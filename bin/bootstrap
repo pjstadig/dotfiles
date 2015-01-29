@@ -25,3 +25,6 @@ set -eu
 
 "${HOME}/bin/bootstrap-system"
 "${HOME}/bin/bootstrap-dotfiles"
+
+gsettings set org.freedesktop.ibus.general.hotkey trigger '@as []'
+gsettings set org.freedesktop.ibus.general.hotkey triggers '@as []'
