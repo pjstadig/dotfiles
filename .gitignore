@@ -1,6 +1,8 @@
 *
+!/.bashrc
 !/.gitconfig
 !/.gitignore
+!/.profile
 !/.ssh/
 !/.ssh/id_rsa.pub
 !/LICENSE.txt
