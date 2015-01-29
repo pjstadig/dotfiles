@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# -*- mode: shell-script; coding: utf-8-unix; fill-column: 80 -*-
+# Copyright © 2015 Paul Stadig.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+# This is a script for your user account that installs this dotfiles
+# repository—in all its glory—into your home directory.  It is idempotent, so it
+# can be safely run multiple times.  It is separate from the other bootstrapping
+# scripts so it can be used to setup your dotfiles on any system (not just a
+# home system).
+
+set -eu
+
+# check for my ssh key
+if [ ! ${!SSH_AUTH_SOCK[@]} ]; then
+  echo "You must be running an ssh-agent." 1>&2
+  exit 1;
+fi
+
+ssh_key_fingerprint="f3:2d:05:e2:52:66:1c:e7:4f:2c:4e:0b:6d:d1:6d:79"
+if ! ssh-add -l | grep "$ssh_key_fingerprint" &>/dev/null; then
+  echo "You must have your key loaded." 1>&2
+  exit 1
+fi
+
+function package-installed () {
+  dpkg-query -W --showformat='${Status}\n' "${1}" 2>/dev/null | grep "install ok installed" &>/dev/null
+}
+
+if package-installed git; then
+  echo "=== Skipping installing git"
+else
+  echo "+++ Installing git"
+  sudo apt-get -y install git
+fi
+
+if [ -d "${HOME}/.git" ]; then
+  echo "=== Skipping cloning dotfiles repo"
+else
+  echo "+++ Cloning dotfiles repo"
+  pushd "${HOME}" &>/dev/null
+  git init
+  git remote add -f -t \* origin git@github.com:pjstadig/dotfiles.git
+  git reset origin/master
+  git branch --set-upstream-to origin/master
+  popd &>/dev/null
+fi

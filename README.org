@@ -1,0 +1,58 @@
+# -*- mode: org; coding: utf-8-unix; fill-column: 80 -*-
+#+STARTUP: hidestars showall
+* Hello, Paul!
+  This repository contains the dotfiles that are shared across your many
+  automatic computing machines (hereafter refered to as 'machines').
+
+  In addition to your dotfiles, here you will also find three bootstrapping
+  scripts.  The first ([[https://github.com/pjstadig/dotfiles/blob/master/bin/bootstrap-system][bootstrap-system]]) is a non-user-specific script that
+  installs essential software packages, creates users, and configures a freshly
+  installed Ubuntu 14.04 machine for home use.  This script is intended to be
+  run by the initial install user (ubuntu) after a fresh install, but it can
+  also be safely—and idempotently—run by any other user with sudo privileges.
+  The bootstrap-system script can be run like so:
+
+  #+BEGIN_EXAMPLE
+  bash <(wget -O- https://raw.githubusercontent.com/pjstadig/dotfiles/master/bin/bootstrap-system)
+  #+END_EXAMPLE
+
+  The second ([[https://github.com/pjstadig/dotfiles/blob/master/bin/bootstrap-dotfiles][bootstrap-dotfiles]]) is a script for your user account that
+  installs this dotfiles repository—in all its glory—into your home directory.
+  It is idempotent, so it can be safely run multiple times.  It is separate from
+  the other bootstrapping scripts so it can be used to setup your dotfiles on
+  any system (not just a home system).  The bootstrap-dotfiles script can be run
+  like so:
+
+  #+BEGIN_EXAMPLE
+  bash <(wget -O- https://raw.githubusercontent.com/pjstadig/dotfiles/master/bin/bootstrap-dotfiles)
+  #+END_EXAMPLE
+
+  The third ([[https://github.com/pjstadig/dotfiles/blob/master/bin/bootstrap][bootstrap]]) is a script for your user account that installs and
+  configures essential (but user-specific) software packages that cannot be
+  installed or configured with self-install scripts.  It is idempotent, so it
+  can be safely run multiple times.  Because they are idempotent, this script
+  will also run both bootstrap-system and bootstrap-dotfiles, but they should
+  still be run manually before running it.  The bootstrap script can be run from
+  your home directory like so:
+
+  #+BEGIN_EXAMPLE
+  ${HOME}/bin/bootstrap
+  #+END_EXAMPLE
+* LICENSE
+  #+BEGIN_EXAMPLE
+  Copyright © 2015 Paul Stadig.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License. You may obtain a copy of
+  the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations under
+  the License.
+  #+END_EXAMPLE
+
+  See [[https://github.com/pjstadig/dotfiles/blob/master/LICENSE.txt][LICENSE.txt]] in this project for more information.

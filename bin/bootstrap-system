@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+# -*- mode: shell-script; coding: utf-8-unix; fill-column: 80 -*-
+# Copyright © 2015 Paul Stadig.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+# This is a non-user-specific script that installs essential software packages,
+# creates users, and configures a freshly installed Ubuntu 14.04 machine for
+# home use.  This script is intended to be run by the initial install user
+# (ubuntu) after a fresh install, but it can also be safely—and idempotently—run
+# by any other user with sudo privileges.
+
+set -eu
+
+if [ -z $(hostname -d 2>/dev/null) ]; then
+  echo "You must set a fully qualified domain name for this system."
+  exit 1
+fi
+
+echo "+++ Updating apt packages"
+sudo apt-get update >/dev/null && true
+echo "+++ Upgrading apt packages"
+sudo apt-get -y upgrade && true
+
+function package-installed () {
+  dpkg-query -W --showformat='${Status}\n' "${1}" 2>/dev/null | grep "install ok installed" &>/dev/null
+}
+
+if package-installed i3 && \
+  package-installed openssh-server && \
+  package-installed brother-cups-wrapper-laser
+then
+  echo "=== Skipping installing essential packages"
+else
+  echo "+++ Installing essential packages"
+  sudo apt-get -y install i3 openssh-server brother-cups-wrapper-laser
+fi
+
+function confirm() {
+  while true; do
+    read -p "${1} " yn
+    case "${yn}" in
+      [Yy]|[Yy][Ee][Ss]) return 0;;
+      [Nn]|[Nn][Oo]) return 1;;
+      * ) echo "Please answer yes or no.";;
+    esac
+  done
+}
+
+function create-user() {
+  if getent group "${2}" &>/dev/null; then
+    echo "=== Skipping adding group '${2}'"
+  else
+    echo "+++ Adding group '${2}'"
+    sudo groupadd -g "${3}" "${2}"
+  fi
+  sudo useradd -m -s /bin/bash -c "${1}" -u "${3}" -g "${3}" -G cdrom,dip,plugdev,lpadmin "${2}"
+  while true; do sudo passwd "${2}" && break; done
+}
+
+function make-user-admin() {
+  sudo usermod -a -G adm,sudo,sambashare "${1}"
+}
+
+function init-ssh() {
+  sudo -Hiu "${1}" <<EOF
+set -eu
+
+if [ -d "\${HOME}/.ssh" ]; then
+  echo "=== Skipping initializing '\${HOME}/.ssh' for '${1}'"
+else
+  echo "+++ Initializing '\${HOME}/.ssh' for '${1}'"
+  mkdir -m0755 -p "\${HOME}/.ssh"
+fi
+
+if [ -f "\${HOME}/.ssh/authorized_keys" ]; then
+  echo "=== Skipping initializing '\${HOME}/.ssh/authorized_keys' for '${1}'"
+else
+  echo "+++ Initializing '\${HOME}/.ssh/authorized_keys' for '${1}'"
+  wget "-O\${HOME}/.ssh/authorized_keys" https://raw.githubusercontent.com/pjstadig/dotfiles/master/.ssh/id_rsa.pub
+  chmod 0644 "\${HOME}/.ssh/authorized_keys"
+fi
+EOF
+}
+
+function setup-user() {
+  if getent passwd "${2}" &>/dev/null; then
+    echo "=== Skipping setting up user '${1}'"
+  else
+    echo "+++ Setting up user '${1}'"
+    create-user "${1}" "${2}" "${3}"
+    if confirm "Is '${1}' an administrator?"; then
+      echo "+++ Making '${1}' an administrator"
+      make-user-admin "${2}"
+    else
+      echo "=== Skipping making '${1}' an administrator"
+    fi
+  fi
+  init-ssh "${2}"
+}
+
+setup-user "Paul Stadig" "paul" 6000
+setup-user "Lauren Stadig" "lauren" 6001
+
+if [ $USER != "ubuntu" ] && getent passwd ubuntu &>/dev/null; then
+  if confirm "Would you like to remove the 'ubuntu' user?"; then
+    echo "+++ Removing 'ubuntu' user"
+    sudo deluser ubuntu
+    echo "+++ Removing '/home/ubuntu/'"
+    sudo rm -rf /home/ubuntu/
+    if getent group ubuntu &>/dev/null; then
+      echo "+++ Removing 'ubuntu' group"
+      sudo delgroup ubuntu
+    fi
+  else
+    echo "=== Skipping removing 'ubuntu' user"
+  fi
+else
+  echo "=== Skipping removing 'ubuntu' user"
+fi
+
+if grep 'XKBOPTIONS=""' /etc/default/keyboard &>/dev/null; then
+  echo "+++ Making 'Caps Lock' a 'Control' key in the console"
+  sudo sed -i 's/^XKBOPTIONS=""$/XKBOPTIONS="ctrl:nocaps"/' /etc/default/keyboard
+  sudo dpkg-reconfigure -p high console-setup
+else
+  echo "=== Skipping making 'Caps Lock' a 'Control' key in the console"
+fi
+
+# samson specific bootstrapping
+if [ $(hostname -a) = "samson" ]; then
+  if package-installed nvidia-331; then
+    echo "=== Skipping installing nvidia drivers"
+  else
+    echo "+++ Installing nvidia drivers"
+    sudo apt-get -y install nvidia-331
+  fi
+else
+  echo "=== Skipping installing nvidia drivers (not samson)"
+fi

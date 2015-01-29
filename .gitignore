@@ -1,0 +1,11 @@
+*
+!/.gitconfig
+!/.gitignore
+!/.ssh/
+!/.ssh/id_rsa.pub
+!/LICENSE.txt
+!/README.org
+!/bin/
+!/bin/bootstrap
+!/bin/bootstrap-dotfiles
+!/bin/bootstrap-system
