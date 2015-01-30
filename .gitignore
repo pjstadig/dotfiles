@@ -11,6 +11,7 @@
 !/bin/bootstrap
 !/bin/bootstrap-dotfiles
 !/bin/bootstrap-system
+!/bin/lein
 !/bin/lib/
 !/bin/lib/gsettings.bash
 !/bin/lib/log.bash
