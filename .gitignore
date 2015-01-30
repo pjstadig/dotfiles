@@ -12,6 +12,7 @@
 !/bin/bootstrap-dotfiles
 !/bin/bootstrap-system
 !/bin/lib/
+!/bin/lib/gsettings.bash
 !/bin/lib/log.bash
 !/bin/lib/packages.bash
 !/bin/lib/require.bash
