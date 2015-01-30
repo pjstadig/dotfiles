@@ -2,6 +2,8 @@
 !/.bashrc
 !/.gitconfig
 !/.gitignore
+!/.i3/
+!/.i3/config
 !/.profile
 !/.ssh/
 !/.ssh/id_rsa.pub
