@@ -9,6 +9,8 @@
 !/.ssh/id_rsa.pub
 !/LICENSE.txt
 !/README.org
+!/.xbindkeysrc
+!/.xsessionrc
 !/bin/
 !/bin/bootstrap
 !/bin/bootstrap-dotfiles
@@ -19,3 +21,4 @@
 !/bin/lib/log.bash
 !/bin/lib/packages.bash
 !/bin/lib/require.bash
+!/bin/raise-or-run
