@@ -1,5 +1,8 @@
 *
 !/.bashrc
+!/.fonts/
+!/.fonts/Glass_TTY_VT220.ttf
+!/.fonts/mensch-1.0.ttf
 !/.gitconfig
 !/.gitignore
 !/.i3/
@@ -7,8 +10,6 @@
 !/.profile
 !/.ssh/
 !/.ssh/id_rsa.pub
-!/LICENSE.txt
-!/README.org
 !/.xbindkeysrc
 !/.xsessionrc
 !/bin/
@@ -22,3 +23,5 @@
 !/bin/lib/packages.bash
 !/bin/lib/require.bash
 !/bin/raise-or-run
+!/LICENSE.txt
+!/README.org
