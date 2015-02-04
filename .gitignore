@@ -7,6 +7,7 @@
 !/.gitignore
 !/.i3/
 !/.i3/config
+!/.keysnail.js
 !/.profile
 !/.ssh/
 !/.ssh/id_rsa.pub
