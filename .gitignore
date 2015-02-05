@@ -23,6 +23,7 @@
 !/bin/lib/log.bash
 !/bin/lib/packages.bash
 !/bin/lib/require.bash
+!/bin/mvn
 !/bin/raise-or-run
 !/LICENSE.txt
 !/README.org

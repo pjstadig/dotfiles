@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+# -*- mode: shell-script; coding: utf-8-unix; fill-column: 80 -*-
+# Copyright © 2015 Paul Stadig.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+# A self-installing script to run maven.
+
+set -eu
+
+. "${HOME}/bin/lib/require.bash"
+
+require log
+
+local_opt_dir="${HOME}/.local/opt"
+maven_version="3.2.5"
+maven_dir="${local_opt_dir}/apache-maven"
+maven="${maven_dir}/bin/mvn"
+
+if [ ! -d "${local_opt_dir}" ]; then
+  mkdir -p "${local_opt_dir}"
+fi
+
+if [ ! -x "${maven_dir}-${maven_version}" ]; then
+    pushd "${local_opt_dir}"
+    if [ -f "${local_opt_dir}/apache-maven-developer-keys.txt" ]; then
+      log-verbose "=== Skipping downloading maven developer keys"
+    else
+      log "+++ Downloading maven developer keys"
+      wget -O "${local_opt_dir}/apache-maven-developer-keys.txt" "https://www.apache.org/dist/maven/KEYS"
+    fi
+
+    gpg --import "${local_opt_dir}/apache-maven-developer-keys.txt"
+
+    if [ -f "apache-maven-${maven_version}.tar.gz.asc" ]; then
+      log-verbose "=== Skipping downloading maven signature"
+    else
+      log "+++ Downloading maven signature"
+      wget -O "apache-maven-${maven_version}.tar.gz.asc" "http://www.apache.org/dist/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz.asc"
+    fi
+
+    if [ -f "apache-maven-${maven_version}.tar.gz.md5" ]; then
+      log-verbose "=== Skipping downloading maven checksum"
+    else
+      log "+++ Downloading maven checksum"
+      wget -O "apache-maven-${maven_version}.tar.gz.md5" "http://www.apache.org/dist/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz.md5"
+    fi
+
+    if [ -f "apache-maven-${maven_version}.tar.gz" ]; then
+      log-verbose "=== Skipping downloading maven"
+    else
+      log "+++ Downloading maven"
+      wget -O "apache-maven-${maven_version}.tar.gz" "http://apache.osuosl.org/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz"
+    fi
+
+    [ $(md5sum "apache-maven-${maven_version}.tar.gz" | cut -d' ' -f1) = $(< "apache-maven-${maven_version}.tar.gz.md5") ] || (echo "MD5 checksum failed" && exit 1)
+    gpg --verify "apache-maven-${maven_version}.tar.gz.asc"
+
+    tar xzvf "apache-maven-${maven_version}.tar.gz"
+    rm "apache-maven-${maven_version}.tar.gz"
+    ln -nsf "${maven_dir}-${maven_version}" "${maven_dir}"
+    popd
+fi
+
+exec "${maven}" "$@"
