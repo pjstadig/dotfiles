@@ -38,7 +38,7 @@ else
   sudo add-apt-repository -y ppa:yubico/stable
 fi
 
-ensure-packages "openjdk-7-jdk" "xdotool" "xbindkeys" "yubikey-neo-manager"
+ensure-packages "openjdk-7-jdk" "xdotool" "xbindkeys" "yubikey-neo-manager" "build-essential"
 
 ensure-setting org.freedesktop.ibus.general.hotkey trigger '@as []'
 ensure-setting org.freedesktop.ibus.general.hotkey triggers '@as []'
