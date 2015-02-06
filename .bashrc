@@ -112,6 +112,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# setup the require path for require.bash
-export FPATH="${HOME}/bin/lib"

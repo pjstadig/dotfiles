@@ -20,3 +20,6 @@ fi
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
+
+# setup the require path for require.bash
+export FPATH="${HOME}/bin/lib"

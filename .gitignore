@@ -1,5 +1,8 @@
 *
 !/.bashrc
+!/.config/
+!/.config/autostart/
+!/.config/autostart/*
 !/.fonts/
 !/.fonts/Glass_TTY_VT220.ttf
 !/.fonts/mensch-1.0.ttf
@@ -17,6 +20,7 @@
 !/bin/bootstrap
 !/bin/bootstrap-dotfiles
 !/bin/bootstrap-system
+!/bin/dex
 !/bin/lein
 !/bin/lib/
 !/bin/lib/gsettings.bash
