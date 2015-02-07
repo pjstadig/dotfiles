@@ -17,4 +17,4 @@
 set -eu
 
 dex -ae i3 &>>/tmp/dotfiles.log
-exec i3
+exec dbus-launch --exit-with-session i3
