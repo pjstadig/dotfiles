@@ -16,5 +16,6 @@
 
 set -eu
 
+eval $(gpg-agent --daemon)
 dex -ae i3 &>>/tmp/dotfiles.log
 exec dbus-launch --exit-with-session i3
