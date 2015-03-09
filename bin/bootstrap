@@ -39,7 +39,8 @@ else
 fi
 
 ensure-packages "openjdk-7-jdk" "xdotool" "xbindkeys" "yubikey-neo-manager" \
-   "yubikey-personalization-gui" "build-essential" "emacs24" "checkinstall"
+  "yubikey-personalization-gui" "build-essential" "emacs24" "checkinstall" \
+  "gnupg-agent"
 
 ensure-setting org.freedesktop.ibus.general.hotkey trigger '@as []'
 ensure-setting org.freedesktop.ibus.general.hotkey triggers '@as []'
