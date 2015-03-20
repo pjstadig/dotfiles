@@ -14,6 +14,12 @@
 !/.profile
 !/.ssh/
 !/.ssh/id_rsa.pub
+!/.system/
+!/.system/usr/
+!/.system/usr/share/
+!/.system/usr/share/X11/
+!/.system/usr/share/X11/xorg.conf.d/
+!/.system/usr/share/X11/xorg.conf.d/20-intel.conf
 !/.xbindkeysrc
 !/.xsessionrc
 !/bin/
