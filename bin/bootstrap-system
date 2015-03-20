@@ -38,12 +38,13 @@ function package-installed () {
 
 if package-installed i3 && \
   package-installed openssh-server && \
-  package-installed brother-cups-wrapper-laser
+  package-installed brother-cups-wrapper-laser && \
+  package-installed encfs
 then
   echo "=== Skipping installing essential packages"
 else
   echo "+++ Installing essential packages"
-  sudo apt-get -y install i3 openssh-server brother-cups-wrapper-laser
+  sudo apt-get -y install i3 openssh-server brother-cups-wrapper-laser encfs
 fi
 
 function confirm() {
