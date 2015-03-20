@@ -148,3 +148,13 @@ if [ $(hostname -a) = "samson" ]; then
 else
   echo "=== Skipping installing nvidia drivers (not samson)"
 fi
+
+# rosey specific bootstrapping
+if [ $(hostname -a) = "rosey" ]; then
+  if [ -f /usr/share/X11/xorg.conf.d/20-intel.conf ]; then
+    echo "=== Skipping configuring rosey's brightness controls"
+  else
+    echo "+++ Configuring rosey's brightness controls"
+    sudo wget -O /usr/share/X11/xorg.conf.d/20-intel.conf https://raw.githubusercontent.com/pjstadig/dotfiles/master/.system/usr/share/X11/xorg.conf.d/20-intel.conf
+  fi
+fi
