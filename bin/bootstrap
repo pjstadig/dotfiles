@@ -36,6 +36,7 @@ if ls /etc/apt/sources.list.d/yubico*.list &>/dev/null; then
 else
   log "+++ Adding the Yubico PPA"
   sudo add-apt-repository -y ppa:yubico/stable
+  sudo apt-get update
 fi
 
 ensure-packages "openjdk-7-jdk" "xdotool" "xbindkeys" "yubikey-neo-manager" \
