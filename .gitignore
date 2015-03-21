@@ -5,6 +5,8 @@
 !/.config/autostart/*
 !/.emacs.d/
 !/.emacs.d/*
+/.emacs.d/places
+/.emacs.d/.smex-items
 !/.emacs.d/paul/
 !/.emacs.d/paul/*
 !/.fonts/
