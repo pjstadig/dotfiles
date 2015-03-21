@@ -16,6 +16,15 @@
 
 set -eu
 
-eval $(gpg-agent --daemon)
-dex -ae i3 &>>/tmp/dotfiles.log
+. "${HOME}/bin/lib/require.bash"
+
+require log
+
+if [ -x gpg-agent] && gpg_agent_env=`gpg-agent --daemon`; then
+    eval "${gpg_agent_env}"
+else
+  log-verbose "!!! Failed to start gpg-agent"
+fi
+
+dex -ae i3 &>>/tmp/dotfiles.log || log-verbose "!!! Failed to start dex"
 exec dbus-launch --exit-with-session i3
