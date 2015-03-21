@@ -41,5 +41,7 @@
 !/bin/lib/require.bash
 !/bin/mvn
 !/bin/raise-or-run
+!/bin/secure-mount
+!/bin/secure-unmount
 !/LICENSE.txt
 !/README.org
