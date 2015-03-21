@@ -3,6 +3,10 @@
 !/.config/
 !/.config/autostart/
 !/.config/autostart/*
+!/.emacs.d/
+!/.emacs.d/*
+!/.emacs.d/paul/
+!/.emacs.d/paul/*
 !/.fonts/
 !/.fonts/Glass_TTY_VT220.ttf
 !/.fonts/mensch-1.0.ttf
