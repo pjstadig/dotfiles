@@ -5,6 +5,11 @@
 // ========================================================================= //
 //{{%PRESERVE%
 // Put your codes here
+// Setup tanything
+key.setViewKey(["C-x", "b"], function (ev, arg) {
+                   ext.exec("tanything", arg);
+               }, "view all tabs", true);
+
 //}}%PRESERVE%
 // ========================================================================= //
 
