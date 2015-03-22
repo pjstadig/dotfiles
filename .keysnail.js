@@ -7,8 +7,39 @@
 // Put your codes here
 // Setup tanything
 key.setViewKey(["C-x", "b"], function (ev, arg) {
-                   ext.exec("tanything", arg);
-               }, "view all tabs", true);
+    ext.exec("tanything", arg);
+}, "view all tabs", true);
+
+// Setup HoK
+plugins.options["hok.hint_keys"] = "0123456789";
+
+key.setViewKey("f", function (aEvent, aArg) {
+    ext.exec("hok-start-foreground-mode", aArg);
+}, 'Hok - Foreground hint mode', true);
+
+key.setViewKey(["C-u", "f"], function (aEvent, aArg) {
+    ext.exec("hok-start-background-mode", aArg);
+}, 'HoK - Background hint mode', true);
+
+key.setViewKey(';', function (aEvent, aArg) {
+    ext.exec("hok-start-extended-mode", aArg);
+}, 'HoK - Extented hint mode', true);
+
+key.setViewKey(['C-c', 'f'], function (aEvent, aArg) {
+    ext.exec("hok-start-continuous-mode", aArg);
+}, 'Start continuous HaH', true);
+
+key.setViewKey('c', function (aEvent, aArg) {
+    ext.exec("hok-yank-foreground-mode", aArg);
+}, 'Hok - Foreground yank hint mode', true);
+
+// key.setViewKey(["[", "["], function (aEvent, aArg) {
+//     ext.exec("hok-follow-prev-link", aArg);
+// }, 'Hok - Follow next link', true);
+
+// key.setViewKey(["]", "]"], function (aEvent, aArg) {
+//     ext.exec("hok-follow-next-link", aArg);
+// }, 'Hok - Follow previous link', true);
 
 //}}%PRESERVE%
 // ========================================================================= //
@@ -27,7 +58,6 @@ key.negativeArgument3Key = "M--";
 key.suspendKey           = "<f2>";
 
 // ================================= Hooks ================================= //
-
 
 hook.setHook('KeyBoardQuit', function (aEvent) {
     if (key.currentKeySequence.length) return;
@@ -53,7 +83,6 @@ hook.setHook('KeyBoardQuit', function (aEvent) {
         key.generateKey(aEvent.originalTarget, KeyEvent.DOM_VK_ESCAPE, true);
     }
 });
-
 
 // ============================= Key bindings ============================== //
 
@@ -161,6 +190,34 @@ key.setGlobalKey('C-M-h', function (ev) {
     getBrowser().mTabContainer.advanceSelectedTab(-1, true);
 }, 'Select previous tab');
 
+key.setViewKey([['C-x', 'b'], ['a']], function (ev, arg) {
+    ext.exec("tanything", arg);
+}, 'view all tabs', true);
+
+key.setViewKey(['C-x', 'h'], function (ev) {
+    goDoCommand("cmd_selectAll");
+}, 'Select all', true);
+
+key.setViewKey('f', function (aEvent, aArg) {
+    ext.exec("hok-start-foreground-mode", aArg);
+}, 'Hok - Foreground hint mode', true);
+
+key.setViewKey(['C-u', 'E'], function (aEvent, aArg) {
+    ext.exec("hok-start-background-mode", aArg);
+}, 'HoK - Background hint mode', true);
+
+key.setViewKey(';', function (aEvent, aArg) {
+    ext.exec("hok-start-extended-mode", aArg);
+}, 'HoK - Extented hint mode', true);
+
+key.setViewKey(['C-c', 'C-e'], function (aEvent, aArg) {
+    ext.exec("hok-start-continuous-mode", aArg);
+}, 'Start continuous HaH', true);
+
+key.setViewKey('c', function (aEvent, aArg) {
+    ext.exec("hok-yank-foreground-mode", aArg);
+}, 'Hok - Foreground yank hint mode', true);
+
 key.setViewKey('C-n', function (ev) {
     key.generateKey(ev.originalTarget, KeyEvent.DOM_VK_DOWN, true);
 }, 'Scroll line down');
@@ -217,11 +274,7 @@ key.setViewKey('F', function (ev) {
     BrowserForward();
 }, 'Forward');
 
-key.setViewKey(['C-x', 'h'], function (ev) {
-    goDoCommand("cmd_selectAll");
-}, 'Select all', true);
-
-key.setViewKey('e', function (ev) {
+key.setViewKey('t', function (ev) {
     command.focusElement(command.elementsRetrieverTextarea, 0);
 }, 'Focus to the first textarea', true);
 
@@ -480,7 +533,7 @@ key.setCaretKey(['C-x', 'h'], function (ev) {
     goDoCommand("cmd_selectAll");
 }, 'Select all', true);
 
-key.setCaretKey('e', function (ev) {
+key.setCaretKey('t', function (ev) {
     command.focusElement(command.elementsRetrieverTextarea, 0);
 }, 'Focus to the first textarea', true);
 
