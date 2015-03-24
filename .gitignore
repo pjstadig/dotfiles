@@ -17,6 +17,8 @@
 !/.i3/
 !/.i3/config
 !/.keysnail.js
+!/.lein/
+!/.lein/*
 !/.profile
 !/.ssh/
 !/.ssh/id_rsa.pub
