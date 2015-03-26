@@ -27,4 +27,5 @@ else
 fi
 
 dex -ae i3 &>>/tmp/dotfiles.log || log-verbose "!!! Failed to start dex"
-exec dbus-launch --exit-with-session i3
+dbus-launch --exit-with-session i3
+rm -rf ~/Downloads/*
