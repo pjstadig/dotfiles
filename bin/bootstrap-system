@@ -158,4 +158,11 @@ if [ $(hostname -a) = "rosey" ]; then
     echo "+++ Configuring rosey's brightness controls"
     sudo wget -O /usr/share/X11/xorg.conf.d/20-intel.conf https://raw.githubusercontent.com/pjstadig/dotfiles/master/.system/usr/share/X11/xorg.conf.d/20-intel.conf
   fi
+
+  if package-installed pm-utils; then
+    echo "=== Skipping installing pm-utils on rosey"
+  else
+    echo "+++ Installing pm-utils on rosey"
+    sudo apt-get -y install pm-utils
+  fi
 fi
