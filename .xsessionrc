@@ -26,6 +26,7 @@ else
   log-verbose "!!! Failed to start gpg-agent"
 fi
 
+# dex runs startup applications from ~/.config/autostart
 dex -ae i3 &>>/tmp/dotfiles.log || log-verbose "!!! Failed to start dex"
 dbus-launch --exit-with-session i3
 rm -rf ~/Downloads/*
