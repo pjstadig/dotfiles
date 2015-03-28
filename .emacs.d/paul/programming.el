@@ -225,3 +225,7 @@
 (add-hook 'asm-mode-hook
           (defun my-tab-indent ()
             (setq fill-prefix nil)))
+
+
+;;; sh-mode
+(setq sh-basic-offset 2)
