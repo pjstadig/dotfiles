@@ -36,12 +36,12 @@
 (when (null package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(better-defaults clojure-mode paredit
-                                      cider idle-highlight-mode
-                                      find-file-in-project magit
-                                      elisp-slime-nav parenface-plus
-                                      markdown-mode yaml-mode page-break-lines
-                                      scpaste diminish smex))
+(defvar my-packages '(better-defaults cider clojure-mode diminish
+                                      elisp-slime-nav find-file-in-project
+                                      fill-column-indicator idle-highlight-mode
+                                      magit markdown-mode page-break-lines
+                                      paredit parenface-plus scpaste smex
+                                      yaml-mode))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
