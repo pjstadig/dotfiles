@@ -3,6 +3,8 @@
 !/.config/
 !/.config/autostart/
 !/.config/autostart/*
+!/.config/i3status/
+!/.config/i3status/*
 !/.emacs.d/
 !/.emacs.d/*
 /.emacs.d/places
