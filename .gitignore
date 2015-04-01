@@ -33,6 +33,7 @@
 !/.xbindkeysrc
 !/.xsessionrc
 !/bin/
+!/bin/boot
 !/bin/bootstrap
 !/bin/bootstrap-dotfiles
 !/bin/bootstrap-system
