@@ -44,6 +44,7 @@
 !/bin/lib/log.bash
 !/bin/lib/packages.bash
 !/bin/lib/require.bash
+!/bin/merge
 !/bin/mvn
 !/bin/raise-or-run
 !/bin/secure-mount

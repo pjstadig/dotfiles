@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+# -*- mode: shell-script; coding: utf-8-unix; fill-column: 80 -*-
+# Copyright © 2015 Paul Stadig.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may not
+# use this file except in compliance with the License. You may obtain a copy of
+# the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations under
+# the License.
+
+# Merges a compare directory (the second argument) into a canonical directory
+# (the first argument).  Any files in the compare directory that have the same
+# content (determined my md5sum) and same relative path as a file in the
+# canonical directory are deleted.  Any files in the compare directory that do
+# not exist at the same relative path in the canonical directory are moved into
+# the canonical directory.
+
+set -eu
+
+if [ "${#@}" -ne 2 ]; then
+  echo "Please specify exactly two arguments: a canonical directory and a compare directory, respectively."
+  exit 1
+fi
+
+canonical_dir="${1}"
+compare_dir="${2}"
+
+if [ ! -d "${canonical_dir}" ]; then
+  echo "Please specify a valid canonical directory"
+  exit 1
+fi
+
+if [ ! -d "${compare_dir}" ]; then
+  echo "Please specify a valid compare directory"
+  exit 1
+fi
+
+find "${compare_dir}" -type f -print0 | while IFS= read -r -d '' file; do
+  file="${file#${compare_dir}}"
+  compare_file="${compare_dir%/}/${file#/}"
+  canonical_file="${canonical_dir%/}/${file#/}"
+  if [ -f "${canonical_file}" ]; then
+    canonical_file_hash="$(md5sum "${canonical_file}" | cut -d' ' -f1)"
+    compare_file_hash="$(md5sum "${compare_file}" | cut -d' ' -f1)"
+    if [ ! -z "${compare_file_hash}" ]; then
+      if [ "${canonical_file_hash}" = "${compare_file_hash}" ]; then
+        echo "removing '${compare_file}'"
+        rm "${compare_file}" || echo "Failed to remove ${compare_file}" >&2
+      else
+        echo "conflict between '${canonical_file}' and '${compare_file}'" >&2
+      fi
+    else
+      echo "EMPTY HASH!"
+    fi
+  else
+    echo "moving '${compare_file}' to '${canonical_file}'"
+    mkdir -p "$(dirname "${canonical_file}")"
+    mv "${compare_file}" "${canonical_file}" || echo "Failed to move ${compare_file}" >&2
+  fi
+done
