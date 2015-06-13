@@ -6,7 +6,7 @@
       ruby-insert-encoding-magic-comment nil
       ;; can't interrupt geiser repls without this
       geiser-repl-read-only-prompt-p nil
-      ;; really annoying an inconsistent
+      ;; really annoying and inconsistent
       line-move-ignore-invisible nil)
 
 (delete 'try-expand-dabbrev-from-kill hippie-expand-try-functions-list)
