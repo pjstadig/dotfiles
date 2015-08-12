@@ -112,3 +112,8 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+. "${HOME}/bin/lib/require.bash"
+
+require android-sdk-path
+require heroku-toolbelt-path
