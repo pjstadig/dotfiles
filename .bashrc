@@ -115,5 +115,8 @@ fi
 
 . "${HOME}/bin/lib/require.bash"
 
+require log
 require android-sdk-path
 require heroku-toolbelt-path
+
+log-verbose "=== Done with .bashrc"
