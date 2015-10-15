@@ -90,7 +90,7 @@
 
 (define-key emacs-lisp-mode-map (kbd "C-c v") 'eval-buffer)
 
-(define-key read-expression-map (kbd "TAB") 'lisp-complete-symbol)
+(define-key read-expression-map (kbd "TAB") 'completion-at-point)
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 
 
