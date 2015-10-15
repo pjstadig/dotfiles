@@ -9,6 +9,8 @@
 !/.emacs.d/*
 /.emacs.d/places
 /.emacs.d/.smex-items
+!/.emacs.d/lisp/
+!/.emacs.d/lisp/*
 !/.emacs.d/paul/
 !/.emacs.d/paul/*
 !/.fonts/

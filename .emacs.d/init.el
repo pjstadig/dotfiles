@@ -20,7 +20,7 @@
 
 (load custom-file t)
 
-(add-to-list 'load-path user-emacs-directory)
+(add-to-list 'load-path (concat user-emacs-directory "/lisp"))
 
 ;; Packages
 
