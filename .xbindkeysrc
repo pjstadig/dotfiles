@@ -1,6 +1,0 @@
-"xdotool getactivewindow mousemove -w '%1' 10000 10000"
-   Mod4 + Control + z
-"raise-or-run emacs emacs"
-   Mod4 + Control + e
-"raise-or-run firefox firefox"
-   Mod4 + Control + f
