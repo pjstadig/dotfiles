@@ -418,7 +418,9 @@ key.setEditKey('M-y', command.yankPop, 'Paste pop (Yank pop)', true);
 key.setEditKey('C-M-y', function (ev) {
     if (!command.kill.ring.length) return;
 
-    let(ct = command.getClipboardText())(!command.kill.ring.length || ct != command.kill.ring[0]) && command.pushKillRing(ct);
+    let(ct = command.getClipboardText()) {
+        (!command.kill.ring.length || ct != command.kill.ring[0]) && command.pushKillRing(ct);
+    }
 
     prompt.selector({
         message: "Paste:",
