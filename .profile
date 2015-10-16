@@ -9,7 +9,12 @@
 #umask 022
 
 # setup the require path for require.bash
-export FPATH="${HOME}/bin/lib"
+export FPATH="$HOME/bin/lib"
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+  PATH="$HOME/bin:$PATH"
+fi
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
@@ -17,9 +22,4 @@ if [ -n "$BASH_VERSION" ]; then
   if [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"
   fi
-fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-  PATH="$HOME/bin:$PATH"
 fi
