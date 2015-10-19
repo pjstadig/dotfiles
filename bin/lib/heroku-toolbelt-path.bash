@@ -21,7 +21,7 @@ heroku_path="/usr/local/heroku/bin"
 if [ -d "${heroku_path}" ]; then
   export PATH="${PATH}:${heroku_path}"
 else
-  log "=== The Heroku Toolbelt must be installed to be activated"
+  log-verbose "=== The Heroku Toolbelt must be installed to be activated"
 fi
 
 provide heroku-toolbelt-path

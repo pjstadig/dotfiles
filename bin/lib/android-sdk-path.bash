@@ -21,7 +21,7 @@ android_path="${HOME}/.local/opt/android-sdk-linux/tools"
 if [ -d "${android_path}" ]; then
   export PATH="${PATH}:${android_path}"
 else
-  log "=== The Android SDK must be installed at ${android_path} to be activated"
+  log-verbose "=== The Android SDK must be installed at ${android_path} to be activated"
 fi
 
 provide android-sdk-path
