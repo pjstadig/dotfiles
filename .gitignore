@@ -8,6 +8,7 @@
 !/.config/i3status/*
 !/.emacs.d/
 !/.emacs.d/*
+/.emacs.d/bookmarks
 /.emacs.d/places
 /.emacs.d/.smex-items
 !/.emacs.d/lisp/
