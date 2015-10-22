@@ -29,6 +29,7 @@ set -eu
 . "${HOME}/bin/lib/require.bash"
 
 require packages
+require nix-packages
 require gsettings
 
 if ls /etc/apt/sources.list.d/yubico*.list &>/dev/null; then
@@ -40,8 +41,9 @@ else
 fi
 
 ensure-packages "openjdk-7-jdk" "xdotool" "xbindkeys" "yubikey-neo-manager" \
-  "yubikey-personalization-gui" "build-essential" "emacs24" "checkinstall" \
-  "gnupg-agent"
+  "yubikey-personalization-gui" "build-essential" "checkinstall" "gnupg-agent"
+
+ensure-nix-packages "emacs"
 
 ensure-setting org.freedesktop.ibus.general.hotkey trigger '@as []'
 ensure-setting org.freedesktop.ibus.general.hotkey triggers '@as []'

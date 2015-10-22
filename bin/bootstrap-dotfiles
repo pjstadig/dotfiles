@@ -34,15 +34,28 @@ if ! ssh-add -l | grep "$ssh_key_fingerprint" &>/dev/null; then
   exit 1
 fi
 
-function package-installed () {
-  dpkg-query -W --showformat='${Status}\n' "${1}" 2>/dev/null | grep "install ok installed" &>/dev/null
+nix_env="${HOME}/.nix-profile/bin/nix-env"
+
+function ensure-nix() {
+  if [ -x "${nix_env}" ]; then
+    echo "=== Skipping installing nix-env"
+  else
+    echo "+++ Installing nix-env"
+    curl https://nixos.org/nix/install | sh
+    . "${HOME}/.nix-profile/etc/profile.d/nix.sh"
+  fi
 }
 
-if package-installed git; then
+function nix-package-installed() {
+  ensure-nix
+  "${nix_env}" -q 2>/dev/null | grep "${1}" &>/dev/null
+}
+
+if nix-package-installed git; then
   echo "=== Skipping installing git"
 else
   echo "+++ Installing git"
-  sudo apt-get -y install git
+  "${nix_env}" -i git
 fi
 
 if [ -d "${HOME}/.git" ]; then
