@@ -91,11 +91,6 @@
   '(progn
      (set-face-foreground 'hl-line "white smoke")
      (set-face-background 'hl-line "gray18")))
-(eval-after-load 'magit
-  '(progn
-     (set-face-attribute 'magit-item-highlight nil :inherit nil)
-     (set-face-foreground 'magit-item-highlight nil)
-     (set-face-background 'magit-item-highlight nil)))
 
 (setq-default fill-column 80)
 
