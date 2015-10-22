@@ -16,9 +16,8 @@
 
 set -eu
 
-. "${HOME}/bin/lib/require.bash"
-
-require log
+# .bashrc should have been run already
+log-verbose "=== Start .xsessionrc"
 
 if [ -x gpg-agent] && gpg_agent_env=`gpg-agent --daemon`; then
     eval "${gpg_agent_env}"
@@ -30,4 +29,4 @@ fi
 dex -ae i3 &>>/tmp/dotfiles.log || log-verbose "!!! Failed to start dex"
 dbus-launch --exit-with-session i3
 rm -rf ~/Downloads/*
-log-verbose "=== Done with .xsessionrc"
+log-verbose "=== End .xsessionrc"

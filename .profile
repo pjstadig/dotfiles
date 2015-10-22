@@ -8,6 +8,9 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+echo -n "$(date) " >>/tmp/dotfiles.log
+echo "=== Start .profile" >>/tmp/dotfiles.log
+
 # setup the require path for require.bash
 export FPATH="$HOME/bin/lib"
 
@@ -27,3 +30,6 @@ if [ -n "$BASH_VERSION" ]; then
     . "$HOME/.bashrc"
   fi
 fi
+
+echo -n "$(date) " >>/tmp/dotfiles.log
+echo "=== End .profile" >>/tmp/dotfiles.log
