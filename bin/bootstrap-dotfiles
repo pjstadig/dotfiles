@@ -55,7 +55,7 @@ if nix-package-installed git; then
   echo "=== Skipping installing git"
 else
   echo "+++ Installing git"
-  nix-env -i git
+  "${nix_env}" -i git
 fi
 
 if [ -d "${HOME}/.git" ]; then
