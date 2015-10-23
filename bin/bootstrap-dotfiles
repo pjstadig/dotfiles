@@ -41,8 +41,8 @@ fi
 if which git &>/dev/null; then
   echo "=== Skipping installing git"
 else
-  echo "+++ Installing git"
-  sudo apt-get install git
+  echo "You must have git installed"
+  exit 1
 fi
 
 if [ -d "${HOME}/.git" ]; then
