@@ -27,7 +27,7 @@ if ! package-installed encfs; then
   log "+++ Installing encfs"
   install-packages encfs >> "${logfile}"
 else
-  log-verbose "=== Skipping installing encfs"
+  debug "=== Skipping installing encfs"
 fi
 
 if [ -d "${HOME}/secure" ]; then
@@ -35,19 +35,19 @@ if [ -d "${HOME}/secure" ]; then
   exit 1
 fi
 
-log-verbose "=== Making ${HOME}/secure"
+debug "=== Making ${HOME}/secure"
 if ! mkdir ~/secure; then
   log "!!! Failed making ${HOME}/secure"
   exit 1
 fi
 
-log-verbose "=== Mounting /dev/sdb1"
+debug "=== Mounting /dev/sdb1"
 if ! udisksctl mount -b /dev/sdb1; then
   log "!!! Failed mounting /dev/sdb1"
   exit 1
 fi
 
-log-verbose "=== Mounting ${HOME}/secure"
+debug "=== Mounting ${HOME}/secure"
 if ! encfs /media/paul/secure-data ~/secure; then
   log "!!! Failed mounting ${HOME}/secure"
   exit 1

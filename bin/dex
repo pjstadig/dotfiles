@@ -25,13 +25,13 @@ require log
 dex="/usr/local/bin/dex"
 
 if [ -x "${dex}" ]; then
-  log-verbose "=== Skipping installing dex"
+  debug "=== Skipping installing dex"
 else
   log "+++ Installing dex"
   dex_dir="${HOME}/src/dex"
 
   if [ -d "${dex_dir}" ]; then
-    log-verbose "=== Skipping cloning dex"
+    debug "=== Skipping cloning dex"
   else
     log "+++ Cloning dex"
     mkdir -p "${HOME}/src"

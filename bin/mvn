@@ -34,7 +34,7 @@ fi
 if [ ! -x "${maven_dir}-${maven_version}" ]; then
     pushd "${local_opt_dir}"
     if [ -f "${local_opt_dir}/apache-maven-developer-keys.txt" ]; then
-      log-verbose "=== Skipping downloading maven developer keys"
+      debug "=== Skipping downloading maven developer keys"
     else
       log "+++ Downloading maven developer keys"
       wget -O "${local_opt_dir}/apache-maven-developer-keys.txt" "https://www.apache.org/dist/maven/KEYS"
@@ -43,21 +43,21 @@ if [ ! -x "${maven_dir}-${maven_version}" ]; then
     gpg --import "${local_opt_dir}/apache-maven-developer-keys.txt"
 
     if [ -f "apache-maven-${maven_version}.tar.gz.asc" ]; then
-      log-verbose "=== Skipping downloading maven signature"
+      debug "=== Skipping downloading maven signature"
     else
       log "+++ Downloading maven signature"
       wget -O "apache-maven-${maven_version}.tar.gz.asc" "http://www.apache.org/dist/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz.asc"
     fi
 
     if [ -f "apache-maven-${maven_version}.tar.gz.md5" ]; then
-      log-verbose "=== Skipping downloading maven checksum"
+      debug "=== Skipping downloading maven checksum"
     else
       log "+++ Downloading maven checksum"
       wget -O "apache-maven-${maven_version}.tar.gz.md5" "http://www.apache.org/dist/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz.md5"
     fi
 
     if [ -f "apache-maven-${maven_version}.tar.gz" ]; then
-      log-verbose "=== Skipping downloading maven"
+      debug "=== Skipping downloading maven"
     else
       log "+++ Downloading maven"
       wget -O "apache-maven-${maven_version}.tar.gz" "http://apache.osuosl.org/maven/maven-3/${maven_version}/binaries/apache-maven-${maven_version}-bin.tar.gz"

@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # -*- mode: shell-script; coding: utf-8-unix; fill-column: 80 -*-
 # Copyright © 2015 Paul Stadig.
 #
@@ -14,14 +13,21 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-require log
+logfile="/tmp/dotfiles-${USER}.log"
 
-android_path="${HOME}/.local/opt/android-sdk-linux/tools"
+log() {
+  echo -n "$(date) " >>"${logfile}"
+  echo "$@" | tee -a "${logfile}"
+}
 
-if [ -d "${android_path}" ]; then
-  export PATH="${PATH}:${android_path}"
-else
-  debug "=== The Android SDK must be installed at ${android_path} to be activated"
-fi
+error() {
+  log "$@" 1>&2
+}
 
-provide android-sdk-path
+debug() {
+  if [ -n "${DEBUG:-}" ]; then
+    log "$@"
+  else
+    log "$@" >/dev/null
+  fi
+}
