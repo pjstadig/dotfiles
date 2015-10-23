@@ -8,7 +8,7 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-echo -n "$(date) " >>/tmp/dotfiles.log
+echo -n "`date` " >>/tmp/dotfiles.log
 echo "=== Start .profile" >>/tmp/dotfiles.log
 
 # setup the require path for require.bash
@@ -19,8 +19,8 @@ if [ -d "$HOME/bin" ] ; then
   PATH="$HOME/bin:$PATH"
 fi
 
-if [ -e "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]; then
-  . "${HOME}/.nix-profile/etc/profile.d/nix.sh"
+if [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+  . "$HOME/.nix-profile/etc/profile.d/nix.sh"
 fi
 
 # if running bash
@@ -31,5 +31,5 @@ if [ -n "$BASH_VERSION" ]; then
   fi
 fi
 
-echo -n "$(date) " >>/tmp/dotfiles.log
+echo -n "`date` " >>/tmp/dotfiles.log
 echo "=== End .profile" >>/tmp/dotfiles.log

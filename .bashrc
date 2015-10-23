@@ -10,7 +10,10 @@ log-verbose "=== Start .bashrc"
 # If not running interactively, don't do anything
 case $- in
   *i*) ;;
-  *) return;;
+  *)
+    log-verbose "=== End .bashrc (non-interactive)"
+    return
+    ;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
