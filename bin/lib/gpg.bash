@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # -*- mode: shell-script; coding: utf-8-unix; fill-column: 80 -*-
 # Copyright © 2015 Paul Stadig.
 #
@@ -14,16 +13,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set -eu
+. "${HOME}/bin/lib/gpg.sh"
 
-# .bashrc should have been run already
-debug "=== Start .xsessionrc"
-
-require gpg
-ensure_gpg_agent
-
-# dex runs startup applications from ~/.config/autostart
-dex -ae i3 &>>/tmp/dotfiles.log || error "!!! Failed to start dex"
-dbus-launch --exit-with-session i3
-rm -rf ~/Downloads/*
-debug "=== End .xsessionrc"
+provide gpg
