@@ -31,9 +31,10 @@ set -eu
 require packages
 require nix-packages
 require gsettings
+require gconf
 
 if ls /etc/apt/sources.list.d/yubico*.list &>/dev/null; then
-  log-verbose "=== Skipping adding the Yubico PPA"
+  debug "=== Skipping adding the Yubico PPA"
 else
   log "+++ Adding the Yubico PPA"
   sudo add-apt-repository -y ppa:yubico/stable
@@ -52,3 +53,6 @@ ensure-setting org.gnome.desktop.wm.preferences titlebar-font 'Cantarell 14'
 ensure-setting org.gnome.desktop.interface monospace-font-name 'Mensch 14'
 ensure-setting org.gnome.desktop.interface font-name 'Cantarell 14'
 ensure-setting org.gnome.desktop.interface document-font-name 'Sans 14'
+
+ensure-conf /apps/gnome-terminal/profiles/Default/custom_command "string" "env TERM=xterm-256color /bin/bash"
+ensure-conf /apps/gnome-terminal/profiles/Default/default_show_menubar "bool" "false"

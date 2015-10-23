@@ -22,17 +22,17 @@ set -eu
 
 require log
 
-log-verbose "=== Unmounting ${HOME}/secure"
+debug "=== Unmounting ${HOME}/secure"
 if ! fusermount -u ~/secure; then
   log "!!! Failed unmounting ${HOME}/secure"
 fi
 
-log-verbose "=== Unmounting /dev/sdb1"
+debug "=== Unmounting /dev/sdb1"
 if ! udisksctl unmount -b /dev/sdb1; then
   log "!!! Failed unmounting /dev/sdb1"
 fi
 
-log-verbose "=== Removing ${HOME}/secure"
+debug "=== Removing ${HOME}/secure"
 if ! rmdir ~/secure; then
   log "!!! Failed removing ${HOME}/secure"
 fi

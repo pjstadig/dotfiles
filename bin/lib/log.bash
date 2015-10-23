@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # -*- mode: shell-script; coding: utf-8-unix; fill-column: 80 -*-
 # Copyright © 2015 Paul Stadig.
 #
@@ -14,19 +13,6 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-logfile="/tmp/dotfiles.log"
-
-function log() {
-  echo -n "$(date) " >>"${logfile}"
-  echo "${@}" | tee -a "${logfile}"
-}
-
-function log-verbose() {
-  if [ ! "${!VERBOSE[@]}" ]; then
-    log "${@}" >/dev/null
-  else
-    log "${@}"
-  fi
-}
+. "${HOME}/bin/lib/log.sh"
 
 provide log

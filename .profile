@@ -8,12 +8,16 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
+. "${HOME}/bin/lib/log.sh"
+
+debug "=== Start .profile"
+
 # setup the require path for require.bash
-export FPATH="$HOME/bin/lib"
+export FPATH="${HOME}/bin/lib"
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-  PATH="$HOME/bin:$PATH"
+if [ -d "${HOME}/bin" ] ; then
+  PATH="${HOME}/bin:${PATH}"
 fi
 
 if [ -e "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]; then
@@ -21,9 +25,11 @@ if [ -e "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]; then
 fi
 
 # if running bash
-if [ -n "$BASH_VERSION" ]; then
+if [ -n "${BASH_VERSION:-}" ]; then
   # include .bashrc if it exists
-  if [ -f "$HOME/.bashrc" ]; then
-    . "$HOME/.bashrc"
+  if [ -f "${HOME}/.bashrc" ]; then
+    . "${HOME}/.bashrc"
   fi
 fi
+
+debug "=== End .profile"

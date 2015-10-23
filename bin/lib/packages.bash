@@ -28,7 +28,7 @@ function ensure-packages() {
   uninstalled=()
   for package in "${@}"; do
     if package-installed "${package}"; then
-      log-verbose "=== Skipping installing package '${package}'"
+      debug "=== Skipping installing package '${package}'"
     else
       uninstalled["${#uninstalled[@]}"]="${package}"
     fi

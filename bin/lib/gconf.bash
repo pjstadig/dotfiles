@@ -14,41 +14,23 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-# A self-installing script for dex.
-
-set -eu
-
-. "${HOME}/bin/lib/require.bash"
-
 require log
 
-dex="/usr/local/bin/dex"
+function get-conf() {
+  gconftool-2 --get "${1}"
+}
 
-if [ -x "${dex}" ]; then
-  debug "=== Skipping installing dex"
-else
-  log "+++ Installing dex"
-  dex_dir="${HOME}/src/dex"
+function set-conf() {
+  gconftool-2 --set "${1}" -t "${2}" "${3}"
+}
 
-  if [ -d "${dex_dir}" ]; then
-    debug "=== Skipping cloning dex"
+function ensure-conf() {
+  if [ "$(get-conf "${1}")" = "${3}" ]; then
+    debug "=== Skipping setting '${1}' to '${3}'"
   else
-    log "+++ Cloning dex"
-    mkdir -p "${HOME}/src"
-    pushd "${HOME}/src"
-    git clone https://github.com/jceb/dex.git
-    popd
+    log "+++ Setting '${1}' to '${3}'"
+    set-conf "${1}" "${2}" "${3}"
   fi
+}
 
-  require packages
-  ensure-packages "python-sphinx"
-
-  log "+++ Building dex"
-  pushd "${HOME}/src/dex"
-  git reset --hard a98fa2faf9
-  make clean
-  sudo checkinstall -yD
-  popd
-fi
-
-exec "${dex}" "${@}"
+provide gconf
