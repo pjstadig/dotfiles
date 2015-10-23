@@ -28,8 +28,10 @@ if [ ! ${!SSH_AUTH_SOCK[@]} ]; then
   exit 1;
 fi
 
-ssh_key_fingerprint="f3:2d:05:e2:52:66:1c:e7:4f:2c:4e:0b:6d:d1:6d:79"
-if ! ssh-add -l | grep "$ssh_key_fingerprint" &>/dev/null; then
+ssh_key_fingerprint1="f3:2d:05:e2:52:66:1c:e7:4f:2c:4e:0b:6d:d1:6d:79"
+ssh_key_fingerprint2="19:b2:ce:fc:e6:b0:62:37:b3:e6:76:b8:6d:01:cb:a8"
+if ! ssh-add -l | grep "${ssh_key_fingerprint1}" &>/dev/null && \
+   ! ssh-add -l | grep "${ssh_key_fingerprint2}" &>/dev/null; then
   echo "You must have your key loaded." 1>&2
   exit 1
 fi
