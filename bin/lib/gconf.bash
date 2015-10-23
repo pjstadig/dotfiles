@@ -14,19 +14,23 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set -eu
+require log
 
-# .bashrc should have been run already
-log-verbose "=== Start .xsessionrc"
+function get-conf() {
+  gconftool-2 --get "${1}"
+}
 
-if [ -x gpg-agent] && gpg_agent_env=`gpg-agent --daemon`; then
-    eval "${gpg_agent_env}"
-else
-  log-verbose "!!! Failed to start gpg-agent"
-fi
+function set-conf() {
+  gconftool-2 --set "${1}" -t "${2}" "${3}"
+}
 
-# dex runs startup applications from ~/.config/autostart
-dex -ae i3 &>>/tmp/dotfiles.log || log-verbose "!!! Failed to start dex"
-dbus-launch --exit-with-session i3
-rm -rf ~/Downloads/*
-log-verbose "=== End .xsessionrc"
+function ensure-conf() {
+  if [ "$(get-conf "${1}")" = "${3}" ]; then
+    log-verbose "=== Skipping setting '${1}' to '${3}'"
+  else
+    log "+++ Setting '${1}' to '${3}'"
+    set-conf "${1}" "${2}" "${3}"
+  fi
+}
+
+provide gconf

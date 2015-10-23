@@ -2,10 +2,18 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+. "${HOME}/bin/lib/require.bash"
+require log
+
+log-verbose "=== Start .bashrc"
+
 # If not running interactively, don't do anything
 case $- in
   *i*) ;;
-  *) return;;
+  *)
+    log-verbose "=== End .bashrc (non-interactive)"
+    return
+    ;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -113,10 +121,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-. "${HOME}/bin/lib/require.bash"
-
-require log
 require android-sdk-path
 require heroku-toolbelt-path
 
-log-verbose "=== Done with .bashrc"
+log-verbose "=== End .bashrc"
