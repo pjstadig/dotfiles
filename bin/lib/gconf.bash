@@ -26,7 +26,7 @@ function set-conf() {
 
 function ensure-conf() {
   if [ "$(get-conf "${1}")" = "${3}" ]; then
-    log-verbose "=== Skipping setting '${1}' to '${3}'"
+    debug "=== Skipping setting '${1}' to '${3}'"
   else
     log "+++ Setting '${1}' to '${3}'"
     set-conf "${1}" "${2}" "${3}"

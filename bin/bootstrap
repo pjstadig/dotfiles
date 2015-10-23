@@ -34,7 +34,7 @@ require gsettings
 require gconf
 
 if ls /etc/apt/sources.list.d/yubico*.list &>/dev/null; then
-  log-verbose "=== Skipping adding the Yubico PPA"
+  debug "=== Skipping adding the Yubico PPA"
 else
   log "+++ Adding the Yubico PPA"
   sudo add-apt-repository -y ppa:yubico/stable

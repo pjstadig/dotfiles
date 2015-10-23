@@ -20,7 +20,7 @@ nix_env="${HOME}/.nix-profile/bin/nix-env"
 
 function ensure-nix() {
   if [ -x "${nix_env}" ]; then
-    log-verbose "=== Skipping installing nix-env"
+    debug "=== Skipping installing nix-env"
   else
     log "+++ Installing nix-env"
     curl https://nixos.org/nix/install | sh
@@ -43,7 +43,7 @@ function ensure-nix-packages() {
   uninstalled=()
   for package in "${@}"; do
     if nix-package-installed "${package}"; then
-      log-verbose "=== Skipping installing package '${package}'"
+      debug "=== Skipping installing package '${package}'"
     else
       uninstalled["${#uninstalled[@]}"]="${package}"
     fi

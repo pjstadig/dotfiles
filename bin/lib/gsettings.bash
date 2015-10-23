@@ -26,7 +26,7 @@ function set-setting() {
 
 function ensure-setting() {
   if [ "$(get-setting "${1}" "${2}")" = "${3}" ]; then
-    log-verbose "=== Skipping setting '${1}/${2}' to '${3}'"
+    debug "=== Skipping setting '${1}/${2}' to '${3}'"
   else
     log "+++ Setting '${1}/${2}' to '${3}'"
     set-setting "${1}" "${2}" "${3}"
