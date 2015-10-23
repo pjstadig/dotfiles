@@ -5,13 +5,13 @@
 . "${HOME}/bin/lib/require.bash"
 require log
 
-log-verbose "=== Start .bashrc"
+debug "=== Start .bashrc"
 
 # If not running interactively, don't do anything
 case $- in
   *i*) ;;
   *)
-    log-verbose "=== End .bashrc (non-interactive)"
+    debug "=== End .bashrc (non-interactive)"
     return
     ;;
 esac
@@ -127,4 +127,4 @@ require heroku-toolbelt-path
 GPG_TTY=$(tty) || error "!!! failed to set GPG_TTY"
 export GPG_TTY
 
-log-verbose "=== End .bashrc"
+debug "=== End .bashrc"
