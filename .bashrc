@@ -124,4 +124,7 @@ fi
 require android-sdk-path
 require heroku-toolbelt-path
 
+GPG_TTY=$(tty) || error "!!! failed to set GPG_TTY"
+export GPG_TTY
+
 log-verbose "=== End .bashrc"

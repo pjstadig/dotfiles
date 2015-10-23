@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 # -*- mode: shell-script; coding: utf-8-unix; fill-column: 80 -*-
 # Copyright © 2015 Paul Stadig.
 #
@@ -14,16 +13,17 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-set -eu
-
-# .bashrc should have been run already
-debug "=== Start .xsessionrc"
-
-require gpg
-ensure_gpg_agent
-
-# dex runs startup applications from ~/.config/autostart
-dex -ae i3 &>>/tmp/dotfiles.log || error "!!! Failed to start dex"
-dbus-launch --exit-with-session i3
-rm -rf ~/Downloads/*
-debug "=== End .xsessionrc"
+ensure_gpg_agent () {
+  gpg_agent="/usr/bin/gpg-agent"
+  if [ -x ${gpg_agent} ]; then
+    if [ -f "$HOME/.gpg-agent-info" ]; then
+      . "$HOME/.gpg-agent-info"
+      export GPG_AGENT_INFO
+    fi
+    if ! ${gpg_agent} &>/dev/null; then
+      ${gpg_agent} --daemon --write-env-file "$HOME/.gpg-agent-info"
+      . "$HOME/.gpg-agent-info"
+      export GPG_AGENT_INFO
+    fi
+  fi
+}
