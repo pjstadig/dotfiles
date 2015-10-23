@@ -30,8 +30,10 @@ fi
 
 ssh_key_fingerprint1="f3:2d:05:e2:52:66:1c:e7:4f:2c:4e:0b:6d:d1:6d:79"
 ssh_key_fingerprint2="19:b2:ce:fc:e6:b0:62:37:b3:e6:76:b8:6d:01:cb:a8"
+ssh_key_fingerprint3="vLV2M8YOZSqxq1GwNgsTOo/yISf1YR5Vqj9P9QW0wF0"
 if ! ssh-add -l | grep "${ssh_key_fingerprint1}" &>/dev/null && \
-   ! ssh-add -l | grep "${ssh_key_fingerprint2}" &>/dev/null; then
+   ! ssh-add -l | grep "${ssh_key_fingerprint2}" &>/dev/null && \
+   ! ssh-add -l | grep "${ssh_key_fingerprint3}" &>/dev/null; then
   echo "You must have your key loaded." 1>&2
   exit 1
 fi
