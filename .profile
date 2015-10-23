@@ -12,6 +12,10 @@
 
 debug "=== Start .profile"
 
+. "${HOME}/bin/lib/gpg.sh"
+
+ensure_gpg_agent
+
 # setup the require path for require.bash
 export FPATH="${HOME}/bin/lib"
 
