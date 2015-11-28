@@ -26,6 +26,7 @@
 !/.keysnail.js
 !/.lein/
 !/.lein/*
+/.lein/credentials.clj
 !/.profile
 !/.ssh/
 !/.ssh/id_rsa.pub
