@@ -24,8 +24,8 @@ if [ -d "${HOME}/bin" ] ; then
   PATH="${HOME}/bin:${PATH}"
 fi
 
-# set EDITOR
 export EDITOR="emacs -nw"
+export SYSTEMD_PAGER="less -r"
 
 if [ -e "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]; then
   . "${HOME}/.nix-profile/etc/profile.d/nix.sh"
