@@ -1,3 +1,5 @@
+(add-to-list 'load-path "~/src/org-mode")
+
 (define-key global-map "\C-cc" 'org-capture)
 (setq org-directory (expand-file-name "~/org"))
 (setq org-agenda-files (list org-directory))
