@@ -27,3 +27,4 @@
 (add-hook 'org-mode-hook 'pjs-set-org-mode-whitespace-style)
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
+(add-hook 'org-mode-hook 'turn-off-fci-mode)
