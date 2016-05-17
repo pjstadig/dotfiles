@@ -18,12 +18,13 @@ ensure_gpg_agent () {
   if [ -x ${gpg_agent} ]; then
     if [ -f "$HOME/.gpg-agent-info" ]; then
       . "$HOME/.gpg-agent-info"
-      export GPG_AGENT_INFO
     fi
-    if ! ${gpg_agent} &>/dev/null; then
-      ${gpg_agent} --daemon --write-env-file "$HOME/.gpg-agent-info"
+    if ! ${gpg_agent} >/dev/null 2>&1; then
+      ${gpg_agent} --daemon --enable-ssh-support --write-env-file "$HOME/.gpg-agent-info"
       . "$HOME/.gpg-agent-info"
-      export GPG_AGENT_INFO
     fi
+    export GPG_AGENT_INFO
+    export SSH_AUTH_SOCK
+    export SSH_AGENT_ID
   fi
 }
