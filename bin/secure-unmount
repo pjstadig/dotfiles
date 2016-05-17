@@ -25,14 +25,17 @@ require log
 debug "=== Unmounting ${HOME}/secure"
 if ! fusermount -u ~/secure; then
   log "!!! Failed unmounting ${HOME}/secure"
+  exit 1
 fi
 
 debug "=== Unmounting /dev/sdb1"
 if ! udisksctl unmount -b /dev/sdb1; then
   log "!!! Failed unmounting /dev/sdb1"
+  exit 1
 fi
 
 debug "=== Removing ${HOME}/secure"
 if ! rmdir ~/secure; then
   log "!!! Failed removing ${HOME}/secure"
+  exit 1
 fi
