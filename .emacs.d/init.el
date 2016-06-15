@@ -8,7 +8,7 @@
       ispell-extra-args '("--keyboard=dvorak")
       ido-use-virtual-buffers t
       ido-handle-duplicate-virtual-buffers 2
-      org-default-notes-file "~/.dotfiles/.notes.org"
+      org-default-notes-file "~/org/inbox.org"
       org-remember-default-headline 'bottom
       org-completion-use-ido t
       epa-armor t
