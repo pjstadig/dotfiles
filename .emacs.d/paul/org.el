@@ -8,9 +8,9 @@
       '(("t" "Todo" entry (file "inbox.org")
          "* TODO %i%?")
         ("p" "Project" entry (file "gtd.org")
-         "* %i%? :project:")
-        ("j" "Journal" entry (file+datetree "journal.org")
-         "* %i%?\n  Entered on %T")))
+         "* %i%? :project:" :prepend 't)
+        ("j" "Journal" item (file+datetree "journal.org")
+         "    - %i%?")))
 (setq org-refile-targets `((,(expand-file-name "~/org/gtd.org") . (:level . 1))))
 (setq org-todo-keywords
       '((sequence "TODO" "|" "DONE" "WAITING")))
