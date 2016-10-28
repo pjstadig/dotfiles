@@ -43,7 +43,7 @@ fi
 
 ensure-packages "openjdk-9-jdk" "xdotool" "xbindkeys" "yubikey-neo-manager" \
                 "yubikey-personalization-gui" "build-essential" "checkinstall" \
-                "gnupg-agent"  "curl"
+                "gnupg-agent" "curl" "python-sphinx"
 
 ensure-nix-packages "emacs" "git"
 
