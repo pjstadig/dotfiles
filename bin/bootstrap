@@ -41,8 +41,9 @@ else
   sudo apt-get update
 fi
 
-ensure-packages "openjdk-7-jdk" "xdotool" "xbindkeys" "yubikey-neo-manager" \
-  "yubikey-personalization-gui" "build-essential" "checkinstall" "gnupg-agent"
+ensure-packages "openjdk-9-jdk" "xdotool" "xbindkeys" "yubikey-neo-manager" \
+                "yubikey-personalization-gui" "build-essential" "checkinstall" \
+                "gnupg-agent"  "curl"
 
 ensure-nix-packages "emacs" "git"
 
