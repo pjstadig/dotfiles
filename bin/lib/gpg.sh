@@ -16,15 +16,7 @@
 ensure_gpg_agent () {
   gpg_agent="/usr/bin/gpg-agent"
   if [ -x ${gpg_agent} ]; then
-    if [ -f "$HOME/.gpg-agent-info" ]; then
-      . "$HOME/.gpg-agent-info"
-    fi
-    if ! ${gpg_agent} >/dev/null 2>&1; then
-      ${gpg_agent} --daemon --enable-ssh-support --write-env-file "$HOME/.gpg-agent-info"
-      . "$HOME/.gpg-agent-info"
-    fi
-    export GPG_AGENT_INFO
-    export SSH_AUTH_SOCK
-    export SSH_AGENT_ID
+    gpg-connect-agent /bye
+    export SSH_AUTH_SOCK="$HOME/.gnupg/S.gpg-agent.ssh"
   fi
 }
