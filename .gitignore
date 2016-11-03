@@ -21,6 +21,10 @@
 !/.fonts/mensch-1.0.ttf
 !/.gitconfig
 !/.gitignore
+!/.gnupg/
+!/.gnupg/gpg.conf
+!/.gnupg/gpg-agent.conf
+!/.gnupg/sshcontrol
 !/.i3/
 !/.i3/config
 !/.keysnail.js
