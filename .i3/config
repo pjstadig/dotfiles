@@ -118,6 +118,16 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
+# pulseaudio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 1 +5% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 1 -10% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 1 toggle # mute sound
+
+# application launchers
+bindsym $mod+Control+z exec xdotool getactivewindow mousemove -w '%1' 10000 10000
+bindsym $mod+Control+e exec raise-or-run emacs emacs
+bindsym $mod+Control+f exec raise-or-run firefox firefox
+
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -151,3 +161,5 @@ bar {
 }
 
 focus_follows_mouse no
+exec --no-startup-id /usr/bin/gnome-settings-daemon
+exec --no-startup-id nm-applet

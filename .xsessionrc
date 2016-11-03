@@ -23,7 +23,6 @@ require gpg
 ensure_gpg_agent
 
 # dex runs startup applications from ~/.config/autostart
-dex -ae i3 &>>/tmp/dotfiles.log || error "!!! Failed to start dex"
 dbus-launch --exit-with-session i3
 rm -rf ~/Downloads/*
 debug "=== End .xsessionrc"
