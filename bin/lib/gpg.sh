@@ -16,7 +16,7 @@
 ensure_gpg_agent () {
   gpg_agent="/usr/bin/gpg-agent"
   if [ -x ${gpg_agent} ]; then
-    gpg-connect-agent /bye
+    gpg-connect-agent /bye 2>&1 1>>"/tmp/dotfiles-${USER}.log"
     export SSH_AUTH_SOCK="$HOME/.gnupg/S.gpg-agent.ssh"
   fi
 }

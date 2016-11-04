@@ -20,7 +20,7 @@ set -eu
 debug "=== Start .xsessionrc"
 
 require gpg
-ensure_gpg_agent &>/tmp/dotfiles-paul.log
+ensure_gpg_agent
 
 # dex runs startup applications from ~/.config/autostart
 dbus-launch --exit-with-session i3
