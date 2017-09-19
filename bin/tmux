@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+. ~/bin/lib/require.bash
+
+require nix-packages
+
+ensure-nix-packages tmux
+
+exec ~/.nix-profile/bin/tmux "${@}"
