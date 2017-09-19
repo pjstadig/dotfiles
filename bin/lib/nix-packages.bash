@@ -16,7 +16,18 @@
 
 require log
 
-nix_env="${HOME}/.nix-profile/bin/nix-env"
+if [ -e "/nix/var/nix/profiles/default/bin/nix-env" ]; then
+  nix_env="/nix/var/nix/profiles/default/bin/nix-env"
+else
+  nix_env="${HOME}/.nix-profile/bin/nix-env"
+fi
+
+
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+  nix_profile='/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+else
+  nix_profile="${HOME}/.nix-profile/etc/profile.d/nix.sh"
+fi
 
 function ensure-nix() {
   if [ -x "${nix_env}" ]; then
@@ -24,7 +35,7 @@ function ensure-nix() {
   else
     log "+++ Installing nix-env"
     curl https://nixos.org/nix/install | sh
-    . "${HOME}/.nix-profile/etc/profile.d/nix.sh"
+    . "${nix_profile}"
   fi
 }
 

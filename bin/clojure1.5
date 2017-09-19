@@ -2,23 +2,28 @@
 
 . ~/bin/lib/require.bash
 
-require packages
+require log
+require nix-packages
+require http-get
 
-ensure-packages rlwrap
+ensure-nix-packages rlwrap
 
 LOCAL_REPO=~/.m2/repository/org/clojure
 REMOTE_REPO=http://repo1.maven.org/maven2/org/clojure
 VERSION=1.5.0
 
 if [ ! -e $LOCAL_REPO/clojure/$VERSION/clojure-$VERSION.jar ]; then
+  log "+++ Installing clojure ${VERSION}"
     mkdir -p $LOCAL_REPO/clojure/$VERSION/
-    wget -P $LOCAL_REPO/clojure/$VERSION/ -U "" \
+    http-get $LOCAL_REPO/clojure/$VERSION/ \
         $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.jar \
         $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.jar.md5 \
         $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.jar.sha1 \
         $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.pom \
         $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.pom.md5 \
         $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.pom.sha1
+else
+  debug "=== Skipping installing clojure ${VERSION}"
 fi
 
 exec rlwrap java -Xmx1g $JAVA_OPTS -cp .:$LOCAL_REPO/clojure/$VERSION/clojure-$VERSION.jar clojure.main $@

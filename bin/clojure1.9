@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+. ~/bin/lib/require.bash
+
+require log
+require nix-packages
+require http-get
+
+ensure-nix-packages rlwrap
+
+LOCAL_REPO=~/.m2/repository/org/clojure
+REMOTE_REPO=http://repo1.maven.org/maven2/org/clojure
+VERSION=1.9.0-beta1
+SPEC_VERSION=0.1.123
+CORE_SPEC_VERSION=0.1.24
+
+if [ ! -e $LOCAL_REPO/clojure/$VERSION/clojure-$VERSION.jar ]; then
+  log "+++ Installing clojure ${VERSION}"
+  mkdir -p $LOCAL_REPO/clojure/$VERSION/
+  http-get $LOCAL_REPO/clojure/$VERSION/ \
+           $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.jar \
+           $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.jar.md5 \
+           $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.jar.sha1 \
+           $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.pom \
+           $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.pom.md5 \
+           $REMOTE_REPO/clojure/$VERSION/clojure-$VERSION.pom.sha1
+else
+  debug "=== Skipping installing clojure ${VERSION}"
+fi
+
+if [ ! -e $LOCAL_REPO/spec.alpha/$SPEC_VERSION/spec.alpha-$SPEC_VERSION.jar ]; then
+  log "+++ Installing spec.alpha ${SPEC_VERSION}"
+  mkdir -p $LOCAL_REPO/spec.alpha/$SPEC_VERSION/
+  http-get $LOCAL_REPO/spec.alpha/$SPEC_VERSION/ \
+        $REMOTE_REPO/spec.alpha/$SPEC_VERSION/spec.alpha-$SPEC_VERSION.jar \
+        $REMOTE_REPO/spec.alpha/$SPEC_VERSION/spec.alpha-$SPEC_VERSION.jar.md5 \
+        $REMOTE_REPO/spec.alpha/$SPEC_VERSION/spec.alpha-$SPEC_VERSION.jar.sha1 \
+        $REMOTE_REPO/spec.alpha/$SPEC_VERSION/spec.alpha-$SPEC_VERSION.pom \
+        $REMOTE_REPO/spec.alpha/$SPEC_VERSION/spec.alpha-$SPEC_VERSION.pom.md5 \
+        $REMOTE_REPO/spec.alpha/$SPEC_VERSION/spec.alpha-$SPEC_VERSION.pom.sha1
+else
+  debug "=== Skipping installing spec.alpha ${SPEC_VERSION}"
+fi
+
+if [ ! -e $LOCAL_REPO/core.specs.alpha/$CORE_SPEC_VERSION/core.specs.alpha-$CORE_SPEC_VERSION.jar ]; then
+  log "+++ Installing core.specs.alpha ${CORE_SPEC_VERSION}"
+  mkdir -p $LOCAL_REPO/core.specs.alpha/$CORE_SPEC_VERSION/
+  http-get $LOCAL_REPO/core.specs.alpha/$CORE_SPEC_VERSION/ \
+           $REMOTE_REPO/core.specs.alpha/$CORE_SPEC_VERSION/core.specs.alpha-$CORE_SPEC_VERSION.jar \
+           $REMOTE_REPO/core.specs.alpha/$CORE_SPEC_VERSION/core.specs.alpha-$CORE_SPEC_VERSION.jar.md5 \
+           $REMOTE_REPO/core.specs.alpha/$CORE_SPEC_VERSION/core.specs.alpha-$CORE_SPEC_VERSION.jar.sha1 \
+           $REMOTE_REPO/core.specs.alpha/$CORE_SPEC_VERSION/core.specs.alpha-$CORE_SPEC_VERSION.pom \
+           $REMOTE_REPO/core.specs.alpha/$CORE_SPEC_VERSION/core.specs.alpha-$CORE_SPEC_VERSION.pom.md5 \
+           $REMOTE_REPO/core.specs.alpha/$CORE_SPEC_VERSION/core.specs.alpha-$CORE_SPEC_VERSION.pom.sha1
+else
+  debug "=== Skipping installing core.specs.alpha ${CORE_SPEC_VERSION}"
+ fi
+
+exec rlwrap java -Xmx1g $JAVA_OPTS -cp .:$LOCAL_REPO/clojure/$VERSION/clojure-$VERSION.jar:$LOCAL_REPO/spec.alpha/$SPEC_VERSION/spec.alpha-$SPEC_VERSION.jar:$LOCAL_REPO/core.specs.alpha/$CORE_SPEC_VERSION/core.specs.alpha-$CORE_SPEC_VERSION.jar clojure.main $@
