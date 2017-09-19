@@ -30,6 +30,7 @@
 !/.profile
 !/.ssh/
 !/.ssh/id_rsa.pub
+!/.ssh/suiteness.pub
 !/.system/
 !/.system/usr/
 !/.system/usr/share/
