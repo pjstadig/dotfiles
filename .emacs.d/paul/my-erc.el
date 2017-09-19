@@ -69,8 +69,5 @@
       (progn
         (erc-tls :server "irc.stadig.name"
                  :nick "pjstadig_freenode"
-                 :password (concat "pjstadig/freenode:" pjs-znc-password))
-        (erc-tls :server "irc.stadig.name"
-                 :nick "pjstadig_sonian"
-                 :password (concat "pjstadig/sonian:" pjs-znc-password)))
+                 :password (concat "pjstadig/freenode:" pjs-znc-password)))
     (message "Missing znc password")))

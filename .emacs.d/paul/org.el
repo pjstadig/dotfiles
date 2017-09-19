@@ -1,3 +1,5 @@
+(add-to-list 'load-path "~/src/org-mode")
+
 (define-key global-map "\C-cc" 'org-capture)
 (setq org-directory (expand-file-name "~/org"))
 (setq org-agenda-files (list org-directory))
@@ -24,10 +26,27 @@
 (defun pjs-load-babel-clojure ()
   (require 'ob-clojure))
 
+;; Thanks, Lee!
+(defun my/org-inline-css-hook (exporter)
+  "Insert custom inline css to automatically set the
+background of code to whatever theme I'm using's background"
+  (when (eq exporter 'html)
+    (let* ((my-pre-bg (face-background 'default))
+           (my-pre-fg (face-foreground 'default)))
+      (setq
+       org-html-head-extra
+       (concat
+        org-html-head-extra
+        (format "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
+                my-pre-bg my-pre-fg))))))
+
+(add-hook 'org-export-before-processing-hook 'my/org-inline-css-hook)
+
 (add-hook 'org-mode-hook 'whitespace-mode)
 (add-hook 'org-mode-hook 'pjs-set-org-mode-whitespace-style)
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (add-hook 'org-mode-hook 'flyspell-mode)
+<<<<<<< HEAD
 (add-hook 'org-mode-hook 'pjs-load-babel-clojure)
 
 (require 'org)
@@ -51,3 +70,6 @@
 
 (add-to-list 'load-path (expand-file-name "~/src/org-present"))
 (autoload 'org-present "org-present" nil t)
+=======
+(add-hook 'org-mode-hook 'turn-off-fci-mode)
+>>>>>>> 0c2143395103d59fba439b29cdfb4131cb58985f
