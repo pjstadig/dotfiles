@@ -95,6 +95,5 @@
 (setq-default fill-column 80)
 
 (add-hook 'prog-mode-hook 'turn-on-fci-mode)
-(add-hook 'text-mode-hook 'turn-on-fci-mode)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
 (add-hook 'text-mode-hook 'flyspell-mode)

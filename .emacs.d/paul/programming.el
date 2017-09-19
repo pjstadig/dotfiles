@@ -72,14 +72,20 @@
 (add-to-list 'load-path "~/src/cider")
 (autoload 'cider-jack-in "cider.el" nil t)
 
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;;(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
 (setq inferior-lisp-command "lein repl"
       cider-repl-popup-stacktraces nil
-      cider-repl-history-file "~/.nrepl-history")
+      cider-repl-history-file "~/.nrepl-history"
+      cider-cljs-lein-repl "(do (require 'figwheel-sidecar.repl-api)
+                                (figwheel-sidecar.repl-api/start-figwheel!)
+                                (figwheel-sidecar.repl-api/cljs-repl))")
 
 (add-to-list 'load-path "~/src/clojure-mode")
 (add-hook 'clojure-mode-hook 'paredit-mode)
+
+(setq org-babel-clojure-backend 'cider)
+(require 'cider)
 
 
 ;;; elisp
@@ -146,7 +152,7 @@
      (define-key tuareg-mode-map (kbd "C-c C-s") 'utop)
      ;; workaround for tuareg bug: https://forge.ocamlcore.org/tracker/index.php?func=detail&aid=1345&group_id=43&atid=255
      (setq tuareg-find-phrase-beginning-and-regexp
-           "\\<\\(and\\)\\>\\|\\<\\(class\\|e\\(?:nd\\|xception\\)\\|let\\|module\\|s\\(?:ig\\|truct\\)\\|type\\)\\>\\|^#[ 	]*[a-z][_a-z]*\\>\\|;;")))
+           "\\<\\(and\\)\\>\\|\\<\\(class\\|e\\(?:nd\\|xception\\)\\|let\\|module\\|s\\(?:ig\\|truct\\)\\|type\\)\\>\\|^#[  ]*[a-z][_a-z]*\\>\\|;;")))
 
 
 ;;; er lang
