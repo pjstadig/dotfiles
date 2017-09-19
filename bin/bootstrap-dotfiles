@@ -30,7 +30,7 @@ fi
 
 ssh_key_fingerprint1="f3:2d:05:e2:52:66:1c:e7:4f:2c:4e:0b:6d:d1:6d:79"
 ssh_key_fingerprint2="46:a2:69:2b:0b:4c:04:34:d1:7c:01:89:15:97:db:79"
-ssh_key_fingerprint3="vLV2M8YOZSqxq1GwNgsTOo/yISf1YR5Vqj9P9QW0wF0"
+ssh_key_fingerprint3="i0xMXB2mCQS63PJZU6ElC1+Bl0XJyxGglswU+ETHMjY"
 if ! ssh-add -l -Emd5 | grep "${ssh_key_fingerprint1}" &>/dev/null && \
    ! ssh-add -l -Emd5 | grep "${ssh_key_fingerprint2}" &>/dev/null && \
    ! ssh-add -l | grep "${ssh_key_fingerprint3}" &>/dev/null; then
