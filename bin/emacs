@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+. ~/bin/lib/require.bash
+
+if [ -x "/Applications/Emacs.app/Contents/MacOS/Emacs" ]; then
+  emacs="/Applications/Emacs.app/Contents/MacOS/Emacs"
+else
+  require nix-packages
+  ensure-nix-packages emacs
+  emacs="~/.nix-profile/bin/emacs"
+fi
+
+exec "${emacs}" "${@}"
