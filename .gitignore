@@ -38,6 +38,7 @@
 !/.system/usr/share/X11/xorg.conf.d/
 !/.system/usr/share/X11/xorg.conf.d/20-intel.conf
 !/.tmux.conf
+!/.tmux.osx.conf
 !/.xbindkeysrc
 !/.xsessionrc
 !/bin/
