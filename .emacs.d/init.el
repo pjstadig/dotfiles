@@ -47,6 +47,15 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
+(defvar macosx-packages '(exec-path-from-shell))
+
+(when (memq window-system '(mac ns))
+  (dolist (p my-packages)
+    (when (not (package-installed-p p))
+      (package-install p)))
+
+  (exec-path-from-shell-initialize))
+
 (mapc 'load (directory-files (concat user-emacs-directory user-login-name)
                              t "^[^#].*el$"))
 
