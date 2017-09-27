@@ -1,1 +1,1 @@
-{:user {:plugins [[cider/cider-nrepl "0.10.0"]]}}
+{:user {:plugins [[lein-ancient "0.6.12"]]}}

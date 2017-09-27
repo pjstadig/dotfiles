@@ -72,7 +72,7 @@
 (add-to-list 'load-path "~/src/cider")
 (autoload 'cider-jack-in "cider.el" nil t)
 
-(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(add-hook 'cider-mode-hook 'eldoc-mode)
 
 (setq inferior-lisp-command "lein repl"
       cider-repl-popup-stacktraces nil
