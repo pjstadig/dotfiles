@@ -6,4 +6,4 @@ require nix-packages
 
 ensure-nix-packages tmux
 
-exec ~/.nix-profile/bin/tmux "${@}"
+exec "${HOME}/.nix-profile/bin/tmux" "${@}"
