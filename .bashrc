@@ -123,6 +123,8 @@ fi
 
 require android-sdk-path
 require heroku-toolbelt-path
+require macos-java-home
+use-java8
 
 GPG_TTY=$(tty) || error "!!! failed to set GPG_TTY"
 export GPG_TTY
