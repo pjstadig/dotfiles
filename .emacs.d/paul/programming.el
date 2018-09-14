@@ -76,7 +76,8 @@
 
 (setq inferior-lisp-command "lein repl"
       cider-repl-popup-stacktraces nil
-      cider-repl-history-file "~/.nrepl-history")
+      cider-repl-history-file "~/.nrepl-history"
+      cider-boot-parameters "cider repl -s wait")
 
 (add-to-list 'load-path "~/src/clojure-mode")
 (add-hook 'clojure-mode-hook 'paredit-mode)
