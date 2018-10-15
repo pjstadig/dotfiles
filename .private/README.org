@@ -1,0 +1,5 @@
+~.private~ is for sensitive information that I want to keep out of git (e.g. passwords).
+
+Though I can store any file here, I expect the following files to exist:
+
+- ~my-znc-password.el~ should define the ~my/znc-password~ symbol for use when connecting to znc.
