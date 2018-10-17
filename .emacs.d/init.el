@@ -14,7 +14,17 @@
 (use-package better-defaults
   :ensure t)
 (use-package magit
-  :ensure t)
+  :ensure t
+  :bind ("C-c g" . magit-status))
+(use-package helm-projectile
+  :ensure t
+  :config
+  (projectile-global-mode)
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on))
+(use-package helm-ag
+  :ensure t
+  :bind ("C-c a" . helm-ag))
 
 (setq my/lib-dir (concat user-emacs-directory "lib"))
 
