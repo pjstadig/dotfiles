@@ -3,7 +3,6 @@
 !/bin/**
 !/.*
 !/.*/**
-/.bash_history
 /.cache/
 /.compose-cache/
 /.dbus/
@@ -23,3 +22,4 @@
 /.nix-profile
 /.zcompdump
 *~
+/.*history
