@@ -33,5 +33,6 @@
   (dolist (f (directory-files my/lib-dir t "\\.el$"))
     (byte-compile-file f)))
 
-(dolist (f (directory-files my/lib-dir t "\\.el$"))
-  (load f))
+(add-to-list 'load-path my/lib-dir)
+(dolist (f (directory-files my/lib-dir nil "\\.el$"))
+  (load (file-name-sans-extension f)))
