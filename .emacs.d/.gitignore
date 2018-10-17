@@ -1,0 +1,6 @@
+/elpa/archives/**
+/ido.last
+/lib/my-autoload/my-autoload.el
+/network-security.data
+/tramp
+/**/*.elc
