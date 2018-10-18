@@ -7,3 +7,13 @@
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (setq linum-format "%d ")
 (add-hook 'prog-mode-hook 'linum-mode)
+
+(use-package helm-ag
+  :ensure t
+  :bind ("C-c a" . helm-ag))
+(use-package helm-projectile
+  :ensure t
+  :config
+  (projectile-mode)
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on))
