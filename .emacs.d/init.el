@@ -1,7 +1,7 @@
 ;; Set fonts
-(set-face-attribute 'default nil :family "Source Code Pro" :height 130)
-(set-face-attribute 'fixed-pitch nil :family "Source Code Pro")
-(set-face-attribute 'variable-pitch nil :family "Source Serif Pro" :height 140)
+(set-face-attribute 'default nil :family "Fira Mono")
+(set-face-attribute 'fixed-pitch nil :family "Fira Mono")
+(set-face-attribute 'variable-pitch nil :family "Fira Sans" :weight 'light)
 
 (require 'package)
 (add-to-list 'package-archives (cons "melpa-stable" "https://stable.melpa.org/packages/") t)
