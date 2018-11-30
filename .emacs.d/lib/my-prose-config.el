@@ -18,6 +18,9 @@
 (add-hook 'org-mode-hook 'visual-fill-column-mode)
 (add-hook 'org-mode-hook 'variable-pitch-mode)
 
+(add-hook 'markdown-mode-hook 'visual-fill-column-mode)
+(add-hook 'markdown-mode-hook 'variable-pitch-mode)
+
 (with-eval-after-load 'org
   (set-face-attribute 'org-checkbox nil :family "Fira Mono")
   (set-face-attribute 'org-table nil :family "Fira Mono")
