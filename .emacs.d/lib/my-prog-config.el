@@ -8,6 +8,11 @@
 (setq linum-format "%d ")
 (add-hook 'prog-mode-hook 'linum-mode)
 
+(use-package helm
+  :ensure t
+  :bind (("C-c i" . helm-imenu)
+         ("C-c C-i" . helm-imenu)))
+
 (use-package helm-ag
   :ensure t
   :bind ("C-c a" . helm-ag))
