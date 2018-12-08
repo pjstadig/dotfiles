@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (org-bullets markdown-mode writegood-mode visual-fill-column use-package paredit magit helm-projectile helm-ag exwm cider better-defaults)))
+    (typo org-bullets markdown-mode writegood-mode visual-fill-column use-package paredit magit helm-projectile helm-ag exwm cider better-defaults)))
  '(safe-local-variable-values
    (quote
     ((whitespace-line-column)
