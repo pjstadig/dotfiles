@@ -14,9 +14,13 @@
 (setq split-window-preferred-function 'visual-fill-column-split-window-sensibly)
 (advice-add 'text-scale-adjust :after 'visual-fill-column-adjust)
 
+(use-package org-bullets
+  :ensure t)
+
 (add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'visual-fill-column-mode)
 (add-hook 'org-mode-hook 'variable-pitch-mode)
+(add-hook 'org-mode-hook 'org-bullets-mode)
 
 (add-hook 'markdown-mode-hook 'visual-fill-column-mode)
 (add-hook 'markdown-mode-hook 'variable-pitch-mode)
