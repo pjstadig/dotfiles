@@ -1,4 +1,6 @@
 /**
+!/Applications/
+!/Applications/**
 !/bin/
 !/bin/**
 !/.*
@@ -23,3 +25,5 @@
 /.zcompdump
 *~
 /.*history
+.DS_Store
+.localized
