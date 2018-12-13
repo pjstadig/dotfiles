@@ -11,11 +11,13 @@
 (use-package helm
   :ensure t
   :bind (("C-c i" . helm-imenu)
-         ("C-c C-i" . helm-imenu)))
+         ("C-c C-i" . helm-imenu)
+         ("M-x" . helm-M-x)))
 
 (use-package helm-ag
   :ensure t
   :bind ("C-c a" . helm-ag))
+
 (use-package helm-projectile
   :ensure t
   :config
