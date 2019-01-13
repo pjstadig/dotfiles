@@ -2,7 +2,9 @@
   (interactive)
   (delete-trailing-whitespace)
   (untabify (point-min) (point-max))
-  (indent-region (point-min) (point-max)))
+  (indent-region (point-min) (point-max))
+  (when (derived-mode-p 'clojure-mode)
+    (clojure-sort-ns)))
 
 (global-set-key (kbd "C-c n") 'my/cleanup-buffer)
 (global-set-key (kbd "C-c C-n") 'my/cleanup-buffer)
