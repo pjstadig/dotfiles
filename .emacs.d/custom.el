@@ -7,7 +7,7 @@
  '(exwm-workspace-show-all-buffers t)
  '(package-selected-packages
    (quote
-    (typo org-bullets markdown-mode writegood-mode visual-fill-column use-package paredit magit helm-projectile helm-ag exwm cider better-defaults)))
+    (company typo org-bullets markdown-mode writegood-mode visual-fill-column use-package paredit magit helm-projectile helm-ag exwm cider better-defaults)))
  '(safe-local-variable-values
    (quote
     ((whitespace-line-column)
