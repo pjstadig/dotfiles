@@ -1,12 +1,17 @@
 (use-package cider
   :ensure t)
+(use-package company
+  :ensure t)
 (use-package paredit
   :ensure t)
 
+(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'column-number-mode)
+(add-hook 'prog-mode-hook 'company-mode)
+(add-hook 'prog-mode-hook 'whitespace-mode)
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
-(setq linum-format "%d ")
-(add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'clojure-mode-hook 'eldoc-mode)
 
 (use-package helm
   :ensure t

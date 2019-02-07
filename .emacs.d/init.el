@@ -19,6 +19,11 @@
 (use-package magit
   :ensure t
   :bind ("C-c g" . magit-status))
+(use-package pinentry
+  :ensure t
+  :config
+  (setq epa-pinentry-mode 'loopback)
+  (pinentry-start))
 
 (setq my/lib-dir (concat user-emacs-directory "lib"))
 
