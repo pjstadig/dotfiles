@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+exec /run/current-system/sw/bin/smbclient --option='client use spnego = no' $@
