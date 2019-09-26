@@ -12,6 +12,7 @@
 /.esd_auth
 /.gnupg/
 /.ICEauthority
+/.lein/repl-port
 /.lein/self-installs/
 /.m2/repository/
 /.mozilla/
