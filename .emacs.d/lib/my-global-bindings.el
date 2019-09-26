@@ -24,7 +24,8 @@
 
 (defun my/restart-network-manager ()
   (interactive)
-  (let ((display-buffer-alist '(("*Async Shell Command*" display-buffer-no-window))))
+  (let ((display-buffer-alist
+         '(("*Async Shell Command*" display-buffer-no-window))))
     (async-shell-command "sudo systemctl restart network-manager" nil)))
 
 (defun my/suspend ()
@@ -48,8 +49,46 @@
   (interactive)
   (revert-buffer 'ignore-auto 'noconfirm 'preserve-mode))
 
-(global-set-key (kbd "C-c c") 'my/cleanup-buffer)
+;; Key binding conventions
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html
+;;
+;; C-c [letter] is reserved for users
+;; <f5> through <f9> are reserved for users
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+;; TODO is there a helm autocomplete I could use?
+(global-set-key (kbd "C-c b") 'org-switchb)
+(global-set-key (kbd "C-c h") 'bh/hide-other)
+(global-set-key (kbd "C-c n") 'bh/toggle-next-task-display)
+
+(defun bh/hide-other ()
+  (interactive)
+  (save-excursion
+    (org-back-to-heading 'invisible-ok)
+    (hide-other)
+    (org-cycle)
+    (org-cycle)
+    (org-cycle)))
+
+(global-set-key (kbd "C-c o a") 'bh/show-org-agenda)
+
+(defun bh/show-org-agenda ()
+  (interactive)
+  (if org-agenda-sticky
+      (switch-to-buffer "*Org Agenda( )*")
+    (switch-to-buffer "*Org Agenda*"))
+  (delete-other-windows))
+
+(global-set-key (kbd "C-c o o") 'org-cycle-agenda-files)
+
+;; TODO org clock with C-c k prefix?
+
 (global-set-key (kbd "C-c r") 'my/revert)
+(global-set-key (kbd "C-c t") 'bh/org-todo)
+(global-set-key (kbd "C-c w") 'bh/widen)
+
+(global-set-key (kbd "C-x n r") 'narrow-to-region)
 (global-set-key (kbd "C-x C-s") 'my/save-buffer)
 
 (global-set-key (kbd "C-c e n") 'my/restart-network-manager)

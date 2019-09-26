@@ -7,7 +7,9 @@
 (set-face-attribute 'variable-pitch nil :family "Fira Sans" :weight 'light)
 
 (require 'package)
-(add-to-list 'package-archives (cons "melpa-stable" "https://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives
+             (cons "melpa-stable" "https://stable.melpa.org/packages/")
+             :append)
 (package-initialize)
 
 (when (not (package-installed-p 'use-package))
@@ -35,3 +37,4 @@
 (add-to-list 'load-path my/lib-dir)
 (dolist (f (directory-files my/lib-dir nil "\\.el$"))
   (load (file-name-sans-extension f)))
+(put 'narrow-to-region 'disabled nil)
