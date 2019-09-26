@@ -1,4 +1,5 @@
 /**/*.elc
+/bookmarks
 /elpa/archives/**
 /ido.last
 /lib/my-autoload/my-autoload.el
