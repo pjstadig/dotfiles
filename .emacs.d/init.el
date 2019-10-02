@@ -6,6 +6,8 @@
 (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
 (set-face-attribute 'variable-pitch nil :family "Fira Sans" :weight 'light)
 
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 (require 'package)
 (add-to-list 'package-archives
              (cons "melpa-stable" "https://stable.melpa.org/packages/")
@@ -16,6 +18,9 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(use-package gnu-elpa-keyring-update
+  :ensure t
+  :config (gnu-elpa-keyring-update))
 (use-package better-defaults
   :ensure t)
 (use-package magit

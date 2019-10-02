@@ -316,7 +316,7 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (pinentry company typo org-bullets markdown-mode writegood-mode visual-fill-column use-package paredit magit helm-projectile helm-ag exwm cider better-defaults)))
+    (better-defaults cider company exwm gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
  '(safe-local-variable-values
    (quote
     ((elisp-lint-indent-specs
