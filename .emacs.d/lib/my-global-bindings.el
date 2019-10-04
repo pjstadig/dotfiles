@@ -40,6 +40,10 @@
   (interactive)
   (start-process-shell-command "show-time" nil "date | dzen2 -p 10"))
 
+(defun my/show-xfce-settings ()
+  (interactive)
+  (start-process-shell-command "show-xfce-settings" nil "xfce4-settings-manager"))
+
 (defun my/save-buffer (&optional arg)
   (interactive "p")
   (my/cleanup-buffer)
@@ -96,3 +100,4 @@
 (global-set-key (kbd "C-c e l") 'my/lock-screen)
 (global-set-key (kbd "C-c e s") 'my/suspend)
 (global-set-key (kbd "C-c e t") 'my/show-time)
+(global-set-key (kbd "<XF86Tools>") 'my/show-xfce-settings)
