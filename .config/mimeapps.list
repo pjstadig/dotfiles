@@ -1,0 +1,11 @@
+[Added Associations]
+image/jpeg=ristretto.desktop;
+video/mp4=vlc.desktop;
+x-scheme-handler/http=exo-web-browser.desktop
+x-scheme-handler/https=exo-web-browser.desktop
+inode/directory=exo-file-manager.desktop
+x-scheme-handler/trash=exo-file-manager.desktop
+text/plain=mousepad.desktop;
+
+[Default Applications]
+video/mp4=vlc.desktop
