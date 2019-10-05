@@ -21,6 +21,7 @@
  '(cider-repl-use-pretty-printing t)
  '(cider-save-file-on-load t)
  '(clojure-docstring-fill-column 80)
+ '(dired-clean-confirm-killing-deleted-buffers nil)
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
  '(exwm-layout-show-all-buffers t)
