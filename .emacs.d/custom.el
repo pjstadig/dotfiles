@@ -110,7 +110,9 @@
      ([134217847]
       . "")
      ("" . "")
-     ("" . ""))))
+     ("" . "")
+     ([134217751]
+      . ""))))
  '(exwm-layout-show-all-buffers t)
  '(exwm-replace t)
  '(exwm-update-class-hook (quote (my/set-exwm-buffer-name-to-class)))
