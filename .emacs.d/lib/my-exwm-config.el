@@ -50,25 +50,19 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
          (funcall confirm "Really exit Emacs? "))
      (start-process "xfce4-session-logout" nil "xfce4-session-logout" "-l" "-f"))))
 
-(defun my/terminal-disable-simulation-keys ()
-  (when (and exwm-class-name
-             (string= exwm-class-name "Xfce4-terminal"))
-    (exwm-input-set-local-simulation-keys nil)))
-
-(defun my/firefox-disable-simulation-keys ()
-  (when (and exwm-class-name
-             (string= exwm-class-name "Firefox"))
-    (exwm-input-set-local-simulation-keys nil)))
+(defun my/set-exwm-buffer-name-to-class ()
+  (exwm-workspace-rename-buffer exwm-class-name))
 
 (defun my/configure-exwm ()
   (require 'exwm)
-  (require 'exwm-config)
-  (exwm-config-default)
+  (exwm-enable)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (fringe-mode 1)
 
   (require 'exwm-randr)
   (exwm-randr-enable)
-  (global-set-key (kbd "C-x C-c") 'my/xfce-logout)
-  (add-hook 'exwm-manage-finish-hook 'my/terminal-disable-simulation-keys)
-  (add-hook 'exwm-manage-finish-hook 'my/firefox-disable-simulation-keys))
+  (global-set-key (kbd "C-x C-c") 'my/xfce-logout))
 
 (provide 'my-exwm-config)

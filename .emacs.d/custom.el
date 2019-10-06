@@ -24,8 +24,96 @@
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
+ '(exwm-input-global-keys
+   (quote
+    (([8388722]
+      . exwm-reset)
+     ([8388727]
+      . exwm-workspace-switch)
+     ([8388646]
+      lambda
+      (command)
+      (interactive
+       (list
+        (read-shell-command "$ ")))
+      (start-process-shell-command command nil command))
+     ([8388656]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 0))
+     ([8388657]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 1))
+     ([8388658]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 2))
+     ([8388659]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 3))
+     ([8388660]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 4))
+     ([8388661]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 5))
+     ([8388662]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 6))
+     ([8388663]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 7))
+     ([8388664]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 8))
+     ([8388665]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 9)))))
+ '(exwm-input-prefix-keys
+   (quote
+    ("" "" ""
+     [134217848]
+     [134217824]
+     [134217766]
+     [134217786])))
+ '(exwm-input-simulation-keys
+   (quote
+    (("" .
+      [left])
+     ("" .
+      [right])
+     ("" .
+      [up])
+     ("" .
+      [down])
+     ("" .
+      [home])
+     ("" .
+      [end])
+     ([134217846]
+      .
+      [prior])
+     ("" .
+      [next])
+     ("" .
+      [delete])
+     ("" .
+      [S-end delete])
+     ([134217847]
+      . "")
+     ("" . "")
+     ("" . ""))))
  '(exwm-layout-show-all-buffers t)
  '(exwm-replace t)
+ '(exwm-update-class-hook (quote (my/set-exwm-buffer-name-to-class)))
  '(exwm-workspace-show-all-buffers t)
  '(fill-column 80)
  '(inhibit-startup-screen t)
