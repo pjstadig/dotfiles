@@ -24,6 +24,7 @@
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
+ '(emacs-lisp-mode-hook (quote (eldoc-mode checkdoc-minor-mode paredit-mode)))
  '(exwm-input-global-keys
    (quote
     (([8388722]
@@ -407,7 +408,10 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (better-defaults cider company exwm gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
+    (flycheck-clj-kondo better-defaults cider company exwm gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
+ '(prog-mode-hook
+   (quote
+    (flyspell-prog-mode linum-mode whitespace-mode company-mode column-number-mode flycheck-mode)))
  '(safe-local-variable-values
    (quote
     ((elisp-lint-indent-specs

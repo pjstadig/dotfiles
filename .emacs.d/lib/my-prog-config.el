@@ -1,3 +1,8 @@
+(use-package flycheck-clj-kondo
+  :ensure t)
+(use-package clojure-mode
+  :ensure t
+  :config (require 'flycheck-clj-kondo))
 (use-package cider
   :ensure t)
 (use-package company
@@ -5,11 +10,6 @@
 (use-package paredit
   :ensure t)
 
-(add-hook 'prog-mode-hook 'linum-mode)
-(add-hook 'prog-mode-hook 'column-number-mode)
-(add-hook 'prog-mode-hook 'company-mode)
-(add-hook 'prog-mode-hook 'whitespace-mode)
-(add-hook 'emacs-lisp-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'eldoc-mode)
 
