@@ -1,6 +1,11 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
+(let ((local-custom-file (concat user-emacs-directory "custom-local.el")))
+  (when (file-exists-p local-custom-file)
+    (setq custom-file local-custom-file)
+    (load custom-file)))
+
 ;; Set fonts
 (set-face-attribute 'default nil :family "Fira Mono")
 (set-face-attribute 'fixed-pitch nil :family "Fira Mono")
