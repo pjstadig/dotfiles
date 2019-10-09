@@ -44,10 +44,10 @@
 /.dbus/
 /.dmrc
 /.emacs.d/bookmarks
+/.emacs.d/custom-local.el
 /.emacs.d/elpa/*-readme.txt
 /.emacs.d/elpa/*.signed
 /.emacs.d/elpa/archives
-/.emacs.d/elpa/custom-local.el
 /.emacs.d/elpa/gnupg/
 /.emacs.d/ido.last
 /.emacs.d/network-security.data
