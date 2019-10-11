@@ -115,6 +115,12 @@
      ([134217751]
       . ""))))
  '(exwm-layout-show-all-buffers t)
+ '(exwm-manage-configurations
+   (quote
+    (((string-equal exwm-class-name "Xfce4-terminal")
+      char-mode t workspace 1)
+     ((string-equal exwm-class-name "Firefox")
+      workspace 2))))
  '(exwm-replace t)
  '(exwm-update-class-hook (quote (my/set-exwm-buffer-name-to-class)))
  '(exwm-workspace-show-all-buffers t)
