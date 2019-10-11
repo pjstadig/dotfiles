@@ -38,46 +38,22 @@
        (list
         (read-shell-command "$ ")))
       (start-process-shell-command command nil command))
-     ([8388656]
-      lambda nil
-      (interactive)
-      (exwm-workspace-switch-create 0))
      ([8388657]
       lambda nil
       (interactive)
-      (exwm-workspace-switch-create 1))
+      (exwm-workspace-switch-create 0))
      ([8388658]
       lambda nil
       (interactive)
-      (exwm-workspace-switch-create 2))
+      (exwm-workspace-switch-create 1))
      ([8388659]
       lambda nil
       (interactive)
-      (exwm-workspace-switch-create 3))
+      (exwm-workspace-switch-create 2))
      ([8388660]
       lambda nil
       (interactive)
-      (exwm-workspace-switch-create 4))
-     ([8388661]
-      lambda nil
-      (interactive)
-      (exwm-workspace-switch-create 5))
-     ([8388662]
-      lambda nil
-      (interactive)
-      (exwm-workspace-switch-create 6))
-     ([8388663]
-      lambda nil
-      (interactive)
-      (exwm-workspace-switch-create 7))
-     ([8388664]
-      lambda nil
-      (interactive)
-      (exwm-workspace-switch-create 8))
-     ([8388665]
-      lambda nil
-      (interactive)
-      (exwm-workspace-switch-create 9)))))
+      (exwm-workspace-switch-create 3)))))
  '(exwm-input-prefix-keys
    (quote
     ("" "" ""
@@ -123,7 +99,10 @@
       workspace 2))))
  '(exwm-replace t)
  '(exwm-update-class-hook (quote (my/set-exwm-buffer-name-to-class)))
+ '(exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
+ '(exwm-workspace-number 4)
  '(exwm-workspace-show-all-buffers t)
+ '(exwm-workspace-switch-create-limit 4)
  '(fill-column 80)
  '(inhibit-startup-screen t)
  '(linum-format "%d ")
