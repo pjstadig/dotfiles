@@ -1,12 +1,14 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
+(let ((local-file (concat user-emacs-directory "local.el")))
+  (when (file-exists-p local-file)
+    (load local-file)))
+
 ;; Set fonts
 (set-face-attribute 'default nil :family "Fira Mono" :height 120)
 (set-face-attribute 'fixed-pitch nil :family "Fira Mono" :height 120)
 (set-face-attribute 'variable-pitch nil :family "Fira Sans" :weight 'light :height 120)
-
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (require 'package)
 (add-to-list 'package-archives

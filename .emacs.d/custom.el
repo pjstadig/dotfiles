@@ -426,6 +426,7 @@ SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
            (whitespace-mode 1))
      (clojure-test-ns-segment-position . 1))))
  '(show-paren-delay 0.25)
+ '(sql-input-ring-file-name "~/.sql-mode-history")
  '(whitespace-style
    (quote
     (face trailing tabs lines-tail newline empty indentation::space))))
