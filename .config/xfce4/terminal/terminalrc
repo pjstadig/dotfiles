@@ -18,4 +18,5 @@ MiscHighlightUrls=TRUE
 ShortcutsNoMnemonics=TRUE
 ShortcutsNoMenukey=TRUE
 ScrollingBar=TERMINAL_SCROLLBAR_NONE
+FontName=Fira Mono 12
 
