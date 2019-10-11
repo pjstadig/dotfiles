@@ -8,9 +8,11 @@
   :type 'boolean
   :safe #'booleanp)
 
-(defun my/cleanup-buffer ()
-  (interactive)
-  (when (and (derived-mode-p 'prog-mode) (not my/inhibit-cleanup))
+(defun my/cleanup-buffer (&optional arg)
+  (interactive "p")
+  (when (and (derived-mode-p 'prog-mode)
+             (and (eq arg 1)
+                  (not my/inhibit-cleanup)))
     (let ((inhibit-redisplay 't))
       (delete-trailing-whitespace)
       (untabify (point-min) (point-max))
@@ -46,8 +48,8 @@
 
 (defun my/save-buffer (&optional arg)
   (interactive "p")
-  (my/cleanup-buffer)
-  (save-buffer arg))
+  (my/cleanup-buffer arg)
+  (save-buffer))
 
 (defun my/revert ()
   (interactive)
