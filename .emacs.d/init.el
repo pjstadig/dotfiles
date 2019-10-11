@@ -34,7 +34,7 @@
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 
-(setq my/lib-dir (concat user-emacs-directory "lib"))
+(defvar my/lib-dir (concat user-emacs-directory "lib"))
 
 (defun my/recompile-libs ()
   (interactive)
