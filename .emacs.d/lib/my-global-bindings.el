@@ -11,7 +11,7 @@
 (defun my/cleanup-buffer (&optional arg)
   (interactive "p")
   (when (and (derived-mode-p 'prog-mode)
-             (and (eq arg 1)
+             (and (<= (or arg 0) 1)
                   (not my/inhibit-cleanup)))
     (let ((inhibit-redisplay 't))
       (delete-trailing-whitespace)
