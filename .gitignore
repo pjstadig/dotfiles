@@ -44,6 +44,8 @@
 /.config/zoomus.conf
 /.dbus/
 /.dmrc
+/.dropbox-dist/
+/.dropbox/
 /.emacs.d/bookmarks
 /.emacs.d/elpa/*-readme.txt
 /.emacs.d/elpa/*.signed
