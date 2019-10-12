@@ -90,6 +90,9 @@
 
 ;; TODO org clock with C-c k prefix?
 
+(global-set-key (kbd "C-c i") 'imenu)
+(global-set-key (kbd "C-c C-i") 'imenu)
+
 (global-set-key (kbd "C-c r") 'my/revert)
 (global-set-key (kbd "C-c t") 'bh/org-todo)
 (global-set-key (kbd "C-c w") 'bh/widen)
@@ -102,4 +105,5 @@
 (global-set-key (kbd "C-c e l") 'my/lock-screen)
 (global-set-key (kbd "C-c e s") 'my/suspend)
 (global-set-key (kbd "C-c e t") 'my/show-time)
+
 (global-set-key (kbd "<XF86Tools>") 'my/show-xfce-settings)

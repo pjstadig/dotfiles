@@ -15,9 +15,10 @@
 
 (use-package helm
   :ensure t
-  :bind (("C-c i" . helm-imenu)
-         ("C-c C-i" . helm-imenu)
-         ("M-x" . helm-M-x)))
+  :bind (("C-x C-f" . helm-find-files)
+         ("M-x" . helm-M-x))
+  :config
+  (helm-mode))
 
 (use-package helm-ag
   :ensure t)
