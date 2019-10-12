@@ -1,9 +1,10 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
-(let ((local-file (concat user-emacs-directory "local.el")))
-  (when (file-exists-p local-file)
-    (load local-file)))
+(defvar my/local-file (concat user-emacs-directory "local.el"))
+
+(when (file-exists-p my/local-file)
+  (load my/local-file))
 
 ;; Set fonts
 (set-face-attribute 'default nil :family "Fira Mono" :height 120)
@@ -19,6 +20,8 @@
 (when (not (package-installed-p 'use-package))
   (package-refresh-contents)
   (package-install 'use-package))
+
+(require 'use-package)
 
 (use-package gnu-elpa-keyring-update
   :ensure t
@@ -37,9 +40,15 @@
 (defun my/recompile-libs ()
   (interactive)
   (dolist (f (directory-files my/lib-dir t "\\.el$"))
-    (byte-compile-file f)))
+    (byte-compile-file f))
+  (byte-compile-file "~/.emacs.d/init.el")
+  (when (file-exists-p my/local-file)
+    (byte-compile-file my/local-file)))
 
 (add-to-list 'load-path my/lib-dir)
 (dolist (f (directory-files my/lib-dir nil "\\.el$"))
   (load (file-name-sans-extension f)))
 (put 'narrow-to-region 'disabled nil)
+
+(when (not (eq (server-running-p) 't))
+  (server-start))
