@@ -21,6 +21,7 @@
 /.config/QtProject.conf
 /.config/Trolltech.conf
 /.config/Unknown Organization/
+/.config/autostart/dropbox-autostart.desktop
 /.config/autostart/keybase_autostart.desktop
 /.config/dconf/
 /.config/evolution/
