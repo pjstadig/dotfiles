@@ -20,8 +20,7 @@
          ("M-x" . helm-M-x)))
 
 (use-package helm-ag
-  :ensure t
-  :bind ("C-c a" . helm-ag))
+  :ensure t)
 
 (use-package helm-projectile
   :ensure t
