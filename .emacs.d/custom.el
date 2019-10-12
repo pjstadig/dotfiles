@@ -62,41 +62,40 @@
      [134217824]
      [134217766]
      [134217786])))
- '(exwm-input-simulation-keys
-   (quote
-    (("" .
-      [left])
-     ("" .
-      [right])
-     ("" .
-      [up])
-     ("" .
-      [down])
-     ("" .
-      [home])
-     ("" .
-      [end])
-     ([134217846]
-      .
-      [prior])
-     ("" .
-      [next])
-     ("" .
-      [delete])
-     ("" .
-      [S-end delete])
-     ([134217847]
-      . "")
-     ("" . "")
-     ("" . "")
-     ([134217751]
-      . ""))))
  '(exwm-layout-show-all-buffers t)
  '(exwm-manage-configurations
    (quote
     (((string-equal exwm-class-name "Xfce4-terminal")
-      char-mode t workspace 1)
+      workspace 3)
      ((string-equal exwm-class-name "Firefox")
+      simulation-keys
+      (("" .
+        [left])
+       ("" .
+        [right])
+       ("" .
+        [up])
+       ("" .
+        [down])
+       ("" .
+        [home])
+       ("" .
+        [end])
+       ([134217846]
+        .
+        [prior])
+       ("" .
+        [next])
+       ("" .
+        [delete])
+       ("" .
+        [S-end delete])
+       ([134217847]
+        . "")
+       ("" . "")
+       ("" . "")
+       ([134217751]
+        . ""))
       workspace 2))))
  '(exwm-replace t)
  '(exwm-update-class-hook (quote (my/set-exwm-buffer-name-to-class)))
