@@ -16,6 +16,7 @@
 
 (use-package typo
   :ensure t)
+(require 'org-agenda)
 (use-package org-bullets
   :ensure t)
 
@@ -59,8 +60,7 @@
   "Move point to the parent (project) task if any"
   (save-restriction
     (widen)
-    (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok)
-                                       (point))))
+    (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
       (while (org-up-heading-safe)
         (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
           (setq parent-task (point))))
@@ -354,7 +354,7 @@ so change the default 'F' binding in the agenda to allow both"
     (widen)
     (bh/set-agenda-restriction-lock 4)
     (org-agenda-redo)
-    (beginning-of-buffer)))
+    (goto-char (point-min))))
 
 (add-hook 'org-agenda-mode-hook
           '(lambda () (org-defkey org-agenda-mode-map "F" 'bh/restrict-to-file-or-follow))
@@ -421,7 +421,7 @@ so change the default 'F' binding in the agenda to allow both"
             (bh/find-project-task)
             (org-agenda-set-restriction-lock)))
         (org-agenda-redo)
-        (beginning-of-buffer))
+        (goto-char (point-min)))
     (bh/narrow-to-org-project)
     (save-restriction
       (org-agenda-set-restriction-lock))))
@@ -465,28 +465,17 @@ so change the default 'F' binding in the agenda to allow both"
                                         ; Remove the marker
       (setq current-project nil)
       (org-agenda-redo)
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (setq num-projects-left (length bh/project-list))
       (if (> num-projects-left 0)
           (message "%s projects left to view" num-projects-left)
-        (beginning-of-buffer)
+        (goto-char (point-min))
         (setq bh/hide-scheduled-and-waiting-next-tasks t)
         (error "All projects viewed.")))))
 
 (add-hook 'org-agenda-mode-hook
           '(lambda () (org-defkey org-agenda-mode-map "V" 'bh/view-next-project))
           'append)
-
-(defun bh/find-project-task ()
-  "Move point to the parent (project) task if any"
-  (save-restriction
-    (widen)
-    (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
-      (while (org-up-heading-safe)
-        (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
-          (setq parent-task (point))))
-      (goto-char parent-task)
-      parent-task)))
 
 (defun bh/org-auto-exclude-function (tag)
   "Automatic task exclusion in the agenda with / RET"
