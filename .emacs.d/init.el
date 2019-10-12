@@ -23,8 +23,6 @@
 (use-package gnu-elpa-keyring-update
   :ensure t
   :config (gnu-elpa-keyring-update))
-(use-package better-defaults
-  :ensure t)
 (use-package magit
   :ensure t
   :bind ("C-c g" . magit-status))
