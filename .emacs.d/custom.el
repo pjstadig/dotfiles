@@ -25,6 +25,7 @@
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
  '(emacs-lisp-mode-hook (quote (eldoc-mode checkdoc-minor-mode paredit-mode)))
+ '(exwm-init-hook (quote (exwm-randr--init my/start-initial-programs)))
  '(exwm-input-global-keys
    (quote
     (([8388722]

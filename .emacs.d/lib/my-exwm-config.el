@@ -53,6 +53,10 @@ if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
 (defun my/set-exwm-buffer-name-to-class ()
   (exwm-workspace-rename-buffer exwm-class-name))
 
+(defun my/start-initial-programs ()
+  (start-process-shell-command "firefox" nil "firefox")
+  (start-process-shell-command "xfce4-terminal" nil "xfce4-terminal"))
+
 (defun my/configure-exwm ()
   (require 'exwm)
   (exwm-enable)
