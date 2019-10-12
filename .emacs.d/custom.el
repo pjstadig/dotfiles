@@ -201,17 +201,19 @@
  '(org-archive-location "%s_archive::* Archived Tasks")
  '(org-capture-templates
    (quote
-    (("t" "todo" entry
-      (file "~/org/refile.org")
+    (("t" "Todo" entry
+      (file "~/Dropbox/orgzly/inbox.org")
+      "* TODO %^{Title}
+:PROPERTIES:
+:CREATED: %U
+:END:
+%?")
+     ("p" "Project" entry
+      (file "~/Dropbox/orgzly/projects.org")
       "* TODO %?
-%U
-" :clock-in t :clock-resume t)
-     ("r" "respond" entry
-      (file "~/org/refile.org")
-      "* NEXT Respond to %:from on %:subject
-SCHEDULED: %t
-%U
-" :immediate-finish t :clock-in t :clock-resume t)
+:PROPERTIES:
+:CREATED: %U
+:END:" :prepend t)
      ("n" "note" entry
       (file "~/org/notes.org")
       "* %?
@@ -222,29 +224,23 @@ SCHEDULED: %t
       "* %?
 %U
 " :clock-in t :clock-resume t)
-     ("w" "org-protocol" entry
-      (file "~/org/refile.org")
-      "* TODO Review %c
-%U
-" :immediate-finish t)
-     ("m" "Meeting" entry
-      (file "~/org/refile.org")
-      "* MEETING with %? :MEETING:
-%U" :clock-in t :clock-resume t)
-     ("p" "Phone call" entry
-      (file "~/org/refile.org")
-      "* PHONE %? :PHONE:
-%U" :clock-in t :clock-resume t)
-     ("h" "Habit" entry
-      (file "~/org/refile.org")
-      "* NEXT %?
-%U
-SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")
+     ("y" "org-protocol-link" entry
+      (file "~/Dropbox/orgzly/inbox.org")
+      "* %? [[%:link][%:description]]
 :PROPERTIES:
-:STYLE: habit
-:REPEAT_TO_STATE: NEXT
+:CREATED: %U
+:END:" :immediate-finish t)
+     ("z" "org-protocol" entry
+      (file "~/Dropbox/orgzly/inbox.org")
+      "* %^{Title}
+:PROPERTIES:
+:CREATED: %U
 :END:
-"))))
+Source: %u, [[%:link][%:description]]
+#+BEGIN_QUOTE
+%i
+#+END_QUOTE
+%?"))))
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/refile.org")
  '(org-directory "~/org")

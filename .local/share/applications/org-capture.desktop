@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=Emacs org-capture
+Exec=emacsclient %u
+Terminal=false
