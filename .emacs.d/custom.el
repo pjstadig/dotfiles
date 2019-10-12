@@ -195,21 +195,21 @@
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/refile.org" "~/org/projects.org" "~/org/projects")))
+    ("~/org/inbox.org" "~/org/projects.org")))
  '(org-agenda-persistent-filter t)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-location "%s_archive::* Archived Tasks")
  '(org-capture-templates
    (quote
     (("t" "Todo" entry
-      (file "~/Dropbox/orgzly/inbox.org")
+      (file "~/org/inbox.org")
       "* TODO %^{Title}
 :PROPERTIES:
 :CREATED: %U
 :END:
 %?")
      ("p" "Project" entry
-      (file "~/Dropbox/orgzly/projects.org")
+      (file "~/org/projects.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
@@ -225,13 +225,13 @@
 %U
 " :clock-in t :clock-resume t)
      ("y" "org-protocol-link" entry
-      (file "~/Dropbox/orgzly/inbox.org")
+      (file "~/org/inbox.org")
       "* %? [[%:link][%:description]]
 :PROPERTIES:
 :CREATED: %U
 :END:" :immediate-finish t)
      ("z" "org-protocol" entry
-      (file "~/Dropbox/orgzly/inbox.org")
+      (file "~/org/inbox.org")
       "* %^{Title}
 :PROPERTIES:
 :CREATED: %U
@@ -242,7 +242,7 @@ Source: %u, [[%:link][%:description]]
 #+END_QUOTE
 %?"))))
  '(org-clock-out-remove-zero-time-clocks t)
- '(org-default-notes-file "~/org/refile.org")
+ '(org-default-notes-file "~/org/inbox.org")
  '(org-directory "~/org")
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-dependencies t)
