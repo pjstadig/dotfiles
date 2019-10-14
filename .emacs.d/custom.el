@@ -247,6 +247,7 @@ Source: %u, [[%:link][%:description]]
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-dependencies t)
  '(org-fast-tag-selection-single-key t)
+ '(org-id-link-to-org-use-id (quote create-if-interactive-and-no-custom-id))
  '(org-indirect-buffer-display (quote current-window))
  '(org-list-allow-alphabetical t)
  '(org-list-demote-modify-bullet
