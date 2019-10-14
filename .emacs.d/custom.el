@@ -193,9 +193,7 @@
       nil))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
- '(org-agenda-files
-   (quote
-    ("~/org/inbox.org" "~/org/projects.org")))
+ '(org-agenda-files (quote ("~/org/projects.org")))
  '(org-agenda-persistent-filter t)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
