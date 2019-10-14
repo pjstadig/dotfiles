@@ -525,4 +525,5 @@ so change the default 'F' binding in the agenda to allow both"
 (with-eval-after-load 'org
   (set-face-attribute 'org-checkbox nil :family "Fira Mono")
   (set-face-attribute 'org-table nil :family "Fira Mono")
-  (require 'ob-shell))
+  (require 'ob-shell)
+  (require 'org-protocol))
