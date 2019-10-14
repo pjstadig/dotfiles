@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-sources (quote ("~/.netrc.gpg")))
+ '(checkdoc-force-docstrings-flag nil)
  '(cider-auto-jump-to-error nil)
  '(cider-auto-select-error-buffer nil)
  '(cider-auto-select-test-report-buffer nil)
@@ -104,6 +105,9 @@
  '(exwm-workspace-show-all-buffers t)
  '(exwm-workspace-switch-create-limit 4)
  '(fill-column 80)
+ '(flycheck-checkers
+   (quote
+    (clj-kondo-edn clj-kondo-cljc clj-kondo-cljs clj-kondo-clj ada-gnat asciidoctor asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint d-dmd dockerfile-hadolint elixir-dogma emacs-lisp erlang-rebar3 erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-megacheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-jscs javascript-standard json-jsonlint json-python-json less less-stylelint llvm-llc lua-luacheck lua perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint markdown-mdl nix rst-sphinx rst ruby-rubocop ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
  '(inhibit-startup-screen t)
  '(linum-format "%d ")
  '(org-agenda-auto-exclude-function (quote bh/org-auto-exclude-function))
@@ -367,7 +371,7 @@ Source: %u, [[%:link][%:description]]
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (flycheck-clj-kondo better-defaults cider company exwm gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
+    (avy better-defaults cider company deft exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode zetteldeft)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode whitespace-mode company-mode column-number-mode flycheck-mode)))
