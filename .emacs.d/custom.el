@@ -198,17 +198,17 @@
     ("~/org/inbox.org" "~/org/projects.org")))
  '(org-agenda-persistent-filter t)
  '(org-agenda-tags-todo-honor-ignore-options t)
- '(org-archive-location "%s_archive::* Archived Tasks")
+ '(org-archive-file-header-format "")
+ '(org-archive-location "%s_archive::")
  '(org-capture-templates
    (quote
-    (("t" "Todo" entry
+    (("t" "todo" entry
       (file "~/org/inbox.org")
-      "* TODO %^{Title}
+      "* TODO %?
 :PROPERTIES:
 :CREATED: %U
-:END:
-%?")
-     ("p" "Project" entry
+:END:")
+     ("p" "project" entry
       (file "~/org/projects.org")
       "* TODO %?
 :PROPERTIES:
@@ -217,20 +217,22 @@
      ("n" "note" entry
       (file "~/org/notes.org")
       "* %?
-%U
-" :clock-in t :clock-resume t)
+:PROPERTIES:
+:CREATED: %U
+:END:")
      ("j" "journal entry" entry
       (file+olp+datetree "~/org/journal.org")
       "* %?
-%U
-" :clock-in t :clock-resume t)
+:PROPERTIES:
+:CREATED: %U
+:END:")
      ("y" "org-protocol-link" entry
       (file "~/org/inbox.org")
       "* %? [[%:link][%:description]]
 :PROPERTIES:
 :CREATED: %U
 :END:" :immediate-finish t)
-     ("z" "org-protocol" entry
+     ("z" "org-protocol-quote" entry
       (file "~/org/inbox.org")
       "* %^{Title}
 :PROPERTIES:
@@ -346,6 +348,7 @@ Source: %u, [[%:link][%:description]]
      ("CANCELLED" . 99)
      ("FLAGGED" . 63)
      ("REFILE" . 114))))
+ '(org-tags-column -77)
  '(org-todo-keyword-faces
    (quote
     (("TODO" :foreground "red" :weight bold)
@@ -359,31 +362,7 @@ Source: %u, [[%:link][%:description]]
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "PHONE" "MEETING"))))
- '(org-todo-state-tags-triggers
-   (quote
-    (("CANCELLED"
-      ("CANCELLED" . t))
-     ("WAITING"
-      ("WAITING" . t))
-     ("HOLD"
-      ("WAITING")
-      ("HOLD" . t))
-     (done
-      ("WAITING")
-      ("HOLD"))
-     ("TODO"
-      ("WAITING")
-      ("CANCELLED")
-      ("HOLD"))
-     ("NEXT"
-      ("WAITING")
-      ("CANCELLED")
-      ("HOLD"))
-     ("DONE"
-      ("WAITING")
-      ("CANCELLED")
-      ("HOLD")))))
+     (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)"))))
  '(org-treat-S-cursor-todo-selection-as-state-change nil)
  '(org-use-speed-commands t)
  '(org-yank-adjusted-subtrees t)
