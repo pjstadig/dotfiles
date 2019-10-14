@@ -68,7 +68,6 @@
 /.lein/repl-port
 /.lein/self-installs/
 /.lesshst
-/.local/
 /.m2/repository/
 /.macromedia/
 /.minecraft/
