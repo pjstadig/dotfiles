@@ -22,6 +22,8 @@
  '(cider-repl-use-pretty-printing t)
  '(cider-save-file-on-load t)
  '(clojure-docstring-fill-column 80)
+ '(deft-directory "~/org/notes/")
+ '(deft-extensions (quote ("org" "txt" "text" "md" "markdown")))
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
@@ -374,6 +376,7 @@ Source: %u, [[%:link][%:description]]
     (
      cider
      company
+     deft
      exwm
      flycheck-clj-kondo
      gnu-elpa-keyring-update

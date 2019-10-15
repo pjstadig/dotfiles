@@ -34,6 +34,8 @@
   :config
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
+(use-package deft
+  :ensure t)
 
 (defvar my/lib-dir (concat user-emacs-directory "lib"))
 
