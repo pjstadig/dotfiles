@@ -35,7 +35,8 @@
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 (use-package deft
-  :ensure t)
+  :ensure t
+  :bind ("C-c d" . deft))
 
 (defvar my/lib-dir (concat user-emacs-directory "lib"))
 
