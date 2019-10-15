@@ -29,6 +29,8 @@
 (use-package magit
   :ensure t
   :bind ("C-c g" . magit-status))
+(use-package forge
+  :ensure t)
 (use-package pinentry
   :ensure t
   :config

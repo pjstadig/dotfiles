@@ -7,6 +7,7 @@
 !/.*/**
 *.elc
 *.log
+*.sqlite
 *~
 .DS_Store
 .localized
@@ -61,6 +62,7 @@
 /.emacs.d/elpa/*-readme.txt
 /.emacs.d/elpa/*.signed
 /.emacs.d/elpa/archives
+/.emacs.d/elpa/emacsql-sqlite-3.0.0/sqlite/emacsql-sqlite
 /.emacs.d/elpa/gnupg/
 /.emacs.d/ido.last
 /.emacs.d/local.el
