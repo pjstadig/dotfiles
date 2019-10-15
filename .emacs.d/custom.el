@@ -376,7 +376,6 @@ Source: %u, [[%:link][%:description]]
      company
      exwm
      flycheck-clj-kondo
-     forge
      gnu-elpa-keyring-update
      helm-ag
      helm-projectile
