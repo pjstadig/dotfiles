@@ -6,11 +6,6 @@
 (when (file-exists-p my/local-file)
   (load my/local-file))
 
-;; Set fonts
-(set-face-attribute 'default nil :family "Fira Mono" :height 120)
-(set-face-attribute 'fixed-pitch nil :family "Fira Mono" :height 120)
-(set-face-attribute 'variable-pitch nil :family "Fira Sans" :weight 'light :height 120)
-
 (require 'package)
 (add-to-list 'package-archives
              (cons "melpa-stable" "https://stable.melpa.org/packages/")
