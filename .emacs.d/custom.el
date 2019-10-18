@@ -28,7 +28,7 @@
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
  '(emacs-lisp-mode-hook (quote (eldoc-mode checkdoc-minor-mode paredit-mode)))
- '(exwm-init-hook (quote (exwm-randr--init my/start-initial-programs)))
+ '(exwm-init-hook (quote (exwm-randr--init pjs-start-initial-programs)))
  '(exwm-input-global-keys
    (quote
     (([8388722]
@@ -101,7 +101,7 @@
         . ""))
       workspace 2))))
  '(exwm-replace t)
- '(exwm-update-class-hook (quote (my/set-exwm-buffer-name-to-class)))
+ '(exwm-update-class-hook (quote (pjs-set-exwm-buffer-name-to-class)))
  '(exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
  '(exwm-workspace-number 4)
  '(exwm-workspace-show-all-buffers t)
@@ -373,25 +373,7 @@ Source: %u, [[%:link][%:description]]
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (
-     cider
-     company
-     deft
-     exwm
-     flycheck-clj-kondo
-     gnu-elpa-keyring-update
-     helm-ag
-     helm-projectile
-     magit
-     markdown-mode
-     org-bullets
-     paredit
-     pinentry
-     typo
-     use-package
-     visual-fill-column
-     writegood-mode
-     )))
+    (deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode whitespace-mode company-mode column-number-mode flycheck-mode)))

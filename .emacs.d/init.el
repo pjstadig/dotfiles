@@ -1,10 +1,16 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
-(defvar my/local-file (concat user-emacs-directory "local.el"))
+(defvar pjs-local-file
+  (expand-file-name (concat user-emacs-directory "local.el")))
 
-(when (file-exists-p my/local-file)
-  (load my/local-file))
+(when (file-exists-p pjs-local-file)
+  (load pjs-local-file))
+
+(defun pjs-add-eval-buffer-binding ()
+  (local-set-key (kbd "C-c C-k") 'eval-buffer))
+
+(add-hook 'emacs-lisp-mode-hook 'pjs-add-eval-buffer-binding)
 
 (require 'package)
 (add-to-list 'package-archives
@@ -32,21 +38,10 @@
 (use-package deft
   :ensure t
   :bind ("C-c d" . deft))
-
-(defvar my/lib-dir (concat user-emacs-directory "lib"))
-
-(defun my/recompile-libs ()
-  (interactive)
-  (dolist (f (directory-files my/lib-dir t "\\.el$"))
-    (byte-compile-file f))
-  (byte-compile-file "~/.emacs.d/init.el")
-  (when (file-exists-p my/local-file)
-    (byte-compile-file my/local-file)))
-
-(add-to-list 'load-path my/lib-dir)
-(dolist (f (directory-files my/lib-dir nil "\\.el$"))
-  (load (file-name-sans-extension f)))
-(put 'narrow-to-region 'disabled nil)
+(use-package exwm
+  :ensure t)
+(use-package pjs
+  :load-path "lisp/pjs")
 
 (when (not (eq (server-running-p) 't))
   (server-start))

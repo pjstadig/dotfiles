@@ -1,14 +1,244 @@
+(defun pjs-erc-connect (server)
+  (interactive "Mserver: ")
+  (let ((znc-password-file "~/.private/pjs-znc-password.el"))
+    (if (file-exists-p znc-password-file)
+        (load znc-password-file)
+      (eval-when-compile
+        (defvar pjs-znc-password))))
+  (erc-tls :server server
+           :port "6697"
+           :nick "paul"
+           :password (concat "paul:" pjs-znc-password)))
+
+(defun pjs-xfce-logout (&optional arg)
+  ;; copied from `save-buffers-kill-emacs`
+  "Offer to save each buffer, then kill this xfce session.
+With prefix ARG, silently save all file-visiting buffers without asking.
+If there are active processes where `process-query-on-exit-flag'
+returns non-nil and `confirm-kill-processes' is non-nil,
+asks whether processes should be killed.
+Runs the members of `kill-emacs-query-functions' in turn and stops
+if any returns nil.  If `confirm-kill-emacs' is non-nil, calls it."
+  (interactive "P")
+  ;; Don't use save-some-buffers-default-predicate, because we want
+  ;; to ask about all the buffers before killing Emacs.
+  (save-some-buffers arg t)
+  (let ((confirm confirm-kill-emacs))
+    (and
+     (or (not (memq t (mapcar (function
+                               (lambda (buf) (and (buffer-file-name buf)
+                                                  (buffer-modified-p buf))))
+                              (buffer-list))))
+         (progn (setq confirm nil)
+                (yes-or-no-p "Modified buffers exist; exit anyway? ")))
+     (or (not (fboundp 'process-list))
+         ;; process-list is not defined on MSDOS.
+         (not confirm-kill-processes)
+         (let ((processes (process-list))
+               active)
+           (while processes
+             (and (memq (process-status (car processes)) '(run stop open listen))
+                  (process-query-on-exit-flag (car processes))
+                  (setq active t))
+             (setq processes (cdr processes)))
+           (or (not active)
+               (with-current-buffer-window
+                (get-buffer-create "*Process List*") nil
+                #'(lambda (window _value)
+                    (with-selected-window window
+                      (unwind-protect
+                          (progn
+                            (setq confirm nil)
+                            (yes-or-no-p "Active processes exist; kill them and exit anyway? "))
+                        (when (window-live-p window)
+                          (quit-restore-window window 'kill)))))
+                (list-processes t)))))
+     ;; Query the user for other things, perhaps.
+     (run-hook-with-args-until-failure 'kill-emacs-query-functions)
+     (or (null confirm)
+         (funcall confirm "Really exit Emacs? "))
+     (start-process "xfce4-session-logout" nil "xfce4-session-logout" "-l" "-f"))))
+
+(defun pjs-set-exwm-buffer-name-to-class ()
+  (exwm-workspace-rename-buffer exwm-class-name))
+
+(defun pjs-start-initial-programs ()
+  (start-process-shell-command "firefox" nil "firefox")
+  (start-process-shell-command "xfce4-terminal" nil "xfce4-terminal"))
+
+(defun pjs-configure-exwm ()
+  (require 'exwm)
+  (exwm-enable)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (fringe-mode 1)
+
+  (require 'exwm-randr)
+  (exwm-randr-enable)
+  (global-set-key (kbd "C-x C-c") 'pjs-xfce-logout))
+
+
+(defgroup pjs nil
+  "My config variables."
+  :prefix "pjs-")
+
+(defcustom pjs-inhibit-cleanup nil
+  "If true will disable buffer cleanup on save."
+  :group 'my
+  :type 'boolean
+  :safe #'booleanp)
+
+(defun pjs-cleanup-buffer (&optional arg)
+  (interactive "p")
+  (when (and (derived-mode-p 'prog-mode)
+             (and (<= (or arg 0) 1)
+                  (not pjs-inhibit-cleanup)))
+    (let ((inhibit-redisplay 't))
+      (delete-trailing-whitespace)
+      (untabify (point-min) (point-max))
+      (indent-region (point-min) (point-max))
+      (when (derived-mode-p 'clojure-mode)
+        (ignore-errors (clojure-sort-ns))))))
+
+(defun pjs-start-power-manager ()
+  (interactive)
+  (start-process "xfce4-power-manager" nil "xfce4-power-manager"))
+
+(defun pjs-restart-network-manager ()
+  (interactive)
+  (let ((display-buffer-alist
+         '(("*Async Shell Command*" display-buffer-no-window))))
+    (async-shell-command "sudo systemctl restart network-manager" nil)))
+
+(defun pjs-suspend ()
+  (interactive)
+  (start-process-shell-command "suspend" nil "systemctl suspend"))
+
+(defun pjs-lock-screen ()
+  (interactive)
+  (start-process-shell-command "lock-screen" nil "dm-tool lock"))
+
+(defun pjs-show-time ()
+  (interactive)
+  (start-process-shell-command "show-time" nil "date | dzen2 -p 10"))
+
+(defun pjs-show-xfce-settings ()
+  (interactive)
+  (start-process-shell-command "show-xfce-settings" nil "xfce4-settings-manager"))
+
+(defun pjs-save-buffer (&optional arg)
+  (interactive "p")
+  (pjs-cleanup-buffer arg)
+  (save-buffer))
+
+(defun pjs-revert ()
+  (interactive)
+  (revert-buffer 'ignore-auto 'noconfirm 'preserve-mode))
+
+;; Key binding conventions
+;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html
+;;
+;; C-c [letter] is reserved for users
+;; <f5> through <f9> are reserved for users
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c c") 'org-capture)
+;; TODO is there a helm autocomplete I could use?
+(global-set-key (kbd "C-c b") 'org-switchb)
+(global-set-key (kbd "C-c h") 'bh/hide-other)
+(global-set-key (kbd "C-c n") 'bh/toggle-next-task-display)
+
+(defun bh/hide-other ()
+  (interactive)
+  (save-excursion
+    (org-back-to-heading 'invisible-ok)
+    (hide-other)
+    (org-cycle)
+    (org-cycle)
+    (org-cycle)))
+
+(global-set-key (kbd "C-c o a") 'bh/show-org-agenda)
+
+(defun bh/show-org-agenda ()
+  (interactive)
+  (if org-agenda-sticky
+      (switch-to-buffer "*Org Agenda( )*")
+    (switch-to-buffer "*Org Agenda*"))
+  (delete-other-windows))
+
+(global-set-key (kbd "C-c o o") 'org-cycle-agenda-files)
+
+;; TODO org clock with C-c k prefix?
+
+(global-set-key (kbd "C-c i") 'imenu)
+(global-set-key (kbd "C-c C-i") 'imenu)
+
+(global-set-key (kbd "C-c r") 'pjs-revert)
+(global-set-key (kbd "C-c t") 'bh/org-todo)
+(global-set-key (kbd "C-c w") 'bh/widen)
+
+(global-set-key (kbd "C-x n r") 'narrow-to-region)
+(global-set-key (kbd "C-x C-s") 'pjs-save-buffer)
+
+(global-set-key (kbd "C-c e n") 'pjs-restart-network-manager)
+(global-set-key (kbd "C-c e p") 'pjs-start-power-manager)
+(global-set-key (kbd "C-c e l") 'pjs-lock-screen)
+(global-set-key (kbd "C-c e s") 'pjs-suspend)
+(global-set-key (kbd "C-c e t") 'pjs-show-time)
+
+(global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
+
+(use-package flycheck-clj-kondo
+  :ensure t)
+(use-package clojure-mode
+  :ensure t
+  :config (require 'flycheck-clj-kondo))
+(use-package cider
+  :ensure t)
+(use-package company
+  :ensure t)
+(use-package paredit
+  :ensure t)
+
+(add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'eldoc-mode)
+
+(use-package helm
+  :ensure t
+  :bind (("C-x C-f" . helm-find-files)
+         ("M-x" . helm-M-x))
+  :config
+  (helm-mode))
+
+(use-package helm-ag
+  :ensure t)
+
+(use-package helm-projectile
+  :ensure t
+  :config
+  (projectile-mode)
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on))
+
+(defun pjs-sort-symbols (reverse beg end)
+  "Sort symbols in region alphabetically, in REVERSE if negative.
+    See `sort-words'."
+  (interactive "*P\nr")
+  (sort-regexp-fields reverse "\\(\\sw\\|\\s_\\)+" "\\&" beg end))
+
+
 (use-package visual-fill-column
   :ensure t)
 (use-package writegood-mode
   :ensure t)
 
-(defun my/configure-text-mode-fill-column ()
+(defun pjs-configure-text-mode-fill-column ()
   (setq fill-column 80))
 
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'text-mode-hook 'writegood-mode)
-(add-hook 'text-mode-hook 'my/configure-text-mode-fill-column)
+(add-hook 'text-mode-hook 'pjs-configure-text-mode-fill-column)
 
 (add-hook 'visual-fill-column-mode-hook 'visual-line-mode)
 (setq split-window-preferred-function 'visual-fill-column-split-window-sensibly)
@@ -527,3 +757,50 @@ so change the default 'F' binding in the agenda to allow both"
   (set-face-attribute 'org-table nil :family "Fira Mono")
   (require 'ob-shell)
   (require 'org-protocol))
+
+;;; Copied from better-defaults package, but removing ido-mode since I prefer
+;;; helm, and ido-mode is interfering with helm.
+(progn
+  ;; (ido-mode t)
+  ;; (setq ido-enable-flex-matching t)
+
+  (menu-bar-mode -1)
+  (when (fboundp 'tool-bar-mode)
+    (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode)
+    (scroll-bar-mode -1))
+
+  (autoload 'zap-up-to-char "misc"
+    "Kill up to, but not including ARGth occurrence of CHAR." t)
+
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward)
+
+  (require 'saveplace)
+  (setq-default save-place t)
+
+  (global-set-key (kbd "M-/") 'hippie-expand)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "M-z") 'zap-up-to-char)
+
+  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "C-r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-M-s") 'isearch-forward)
+  (global-set-key (kbd "C-M-r") 'isearch-backward)
+
+  (show-paren-mode 1)
+  (setq-default indent-tabs-mode nil)
+  (setq x-select-enable-clipboard t
+        x-select-enable-primary t
+        save-interprogram-paste-before-kill t
+        apropos-do-all t
+        mouse-yank-at-point t
+        require-final-newline t
+        visible-bell t
+        load-prefer-newer t
+        ediff-window-setup-function 'ediff-setup-windows-plain
+        save-place-file (concat user-emacs-directory "places")
+        backup-directory-alist `(("." . ,(concat user-emacs-directory
+                                                 "backups")))))
+
+(provide 'pjs)
