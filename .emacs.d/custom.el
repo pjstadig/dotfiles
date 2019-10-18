@@ -259,6 +259,16 @@ Source: %u, [[%:link][%:description]]
  '(org-list-demote-modify-bullet (quote (("-" . "*") ("*" . "+") ("+" . "-"))))
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
+ '(org-mode-hook
+   (quote
+    (org-autolist-mode org-bullets-mode org-indent-mode typo-mode variable-pitch-mode visual-fill-column-mode
+                       #[0 "\300\301\302\303\304$\207"
+                           [add-hook change-major-mode-hook org-show-block-all append local]
+                           5]
+                       #[0 "\300\301\302\303\304$\207"
+                           [add-hook change-major-mode-hook org-babel-show-result-all append local]
+                           5]
+                       org-babel-result-hide-spec org-babel-hide-all-hashes)))
  '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-target-verify-function (quote bh/verify-refile-target))
@@ -360,7 +370,24 @@ Source: %u, [[%:link][%:description]]
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
+    (cider
+     company
+     deft
+     exwm
+     flycheck-clj-kondo
+     gnu-elpa-keyring-update
+     helm-ag
+     helm-projectile
+     magit
+     markdown-mode
+     org-autolist
+     org-bullets
+     paredit
+     pinentry
+     typo
+     use-package
+     visual-fill-column
+     writegood-mode)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode whitespace-mode company-mode column-number-mode flycheck-mode)))

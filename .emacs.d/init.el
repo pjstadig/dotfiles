@@ -42,6 +42,8 @@
   :ensure t)
 (use-package pjs
   :load-path "lisp/pjs")
+(use-package org-autolist
+  :ensure t)
 
 (when (not (eq (server-running-p) 't))
   (server-start))
