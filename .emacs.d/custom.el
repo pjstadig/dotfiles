@@ -370,24 +370,7 @@ Source: %u, [[%:link][%:description]]
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (cider
-     company
-     deft
-     exwm
-     flycheck-clj-kondo
-     gnu-elpa-keyring-update
-     helm-ag
-     helm-projectile
-     magit
-     markdown-mode
-     org-autolist
-     org-bullets
-     paredit
-     pinentry
-     typo
-     use-package
-     visual-fill-column
-     writegood-mode)))
+    (org-autolist deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode whitespace-mode company-mode column-number-mode flycheck-mode)))
