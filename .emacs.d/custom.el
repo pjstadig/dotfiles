@@ -257,7 +257,7 @@ Source: %u, [[%:link][%:description]]
  '(org-id-link-to-org-use-id (quote create-if-interactive-and-no-custom-id))
  '(org-indirect-buffer-display (quote current-window))
  '(org-list-allow-alphabetical t)
- '(org-list-demote-modify-bullet (quote (("-" . "*") ("*" . "+") ("+" . "-"))))
+ '(org-list-demote-modify-bullet (quote (("-" . "+") ("+" . "*") ("*" . "-"))))
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
  '(org-mode-hook
