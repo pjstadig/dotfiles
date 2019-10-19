@@ -263,7 +263,7 @@
 (add-hook 'org-mode-hook 'typo-mode)
 (add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'org-bullets-mode)
-(add-hook 'org-mode-hook 'org-autolist)
+(add-hook 'org-mode-hook 'org-autolist-mode)
 
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
 
