@@ -278,7 +278,7 @@ Source: %u, [[%:link][%:description]]
     ((nil :maxlevel . 9)
      (org-agenda-files :maxlevel . 9))))
  '(org-refile-use-outline-path (quote file))
- '(org-special-ctrl-a/e t)
+ '(org-special-ctrl-a/e (quote reversed))
  '(org-special-ctrl-k t)
  '(org-speed-commands-user
    (quote
@@ -331,6 +331,7 @@ Source: %u, [[%:link][%:description]]
      ("X" . ignore)
      ("Y" . ignore)
      ("Z" . ignore))))
+ '(org-startup-folded (quote content))
  '(org-stuck-projects (quote ("" nil nil "")))
  '(org-tag-alist
    (quote
