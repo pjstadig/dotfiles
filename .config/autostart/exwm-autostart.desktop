@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=Emacs Autostart
-Exec=env emacs -f pjs-configure-exwm
+Exec=exwm
 Terminal=false
