@@ -260,16 +260,6 @@ Source: %u, [[%:link][%:description]]
  '(org-list-demote-modify-bullet (quote (("-" . "+") ("+" . "*") ("*" . "-"))))
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
- '(org-mode-hook
-   (quote
-    (org-autolist-mode org-bullets-mode org-indent-mode typo-mode variable-pitch-mode visual-fill-column-mode
-                       #[0 "\300\301\302\303\304$\207"
-                           [add-hook change-major-mode-hook org-show-block-all append local]
-                           5]
-                       #[0 "\300\301\302\303\304$\207"
-                           [add-hook change-major-mode-hook org-babel-show-result-all append local]
-                           5]
-                       org-babel-result-hide-spec org-babel-hide-all-hashes)))
  '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-target-verify-function (quote bh/verify-refile-target))
