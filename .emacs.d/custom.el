@@ -101,6 +101,7 @@
        ([134217751]
         . ""))
       workspace 2))))
+ '(exwm-randr-workspace-monitor-plist (quote (0 "HDMI-1")))
  '(exwm-replace t)
  '(exwm-update-class-hook (quote (pjs-set-exwm-buffer-name-to-class)))
  '(exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
