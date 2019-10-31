@@ -58,7 +58,31 @@
      ([8388660]
       lambda nil
       (interactive)
-      (exwm-workspace-switch-create 3)))))
+      (exwm-workspace-switch-create 3))
+     ([8388661]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 4))
+     ([8388662]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 5))
+     ([8388663]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 6))
+     ([8388664]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 7))
+     ([8388665]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 8))
+     ([8388656]
+      lambda nil
+      (interactive)
+      (exwm-workspace-switch-create 9)))))
  '(exwm-input-prefix-keys
    (quote
     ("" "" ""
@@ -70,7 +94,7 @@
  '(exwm-manage-configurations
    (quote
     (((string-equal exwm-class-name "Xfce4-terminal")
-      workspace 3)
+      workspace 0)
      ((string-equal exwm-class-name "Firefox")
       simulation-keys
       (("" .
@@ -100,14 +124,14 @@
        ("" . "")
        ([134217751]
         . ""))
-      workspace 2))))
- '(exwm-randr-workspace-monitor-plist (quote (0 "HDMI1")))
+      workspace 1))))
+ '(exwm-randr-workspace-monitor-plist (quote (9 "HDMI1")))
  '(exwm-replace t)
  '(exwm-update-class-hook (quote (pjs-set-exwm-buffer-name-to-class)))
  '(exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
- '(exwm-workspace-number 4)
+ '(exwm-workspace-number 10)
  '(exwm-workspace-show-all-buffers t)
- '(exwm-workspace-switch-create-limit 4)
+ '(exwm-workspace-switch-create-limit 10)
  '(fill-column 80)
  '(flycheck-checkers
    (quote
