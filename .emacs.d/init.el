@@ -90,6 +90,15 @@
 
   (require 'exwm-randr)
   (exwm-randr-enable)
+  (setq exwm-input-global-keys
+        `(([?\s-w] . exwm-workspace-switch)
+          ;; 's-N': Switch to certain workspace.
+          ,@(mapcar (lambda (i)
+                      `(,(kbd (format "s-%d" i)) .
+                        (lambda ()
+                          (interactive)
+                          (exwm-workspace-switch-create ,i))))
+                    (number-sequence 0 9))))
   (setq pjs-exwm-configured-p 't))
 
 (defun pjs-reset ()
@@ -99,6 +108,8 @@
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
   (when pjs-exwm-configured-p
     (exwm-reset)))
+
+(global-set-key (kbd "s-r") 'pjs-reset)
 
 (defun pjs-set-exwm-buffer-name-to-class ()
   (exwm-workspace-rename-buffer exwm-class-name))
