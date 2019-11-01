@@ -37,7 +37,7 @@
      [134217824]
      [134217766]
      [134217786])))
- '(exwm-layout-show-all-buffers t)
+ '(exwm-layout-show-all-buffers nil)
  '(exwm-manage-configurations
    (quote
     (((string-equal exwm-class-name "Xfce4-terminal")
@@ -77,7 +77,7 @@
  '(exwm-update-class-hook (quote (pjs-set-exwm-buffer-name-to-class)))
  '(exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
  '(exwm-workspace-number 10)
- '(exwm-workspace-show-all-buffers t)
+ '(exwm-workspace-show-all-buffers nil)
  '(exwm-workspace-switch-create-limit 10)
  '(fill-column 80)
  '(flycheck-checkers
