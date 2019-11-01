@@ -291,7 +291,8 @@ Source: %u, [[%:link][%:description]]
  '(org-refile-targets
    (quote
     ((nil :maxlevel . 9)
-     (org-agenda-files :maxlevel . 9))))
+     (org-agenda-files :maxlevel . 9)
+     ("~/org/read.org" :level . 0))))
  '(org-refile-use-outline-path (quote file))
  '(org-special-ctrl-a/e (quote reversed))
  '(org-special-ctrl-k t)
