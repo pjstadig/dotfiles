@@ -8,6 +8,7 @@
 *.elc
 *.log
 *~
+.cpcache/
 .DS_Store
 .localized
 /.*history
@@ -62,6 +63,7 @@
 /.emacs.d/elpa/*.signed
 /.emacs.d/elpa/archives
 /.emacs.d/elpa/gnupg/
+/.emacs.d/flycheck_*.el
 /.emacs.d/ido.last
 /.emacs.d/local.el
 /.emacs.d/network-security.data
