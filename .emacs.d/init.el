@@ -835,6 +835,19 @@ so change the default 'F' binding in the agenda to allow both"
         backup-directory-alist `(("." . ,(concat user-emacs-directory
                                                  "backups")))))
 
+(defun pjs-pop-read-queue ()
+  (interactive)
+  (save-excursion
+    (find-file-existing (concat org-directory "/read.org"))
+    (beginning-of-buffer)
+    (org-next-link)
+    (org-open-at-point)
+    (org-cut-subtree)
+    (save-buffer))
+  (exwm-workspace-switch-to-buffer "Firefox"))
+
+(global-set-key (kbd "C-c u") 'pjs-pop-read-queue)
+
 (when (not (eq (server-running-p) 't))
   (server-start))
 
