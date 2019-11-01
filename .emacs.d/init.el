@@ -1,17 +1,12 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
-(defvar pjs-local-file
-  (expand-file-name (concat user-emacs-directory "local.el")))
-
-(when (file-exists-p pjs-local-file)
-  (load pjs-local-file))
-
 (defun pjs-add-eval-buffer-binding ()
   (local-set-key (kbd "C-c C-k") 'eval-buffer))
 
 (add-hook 'emacs-lisp-mode-hook 'pjs-add-eval-buffer-binding)
 
+;; Setup package
 (require 'package)
 (add-to-list 'package-archives
              (cons "melpa-stable" "https://stable.melpa.org/packages/")
@@ -24,6 +19,7 @@
 
 (require 'use-package)
 
+;; Dependencies
 (use-package gnu-elpa-keyring-update
   :ensure t
   :config (gnu-elpa-keyring-update))
@@ -42,12 +38,74 @@
   :ensure t)
 (use-package org-autolist
   :ensure t)
+(use-package flycheck-clj-kondo
+  :ensure t)
+(use-package clojure-mode
+  :ensure t
+  :config (require 'flycheck-clj-kondo))
+(use-package cider
+  :ensure t)
+(use-package company
+  :ensure t)
+(use-package paredit
+  :ensure t)
+(use-package helm
+  :ensure t
+  :bind (("C-x C-f" . helm-find-files)
+         ("M-x" . helm-M-x))
+  :config
+  (helm-mode))
+(use-package helm-ag
+  :ensure t)
+(use-package helm-projectile
+  :ensure t
+  :config
+  (projectile-mode)
+  (setq projectile-completion-system 'helm)
+  (helm-projectile-on))
+(use-package visual-fill-column
+  :ensure t)
+(use-package writegood-mode
+  :ensure t)
+(use-package typo
+  :ensure t)
+(require 'org-agenda)
+(use-package org-bullets
+  :ensure t)
+
+;; Configuration
+(defgroup pjs nil
+  "My config variables."
+  :group 'default)
+
+(defvar pjs-exwm-configured-p nil)
+
+(defun pjs-configure-exwm ()
+  (require 'exwm)
+  (exwm-enable)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (fringe-mode 1)
+
+  (require 'exwm-randr)
+  (exwm-randr-enable)
+  (setq pjs-exwm-configured-p 't))
 
 (defun pjs-reset ()
   (interactive)
-  (byte-compile-file (concat user-emacs-directory "init.el"))
+  (byte-recompile-file (concat user-emacs-directory "init.el"))
   (load (concat user-emacs-directory "init.el"))
-  (exwm-reset))
+  (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
+  (when pjs-exwm-configured-p
+    (exwm-reset)))
+
+(defun pjs-set-exwm-buffer-name-to-class ()
+  (exwm-workspace-rename-buffer exwm-class-name))
+
+(defun pjs-start-initial-programs ()
+  (start-process-shell-command "firefox" nil "firefox")
+  (start-process-shell-command "xfce4-terminal" nil "xfce4-terminal"))
 
 (defun pjs-erc-connect (server)
   (interactive "Mserver: ")
@@ -61,40 +119,15 @@
            :nick "paul"
            :password (concat "paul:" pjs-znc-password)))
 
-(defun pjs-set-exwm-buffer-name-to-class ()
-  (exwm-workspace-rename-buffer exwm-class-name))
-
-(defun pjs-start-initial-programs ()
-  (start-process-shell-command "firefox" nil "firefox")
-  (start-process-shell-command "xfce4-terminal" nil "xfce4-terminal"))
-
-(defun pjs-configure-exwm ()
-  (require 'exwm)
-  (exwm-enable)
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (fringe-mode 1)
-
-  (require 'exwm-randr)
-  (exwm-randr-enable))
-
-
-(defgroup pjs nil
-  "My config variables."
-  :prefix "pjs-")
-
 (defcustom pjs-inhibit-cleanup nil
   "If true will disable buffer cleanup on save."
-  :group 'my
+  :group 'pjs
   :type 'boolean
   :safe #'booleanp)
 
-(defun pjs-cleanup-buffer (&optional arg)
-  (interactive "p")
-  (when (and (derived-mode-p 'prog-mode)
-             (and (<= (or arg 0) 1)
-                  (not pjs-inhibit-cleanup)))
+(defun pjs-cleanup-buffer ()
+  (interactive)
+  (when (derived-mode-p 'prog-mode)
     (let ((inhibit-redisplay 't))
       (delete-trailing-whitespace)
       (untabify (point-min) (point-max))
@@ -102,9 +135,15 @@
       (when (derived-mode-p 'clojure-mode)
         (ignore-errors (clojure-sort-ns))))))
 
-(defun pjs-start-power-manager ()
-  (interactive)
-  (start-process "xfce4-power-manager" nil "xfce4-power-manager"))
+(defun save-buffer-advice (old-save-buffer &optional arg)
+  (interactive "p")
+  (when (and (not (> arg 1))
+             (not pjs-inhibit-cleanup))
+    (pjs-cleanup-buffer))
+  (when old-save-buffer
+    (funcall old-save-buffer)))
+
+(advice-add 'save-buffer :around 'save-buffer-advice)
 
 (defun pjs-restart-network-manager ()
   (interactive)
@@ -112,30 +151,31 @@
          '(("*Async Shell Command*" display-buffer-no-window))))
     (async-shell-command "sudo systemctl restart network-manager" nil)))
 
+(global-set-key (kbd "C-c e n") 'pjs-restart-network-manager)
+
 (defun pjs-suspend ()
   (interactive)
   (start-process-shell-command "suspend" nil "systemctl suspend"))
+
+(global-set-key (kbd "C-c e s") 'pjs-suspend)
 
 (defun pjs-lock-screen ()
   (interactive)
   (start-process-shell-command "lock-screen" nil "dm-tool lock"))
 
-(defun pjs-show-time ()
-  (interactive)
-  (start-process-shell-command "show-time" nil "date | dzen2 -p 10"))
+(global-set-key (kbd "C-c e l") 'pjs-lock-screen)
 
 (defun pjs-show-xfce-settings ()
   (interactive)
   (start-process-shell-command "show-xfce-settings" nil "xfce4-settings-manager"))
 
-(defun pjs-save-buffer (&optional arg)
-  (interactive "p")
-  (pjs-cleanup-buffer arg)
-  (save-buffer))
+(global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
 
 (defun pjs-revert ()
   (interactive)
   (revert-buffer 'ignore-auto 'noconfirm 'preserve-mode))
+
+(global-set-key (kbd "C-c r") 'pjs-revert)
 
 ;; Key binding conventions
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html
@@ -145,20 +185,9 @@
 
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
-;; TODO is there a helm autocomplete I could use?
 (global-set-key (kbd "C-c b") 'org-switchb)
-(global-set-key (kbd "C-c h") 'bh/hide-other)
-(global-set-key (kbd "C-c n") 'bh/toggle-next-task-display)
-
-(defun bh/hide-other ()
-  (interactive)
-  (save-excursion
-    (org-back-to-heading 'invisible-ok)
-    (hide-other)
-    (org-cycle)
-    (org-cycle)
-    (org-cycle)))
-
+(global-set-key (kbd "C-c n") 'pjs-cleanup-buffer)
+(global-set-key (kbd "C-c C-n") 'pjs-cleanup-buffer)
 (global-set-key (kbd "C-c o a") 'bh/show-org-agenda)
 
 (defun bh/show-org-agenda ()
@@ -175,64 +204,19 @@
 (global-set-key (kbd "C-c i") 'imenu)
 (global-set-key (kbd "C-c C-i") 'imenu)
 
-(global-set-key (kbd "C-c r") 'pjs-revert)
 (global-set-key (kbd "C-c t") 'bh/org-todo)
 (global-set-key (kbd "C-c w") 'bh/widen)
 
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
-(global-set-key (kbd "C-x C-s") 'pjs-save-buffer)
-
-(global-set-key (kbd "C-c e n") 'pjs-restart-network-manager)
-(global-set-key (kbd "C-c e p") 'pjs-start-power-manager)
-(global-set-key (kbd "C-c e l") 'pjs-lock-screen)
-(global-set-key (kbd "C-c e s") 'pjs-suspend)
-(global-set-key (kbd "C-c e t") 'pjs-show-time)
-
-(global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
-
-(use-package flycheck-clj-kondo
-  :ensure t)
-(use-package clojure-mode
-  :ensure t
-  :config (require 'flycheck-clj-kondo))
-(use-package cider
-  :ensure t)
-(use-package company
-  :ensure t)
-(use-package paredit
-  :ensure t)
 
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'eldoc-mode)
-
-(use-package helm
-  :ensure t
-  :bind (("C-x C-f" . helm-find-files)
-         ("M-x" . helm-M-x))
-  :config
-  (helm-mode))
-
-(use-package helm-ag
-  :ensure t)
-
-(use-package helm-projectile
-  :ensure t
-  :config
-  (projectile-mode)
-  (setq projectile-completion-system 'helm)
-  (helm-projectile-on))
 
 (defun pjs-sort-symbols (reverse beg end)
   "Sort symbols in region alphabetically, in REVERSE if negative.
     See `sort-words'."
   (interactive "*P\nr")
   (sort-regexp-fields reverse "\\(\\sw\\|\\s_\\)+" "\\&" beg end))
-
-
-(use-package visual-fill-column
-  :ensure t)
-(use-package writegood-mode
-  :ensure t)
 
 (defun pjs-configure-text-mode-fill-column ()
   (setq fill-column 80))
@@ -244,12 +228,6 @@
 (add-hook 'visual-fill-column-mode-hook 'visual-line-mode)
 (setq split-window-preferred-function 'visual-fill-column-split-window-sensibly)
 (advice-add 'text-scale-adjust :after 'visual-fill-column-adjust)
-
-(use-package typo
-  :ensure t)
-(require 'org-agenda)
-(use-package org-bullets
-  :ensure t)
 
 ;; Normally I would prefer to customize `org-mode-hook`, but when org loads, it
 ;; transitively loads org-babel, which calls `add-hook` on `org-mode-hook`
@@ -563,12 +541,13 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
 (defun bh/org-todo (arg)
   (interactive "p")
-  (if (equal arg 4)
-      (save-restriction
-        (bh/narrow-to-org-subtree)
-        (org-show-todo-tree nil))
-    (bh/narrow-to-org-subtree)
-    (org-show-todo-tree nil)))
+  (when (derived-mode-p 'org-mode)
+    (if (equal arg 4)
+        (save-restriction
+          (bh/narrow-to-org-subtree)
+          (org-show-todo-tree nil))
+      (bh/narrow-to-org-subtree)
+      (org-show-todo-tree nil))))
 
 (global-set-key (kbd "<S-f5>") 'bh/widen)
 
@@ -821,3 +800,9 @@ so change the default 'F' binding in the agenda to allow both"
 
 (when (not (eq (server-running-p) 't))
   (server-start))
+
+(defvar pjs-local-file
+  (expand-file-name (concat user-emacs-directory "local.el")))
+
+(when (file-exists-p pjs-local-file)
+  (load pjs-local-file))
