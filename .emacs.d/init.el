@@ -42,6 +42,13 @@
   :ensure t)
 (use-package org-autolist
   :ensure t)
+
+(defun pjs-reset ()
+  (interactive)
+  (byte-compile-file (concat user-emacs-directory "init.el"))
+  (load (concat user-emacs-directory "init.el"))
+  (exwm-reset))
+
 (defun pjs-erc-connect (server)
   (interactive "Mserver: ")
   (let ((znc-password-file "~/.private/pjs-znc-password.el"))

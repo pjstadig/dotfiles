@@ -33,7 +33,7 @@
  '(exwm-input-global-keys
    (quote
     (([8388722]
-      . exwm-reset)
+      . pjs-reset)
      ([8388727]
       . exwm-workspace-switch)
      ([8388646]
