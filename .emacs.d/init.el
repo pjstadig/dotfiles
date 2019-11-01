@@ -119,7 +119,7 @@
            :nick "paul"
            :password (concat "paul:" pjs-znc-password)))
 
-(defcustom pjs-inhibit-cleanup nil
+(defcustom pjs-inhibit-cleanup-on-save nil
   "If true will disable buffer cleanup on save."
   :group 'pjs
   :type 'boolean
@@ -137,8 +137,8 @@
 
 (defun save-buffer-advice (old-save-buffer &optional arg)
   (interactive "p")
-  (when (and (not (> arg 1))
-             (not pjs-inhibit-cleanup))
+  (when (and (= (or arg 1) 1)
+             (not pjs-inhibit-cleanup-on-save))
     (pjs-cleanup-buffer))
   (when old-save-buffer
     (funcall old-save-buffer)))
