@@ -204,7 +204,7 @@
 :CREATED: %U
 :END:")
      ("y" "org-protocol-link" entry
-      (file "~/org/inbox.org")
+      (file "~/org/read.org")
       "* %? [[%:link][%:description]]
 :PROPERTIES:
 :CREATED: %U
