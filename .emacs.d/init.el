@@ -31,9 +31,6 @@
   :config
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
-(use-package deft
-  :ensure t
-  :bind ("C-c d" . deft))
 (use-package exwm
   :ensure t)
 (use-package org-autolist
@@ -72,6 +69,8 @@
 (require 'org-agenda)
 (use-package org-bullets
   :ensure t)
+(use-package zk
+  :load-path "lib/zk-0.1")
 
 ;; Configuration
 (defgroup pjs nil
@@ -132,10 +131,9 @@
   (byte-recompile-file (concat user-emacs-directory "init.el"))
   (load (concat user-emacs-directory "init.el"))
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
+  (byte-recompile-directory (concat user-emacs-directory "lib") 0)
   (when pjs-exwm-configured-p
     (exwm-reset)))
-
-(global-set-key (kbd "s-r") 'pjs-reset)
 
 (defun pjs-set-exwm-buffer-name-to-class ()
   (exwm-workspace-rename-buffer exwm-class-name))
@@ -188,31 +186,21 @@
          '(("*Async Shell Command*" display-buffer-no-window))))
     (async-shell-command "sudo systemctl restart network-manager" nil)))
 
-(global-set-key (kbd "C-c e n") 'pjs-restart-network-manager)
-
 (defun pjs-suspend ()
   (interactive)
   (start-process-shell-command "suspend" nil "systemctl suspend"))
-
-(global-set-key (kbd "C-c e s") 'pjs-suspend)
 
 (defun pjs-lock-screen ()
   (interactive)
   (start-process-shell-command "lock-screen" nil "dm-tool lock"))
 
-(global-set-key (kbd "C-c e l") 'pjs-lock-screen)
-
 (defun pjs-show-xfce-settings ()
   (interactive)
   (start-process-shell-command "show-xfce-settings" nil "xfce4-settings-manager"))
 
-(global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
-
 (defun pjs-revert ()
   (interactive)
   (revert-buffer 'ignore-auto 'noconfirm 'preserve-mode))
-
-(global-set-key (kbd "C-c r") 'pjs-revert)
 
 ;; Key binding conventions
 ;; https://www.gnu.org/software/emacs/manual/html_node/elisp/Key-Binding-Conventions.html
@@ -220,12 +208,29 @@
 ;; C-c [letter] is reserved for users
 ;; <f5> through <f9> are reserved for users
 
+(global-set-key (kbd "s-r") 'pjs-reset)
 (global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c b") 'org-switchb)
-(global-set-key (kbd "C-c n") 'pjs-cleanup-buffer)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c d") 'zk)
+(global-set-key (kbd "C-c e n") 'pjs-restart-network-manager)
+(global-set-key (kbd "C-c e s") 'pjs-suspend)
+(global-set-key (kbd "C-c e l") 'pjs-lock-screen)
+(global-set-key (kbd "C-c i") 'imenu)
+(global-set-key (kbd "C-c C-i") 'imenu)
+(global-set-key (kbd "C-c l") 'zk-link)
+(global-set-key (kbd "C-c n n") 'zk-link-new-next)
+(global-set-key (kbd "C-c n c") 'zk-link-new-child)
+(global-set-key (kbd "C-c n l") 'zk-link-new)
 (global-set-key (kbd "C-c C-n") 'pjs-cleanup-buffer)
 (global-set-key (kbd "C-c o a") 'bh/show-org-agenda)
+(global-set-key (kbd "C-c o o") 'org-cycle-agenda-files)
+(global-set-key (kbd "C-c r") 'pjs-revert)
+(global-set-key (kbd "C-c t") 'bh/org-todo)
+(global-set-key (kbd "C-c u") 'pjs-pop-read-queue)
+(global-set-key (kbd "C-c w") 'bh/widen)
+(global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
+(global-set-key (kbd "C-x n r") 'narrow-to-region)
 
 (defun bh/show-org-agenda ()
   (interactive)
@@ -234,17 +239,6 @@
     (switch-to-buffer "*Org Agenda*"))
   (delete-other-windows))
 
-(global-set-key (kbd "C-c o o") 'org-cycle-agenda-files)
-
-;; TODO org clock with C-c k prefix?
-
-(global-set-key (kbd "C-c i") 'imenu)
-(global-set-key (kbd "C-c C-i") 'imenu)
-
-(global-set-key (kbd "C-c t") 'bh/org-todo)
-(global-set-key (kbd "C-c w") 'bh/widen)
-
-(global-set-key (kbd "C-x n r") 'narrow-to-region)
 
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'eldoc-mode)
@@ -286,6 +280,7 @@
 (add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'org-bullets-mode)
 (add-hook 'org-mode-hook 'org-autolist-mode)
+(add-hook 'org-mode-hook 'zk-navigate-keys)
 
 (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
 
@@ -586,8 +581,6 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
       (bh/narrow-to-org-subtree)
       (org-show-todo-tree nil))))
 
-(global-set-key (kbd "<S-f5>") 'bh/widen)
-
 (defun bh/widen ()
   (interactive)
   (if (equal major-mode 'org-agenda-mode)
@@ -845,8 +838,6 @@ so change the default 'F' binding in the agenda to allow both"
     (org-cut-subtree)
     (save-buffer))
   (exwm-workspace-switch-to-buffer "Firefox"))
-
-(global-set-key (kbd "C-c u") 'pjs-pop-read-queue)
 
 (when (not (eq (server-running-p) 't))
   (server-start))

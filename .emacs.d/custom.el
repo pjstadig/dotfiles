@@ -22,9 +22,6 @@
  '(cider-repl-use-pretty-printing t)
  '(cider-save-file-on-load t)
  '(clojure-docstring-fill-column 80)
- '(deft-directory "~/org/notes/")
- '(deft-extensions (quote ("org")))
- '(deft-new-file-format "%Y%m%dT%H%M%S")
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
@@ -192,7 +189,7 @@
 :CREATED: %U
 :END:" :prepend t)
      ("n" "note" entry
-      (file "~/org/notes.org")
+      (file "~/org/inbox.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
@@ -371,7 +368,11 @@ Source: %u, [[%:link][%:description]]
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(whitespace-style
    (quote
-    (face trailing tabs lines-tail newline empty indentation::space))))
+    (face trailing tabs lines-tail newline empty indentation::space)))
+ '(zk-directory "/home/paul/org/zk/")
+ '(zk-extensions (quote ("org" "txt" "text" "md" "markdown")))
+ '(zk-strip-summary-regexp "\\([
+        ]\\|^#\\+[[:upper:]_]+:.*$\\|^:[^:]+:.*$\\)"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
