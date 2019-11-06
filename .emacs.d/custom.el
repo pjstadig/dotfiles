@@ -369,7 +369,7 @@ Source: %u, [[%:link][%:description]]
  '(whitespace-style
    (quote
     (face trailing tabs lines-tail newline empty indentation::space)))
- '(zk-directory "/home/paul/org/zk/")
+ '(zk-directory "~/org/zk/")
  '(zk-extensions (quote ("org" "txt" "text" "md" "markdown")))
  '(zk-strip-summary-regexp "\\([
         ]\\|^#\\+[[:upper:]_]+:.*$\\|^:[^:]+:.*$\\)"))
