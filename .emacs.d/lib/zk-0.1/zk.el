@@ -29,6 +29,7 @@
 (require 'cl)
 (require 'widget)
 (require 'wid-edit)
+(require 'org)
 
 ;; Customization
 
@@ -121,33 +122,6 @@ For example, .tex files may be generated from `org-mode' or Pandoc."
   :type 'boolean
   :group 'zk)
 
-(defcustom zk-list-links-missing-message
-  "   No missing links with search term =%s= found\n"
-  "Message to insert when no missing links are found by `zk-insert-list-links-missing'.
-%s will be replaced by the search term provided to
-that function."
-  :type 'string
-  :group 'zk)
-
-(defcustom zk-id-regex "[0-9]\\{4\\}\\(-[0-9]\\{2,\\}\\)\\{3\\}"
-  "The regular expression used to search for zk IDs.
-Set it so that it matches strings generated with
-`zk-id-format'."
-  :type 'string
-  :group 'zk)
-
-(defcustom zk-link-indicator "§"
-  "String to indicate zk links.
-String prepended to IDs to easily identify them as links to zk notes.
-This variable should be a string containing only one character."
-  :type 'string
-  :group 'zk)
-
-(defcustom zk-tag-regex "[#@][a-z-]+"
-  "Regular expression for zk tags."
-  :type 'string
-  :group 'zk)
-
 ;; Faces
 
 (defgroup zk-faces nil
@@ -230,7 +204,7 @@ regexp.")
 (defvar zk-hash-summaries nil
   "Hash containing cached file summaries, keyed by filename.")
 
-(defvar zk-id-first-max 0
+(defvar zk-id-first-max "0"
   "Maximum id first segment in `zk-directory'.")
 
 (defvar zk-auto-save-buffers nil
@@ -258,7 +232,8 @@ regexp.")
 (defvar zk-complete-insert-buffer nil
   "Buffer to insert a link into when search is complete.")
 
-(defvar zk-navigation-history nil)
+(defvar zk-navigation-history (make-ring 1000)
+  "Navigation history from following links.")
 
 ;; Keymap definition
 
@@ -346,71 +321,146 @@ is the complete regexp."
 
 ;; ID manipulation
 
-(defun zk-id-inc-alpha (str)
-  (let* ((new-str (copy-sequence str))
+(defun zk-last-idx (seq)
+  (1- (length seq)))
+
+(defun zk-alpha-inc (str zero max &optional one)
+  (let* ((one (or one (1+ zero)))
+         (new-str (copy-sequence str))
+         (idx (zk-last-idx new-str))
          (continue t)
-         (idx (1- (length new-str))))
+         c)
     (while continue
-      (if (and (zerop idx) (= (aref new-str idx) ?z))
-          (progn (aset new-str 0 ?a)
-                 (setq new-str (concat "a" new-str))
-                 (setq continue nil))
-        (let ((new-char (1+ (aref new-str idx))))
-          (if (<= new-char ?z)
-              (progn (aset new-str idx new-char)
-                     (setq continue nil))
-            (aset new-str idx (+ ?a (mod new-char ?\{)))
-            (setq idx (1- idx))))))
+      (setq c (seq-elt new-str idx))
+      (if (= c max)
+          (progn
+            (setf (seq-elt new-str idx) zero)
+            (if (> idx 0)
+                (setq idx (1- idx))
+              (setq new-str (concat (string one) new-str))
+              (setq continue nil)))
+        (setf (seq-elt new-str idx) (1+ c))
+        (setq continue nil)))
     new-str))
 
+(defun zk-alpha-dec (str zero max &optional one)
+  (let* ((one (or one (1+ zero)))
+         (new-str (copy-sequence str))
+         (idx (zk-last-idx new-str))
+         (continue t)
+         c)
+    (while continue
+      (setq c (seq-elt new-str idx))
+      (if (not (= idx 0))
+          (if (= c zero)
+              (progn (setf (seq-elt new-str idx) max)
+                     (setq idx (1- idx)))
+            (progn (setf (seq-elt new-str idx) (1- c))
+                   (setq continue nil)))
+        (setq continue nil)
+        (if (= c one)
+            (setq new-str (subseq new-str 1))
+          (setf (seq-elt new-str idx) (1- c)))))
+    new-str))
+
+(defun zk-id-strip-ancestors (id)
+  (when (string-match (concat "\\(?:^\\|[^>]+>\\)"
+                              "\\(\\(?:[0-9]+\\|[a-z]+\\)+\\)$")
+                      id)
+    (match-string 1 id)))
+
 (defun zk-id-parse-first (id)
-  (when (string-match "^\\([0-9]+\\)" id)
-    (string-to-number (match-string 1 id))))
+  (let ((id* (zk-id-strip-ancestors id)))
+    (when (and id* (string-match "^\\([0-9]+\\)" id*))
+      (match-string 1 id*))))
 
 (defun zk-id-parse-last (id)
-  (when (string-match "\\([0-9]+\\|[a-z]+\\)$" id)
-    (match-string 1 id)))
+  (let ((id* (zk-id-strip-ancestors id)))
+    (when (and id* (string-match "\\([0-9]+\\|[a-z]+\\)$" id*))
+      (match-string 1 id*))))
 
 (defun zk-id-but-last (id last)
   (substring id 0 (- (length id) (length last))))
 
+(defun zk-number-string-p (str)
+  (string-match "^[0-9]+$" str))
+
 (defun zk-id-inc (&optional prev-id)
-  (let* ((prev-id (or prev-id (number-to-string zk-id-first-max)))
+  (let* ((prev-id (or prev-id zk-id-first-max))
          (last (zk-id-parse-last prev-id))
          (prefix (zk-id-but-last prev-id last)))
-    (concat prefix (number-to-string (1+ (string-to-number last))))))
+    (concat prefix (if (zk-number-string-p last)
+                       (zk-alpha-inc last ?0 ?9)
+                     (zk-alpha-inc last ?a ?z ?a)))))
+
+(defun zk-id-dec (next-id)
+  (let* ((last (zk-id-parse-last next-id))
+         (prefix (zk-id-but-last next-id last)))
+    (concat prefix (if (or (equal last "1")
+                           (equal last "a"))
+                       ""
+                     (if (zk-number-string-p last)
+                         (zk-alpha-dec last ?0 ?9)
+                       (zk-alpha-dec last ?a ?z ?a))))))
+
+(defun zk-id-insert (prev-id)
+  (if (zk-number-string-p (zk-id-parse-last prev-id))
+      (concat prev-id "a")
+    (concat prev-id "1")))
+
+(defun zk-id-used-p (id)
+  (let ((file (zk-absolute-filename id)))
+    (when (or (get-file-buffer file) (file-exists-p file))
+      id)))
 
 (defun zk-id-branch-inc (prev-id)
   (let* ((last (zk-id-parse-last prev-id))
          (prefix (zk-id-but-last prev-id last))
          (next-last (zk-id-parse-last prefix))
          (prefix (zk-id-but-last prefix next-last)))
-    (concat prefix (zk-id-inc-alpha next-last) last)))
+    (concat prefix (zk-alpha-inc next-last ?a ?z ?a) last)))
 
 (defun zk-id-branch (parent-id)
-  (concat parent-id "a" "1"))
-
-(defun zk-unused-id (id)
-  "Return an unused filename id (short name) in `zk-directory'."
-  (let ((file (zk-absolute-filename id)))
-    (while (or (file-exists-p file) (get-file-buffer file))
-      (setq id (zk-id-inc id))
-      (setq file (zk-absolute-filename id)))
-    id))
-
-(defun zk-unused-child-id (id)
-  "Return an unused filename id (short name) in `zk-directory'."
-  (let ((file (zk-absolute-filename id)))
-    (while (or (file-exists-p file) (get-file-buffer file))
-      (setq id (zk-id-branch-inc id))
-      (setq file (zk-absolute-filename id)))
-    id))
+  (concat parent-id ">a1"))
 
 (defun zk-id-new (&optional prev-id)
-  (zk-unused-id (zk-id-inc prev-id)))
+  (let ((prev-id (or prev-id zk-id-first-max))
+        (id (zk-id-inc prev-id)))
+    (when (zk-id-used-p id)
+      (setq id (zk-id-insert prev-id))
+      (while (zk-id-used-p id)
+        (setq id (zk-id-insert id))))
+    id))
 
 (defun zk-id-new-child (parent-id)
-  (zk-unused-child-id (zk-id-branch parent-id)))
+  (let ((id (zk-id-branch parent-id)))
+    (while (zk-id-used-p id)
+      (setq id (zk-id-branch-inc id)))
+    id))
+
+(defun zk-id-next (id)
+  (let ((next-id (zk-id-inc id)))
+    (if (zk-id-used-p next-id)
+        ;; next id exists; check if there's anything in between
+        (or (zk-id-used-p (zk-id-insert id)) next-id)
+      ;; nothing in between
+      (let* ((id-last (zk-id-parse-last id)))
+        ;; is this the very last top-level id?
+        (when (not (equal (zk-id-strip-ancestors id) id-last))
+          (zk-id-used-p (zk-id-inc (zk-id-but-last id id-last))))))))
+
+(defun zk-id-prev (id)
+  (let ((prev-id (zk-id-dec id)))
+    (when (zk-id-used-p prev-id)
+      (while (not (equal id (zk-id-next prev-id)))
+        (setq prev-id (zk-id-next prev-id)))
+      prev-id)))
+
+(defun zk-id-parent (id)
+  (when (string-match (concat "^\\(.+\\)"
+                              "\\(?:>\\(?:[0-9]+\\|[a-z]+\\)+\\)$")
+                      id)
+    (zk-id-used-p (match-string 1 id))))
 
 ;; File processing
 
@@ -496,10 +546,18 @@ See `zk-generation-rules'."
    (let ((case-fold-search nil))
      (replace-regexp-in-string zk-strip-summary-regexp " " contents))))
 
+(defun zk-id> (id1 id2)
+  (or (> (length id1) (length id2))
+      (and (= (length id1) (length id2))
+           (string> id1 id2))))
+
 (defun zk-update-id-first-max (file)
   (let ((first-id (zk-id-parse-first (file-name-base file))))
     (when first-id
-      (setq zk-id-first-max (max zk-id-first-max first-id)))))
+      (setq zk-id-first-max
+            (if (zk-id> first-id zk-id-first-max)
+                first-id
+              zk-id-first-max)))))
 
 (defun zk-cache-file (file)
   "Update file cache if FILE exists."
@@ -639,7 +697,7 @@ handles nil values gracefully."
                      :button-face 'zk-id-face
                      :format "%[%v%]"
                      :tag file
-                     :help-echo "Edit this file"
+                     :help-echo ""
                      :notify (lambda (widget &rest ignore)
                                (zk-open-file (widget-get widget :tag)))
                      id)
@@ -955,16 +1013,23 @@ filter regexp.  Therefore, in both cases, only the car of
   (zk-filter
    (concat (zk-whole-filter-regexp) (current-kill 0 t)) t))
 
+(defun zk-next-widget ()
+  (let ((p (point)))
+    (condition-case nil
+        (progn
+          (widget-move 1)
+          (when (> (point) p)
+            (widget-at)))
+      (error nil))))
+
 (defun zk-previous-widget ()
-  (or (widget-at)
-      (let ((p (point)))
-        (save-excursion
-          (condition-case nil
-              (progn
-                (widget-move -1)
-                (when (< (point) p)
-                  (widget-at)))
-            (error nil))))))
+  (let ((p (point)))
+    (condition-case nil
+        (progn
+          (widget-move -1)
+          (when (< (point) p)
+            (widget-at)))
+      (error nil))))
 
 (defun zk-complete ()
   "Complete the current action.
@@ -976,7 +1041,7 @@ Otherwise, quick create a new file."
   (interactive)
   (if zk-complete-fun
       (funcall zk-complete-fun)
-    (let ((widget (zk-previous-widget)))
+    (let ((widget (or (widget-at) (save-excursion (zk-previous-widget)))))
       (if widget
           (widget-apply-action widget)
         (zk-new-file)))))
@@ -1096,11 +1161,11 @@ the current file (if it is a zk file)."
 
 ;;; Navigation
 
-(defun zk-push-history (buffer)
-  (setq zk-navigation-history (cons buffer zk-navigation-history)))
+(defun zk-push-history (marker)
+  (ring-insert-at-beginning zk-navigation-history marker))
 
 (defun zk-pop-history ()
-  (setq zk-navigation-history (cdr zk-navigation-history)))
+  (ring-remove zk-navigation-history))
 
 (defun zk-follow ()
   (interactive)
@@ -1111,16 +1176,82 @@ the current file (if it is a zk file)."
 
 (defun zk-back ()
   (interactive)
-  (let ((marker (car zk-navigation-history)))
+  (let ((marker (zk-pop-history)))
     (when marker
-      (setq zk-navigation-history (cdr zk-navigation-history))
       (switch-to-buffer (marker-buffer marker))
       (goto-char (marker-position marker))
       (set-marker marker nil nil))))
 
+(defun zk-current-id ()
+  (zk-lift-id (buffer-file-name)))
+
+(defun zk-next ()
+  (interactive)
+  (let ((next (zk-id-next (zk-current-id))))
+    (if (null next)
+        (message "No more nodes")
+      (zk-push-history (point-marker))
+      (zk-open-file (zk-absolute-filename next)))))
+
+(defun zk-prev ()
+  (interactive)
+  (let ((next (zk-id-prev (zk-current-id))))
+    (if (null next)
+        (message "No more nodes")
+      (zk-push-history (point-marker))
+      (zk-open-file (zk-absolute-filename next)))))
+
+(defun zk-up ()
+  (interactive)
+  (let ((next (zk-id-parent (zk-current-id))))
+    (if (null next)
+        (message "No more nodes")
+      (zk-push-history (point-marker))
+      (zk-open-file (zk-absolute-filename next)))))
+
+(defun zk-next-result ()
+  (interactive)
+  (zk-push-history (point-marker))
+  (when (not (with-current-buffer zk-buffer
+               (let ((p (point))
+                     (widget (zk-next-widget)))
+                 (if widget
+                     (progn
+                       (widget-apply-action widget)
+                       t)
+                   (message "No more results")
+                   (goto-char p)
+                   nil))))
+    (zk-pop-history)))
+
+(defun zk-prev-result ()
+  (interactive)
+  (zk-push-history (point-marker))
+  (when (not (with-current-buffer zk-buffer
+               (let ((p (point))
+                     (widget (zk-previous-widget)))
+                 (if widget
+                     (progn
+                       (widget-apply-action widget)
+                       t)
+                   (message "No more results")
+                   (goto-char p)
+                   nil))))
+    (zk-pop-history)))
+
+;; this should probably be a minor mode?
 (defun zk-navigate-keys ()
   (local-set-key (kbd "M-.") 'zk-follow)
-  (local-set-key (kbd "M-,") 'zk-back))
+  (local-set-key (kbd "M-,") 'zk-back)
+  (local-set-key (kbd "M-g M-n") 'zk-next-result)
+  (local-set-key (kbd "M-g M-p") 'zk-prev-result)
+  (local-set-key (kbd "C-c n n") 'zk-link-new-next)
+  (local-set-key (kbd "C-c n c") 'zk-link-new-child)
+  (local-set-key (kbd "C-c n l") 'zk-link-new)
+  (local-set-key (kbd "C-c l") 'zk-link)
+  (local-set-key (kbd "C-c f n") 'zk-next)
+  (local-set-key (kbd "C-c f p") 'zk-prev)
+  (local-set-key (kbd "C-c f u") 'zk-up))
 
 ;;; Link management
 
@@ -1155,7 +1286,7 @@ the current file (if it is a zk file)."
   (concat "[[zk:" id "]]"))
 
 (defun zk-lift-id (fname)
-  "Extract the zk ID from STR with the regular expression stored in `zk-id-regex'."
+  "Extract the zk ID from STR."
   (file-name-base fname))
 
 (defun zk-complete-file-result ()
@@ -1195,24 +1326,6 @@ the current file (if it is a zk file)."
     (zk-push-history (point-marker))
     (zk-new-file-named id)))
 
-(defun zk-relate (buf rel id)
-  (with-current-buffer buf
-    (let ((oldlist buffer-undo-list))
-      (save-excursion
-        (let ((undo-inhibit-record-point t)
-              (new-link (zk-make-link id))
-              (case-fold-search t))
-          (goto-char (point-min))
-          (if (re-search-forward (concat "^" rel ":.*$") nil t)
-              (replace-match (concat "\\& " new-link))
-            (goto-char (point-max))
-            (insert rel ": " new-link))
-          (undo-boundary)))
-      (setq buffer-undo-list oldlist))))
-
-(defun zk-current-id ()
-  (zk-lift-id (buffer-file-name)))
-
 (defun zk-link-new-next ()
   (interactive)
   (let* ((curr-buf (current-buffer))
@@ -1220,9 +1333,7 @@ the current file (if it is a zk file)."
          (next-id (zk-id-new current-id)))
     (zk-update-id-first-max next-id)
     (zk-push-history (point-marker))
-    (zk-relate (current-buffer) "Next" next-id)
-    (let ((new-buf (zk-new-file-named next-id)))
-      (zk-relate new-buf "Previous" current-id))))
+    (zk-new-file-named next-id)))
 
 (defun zk-link-new-child ()
   (interactive)
@@ -1231,9 +1342,7 @@ the current file (if it is a zk file)."
          (child-id (zk-id-new-child current-id)))
     (zk-update-id-first-max child-id)
     (zk-push-history (point-marker))
-    (zk-relate (current-buffer) "Children" child-id)
-    (let ((new-buf (zk-new-file-named child-id)))
-      (zk-relate new-buf "Parent" current-id))))
+    (zk-new-file-named child-id)))
 
 ;;; Miscellaneous
 
