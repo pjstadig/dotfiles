@@ -1245,8 +1245,8 @@ the current file (if it is a zk file)."
   (local-set-key (kbd "M-,") 'zk-back)
   (local-set-key (kbd "M-g M-n") 'zk-next-result)
   (local-set-key (kbd "M-g M-p") 'zk-prev-result)
-  (local-set-key (kbd "C-c n n") 'zk-link-new-next)
-  (local-set-key (kbd "C-c n c") 'zk-link-new-child)
+  (local-set-key (kbd "C-c n n") 'zk-new-next)
+  (local-set-key (kbd "C-c n c") 'zk-new-child)
   (local-set-key (kbd "C-c n l") 'zk-link-new)
   (local-set-key (kbd "C-c l") 'zk-link)
   (local-set-key (kbd "C-c f n") 'zk-next)
@@ -1326,7 +1326,7 @@ the current file (if it is a zk file)."
     (zk-push-history (point-marker))
     (zk-new-file-named id)))
 
-(defun zk-link-new-next ()
+(defun zk-new-next ()
   (interactive)
   (let* ((curr-buf (current-buffer))
          (current-id (zk-current-id))
@@ -1335,7 +1335,7 @@ the current file (if it is a zk file)."
     (zk-push-history (point-marker))
     (zk-new-file-named next-id)))
 
-(defun zk-link-new-child ()
+(defun zk-new-child ()
   (interactive)
   (let* ((curr-buf (current-buffer))
          (current-id (zk-current-id))
