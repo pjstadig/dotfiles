@@ -156,7 +156,12 @@ Source: %u, [[%:link][%:description]]
  '(org-special-ctrl-a/e (quote reversed))
  '(org-special-ctrl-k t)
  '(org-startup-folded (quote content))
- '(org-stuck-projects (quote ("" nil nil "")))
+ '(org-stuck-projects
+   (quote
+    ("+LEVEL=1+TODO=\"TODO\""
+     ("NEXT")
+     ("someday" "maybe")
+     "")))
  '(org-tag-alist
    (quote
     ((:startgroup)
