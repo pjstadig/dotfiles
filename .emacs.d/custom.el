@@ -83,6 +83,12 @@
  '(inhibit-startup-screen t)
  '(linum-format "%d ")
  '(org-agenda-compact-blocks t)
+ '(org-agenda-custom-commands
+   (quote
+    (("n" "Agenda and all TODOs"
+      ((agenda "" nil)
+       (tags-todo "+LEVEL=2+STANDALONE|TODO=\"NEXT\"" nil))
+      nil))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files (quote ("~/org/projects.org")))
