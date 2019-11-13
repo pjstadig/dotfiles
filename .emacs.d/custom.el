@@ -82,91 +82,7 @@
     (clj-kondo-edn clj-kondo-cljc clj-kondo-cljs clj-kondo-clj ada-gnat asciidoctor asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint d-dmd dockerfile-hadolint elixir-dogma emacs-lisp erlang-rebar3 erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-megacheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-jscs javascript-standard json-jsonlint json-python-json less less-stylelint llvm-llc lua-luacheck lua perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint markdown-mdl nix rst-sphinx rst ruby-rubocop ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
  '(inhibit-startup-screen t)
  '(linum-format "%d ")
- '(org-agenda-auto-exclude-function (quote bh/org-auto-exclude-function))
  '(org-agenda-compact-blocks t)
- '(org-agenda-custom-commands
-   (quote
-    (("N" "Notes" tags "NOTE"
-      ((org-agenda-overriding-header "Notes")
-       (org-tags-match-list-sublevels t)))
-     ("h" "Habits" tags-todo "STYLE=\"habit\""
-      ((org-agenda-overriding-header "Habits")
-       (org-agenda-sorting-strategy
-        (quote
-         (todo-state-down effort-up category-keep)))))
-     (" " "Agenda"
-      ((agenda "" nil)
-       (tags "REFILE"
-             ((org-agenda-overriding-header "Tasks to Refile")
-              (org-tags-match-list-sublevels nil)))
-       (tags-todo "-CANCELLED/!"
-                  ((org-agenda-overriding-header "Stuck Projects")
-                   (org-agenda-skip-function
-                    (quote bh/skip-non-stuck-projects))
-                   (org-agenda-sorting-strategy
-                    (quote
-                     (category-keep)))))
-       (tags-todo "-HOLD-CANCELLED/!"
-                  ((org-agenda-overriding-header "Projects")
-                   (org-agenda-skip-function
-                    (quote bh/skip-non-projects))
-                   (org-tags-match-list-sublevels
-                    (quote indented))
-                   (org-agenda-sorting-strategy
-                    (quote
-                     (category-keep)))))
-       (tags-todo "-CANCELLED/!NEXT"
-                  ((org-agenda-overriding-header
-                    (concat "Project Next Tasks"
-                            (if bh/hide-scheduled-and-waiting-next-tasks "" " (including WAITING and SCHEDULED tasks)")))
-                   (org-agenda-skip-function
-                    (quote bh/skip-projects-and-habits-and-single-tasks))
-                   (org-tags-match-list-sublevels t)
-                   (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-sorting-strategy
-                    (quote
-                     (todo-state-down effort-up category-keep)))))
-       (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
-                  ((org-agenda-overriding-header
-                    (concat "Project Subtasks"
-                            (if bh/hide-scheduled-and-waiting-next-tasks "" " (including WAITING and SCHEDULED tasks)")))
-                   (org-agenda-skip-function
-                    (quote bh/skip-non-project-tasks))
-                   (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-sorting-strategy
-                    (quote
-                     (category-keep)))))
-       (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
-                  ((org-agenda-overriding-header
-                    (concat "Standalone Tasks"
-                            (if bh/hide-scheduled-and-waiting-next-tasks "" " (including WAITING and SCHEDULED tasks)")))
-                   (org-agenda-skip-function
-                    (quote bh/skip-project-tasks))
-                   (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-sorting-strategy
-                    (quote
-                     (category-keep)))))
-       (tags-todo "-CANCELLED+WAITING|HOLD/!"
-                  ((org-agenda-overriding-header
-                    (concat "Waiting and Postponed Tasks"
-                            (if bh/hide-scheduled-and-waiting-next-tasks "" " (including WAITING and SCHEDULED tasks)")))
-                   (org-agenda-skip-function
-                    (quote bh/skip-non-tasks))
-                   (org-tags-match-list-sublevels nil)
-                   (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                   (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
-       (tags "-REFILE/"
-             ((org-agenda-overriding-header "Tasks to Archive")
-              (org-agenda-skip-function
-               (quote bh/skip-non-archivable-tasks))
-              (org-tags-match-list-sublevels nil))))
-      nil))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files (quote ("~/org/projects.org")))
@@ -231,7 +147,6 @@ Source: %u, [[%:link][%:description]]
  '(org-log-into-drawer t)
  '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
- '(org-refile-target-verify-function (quote bh/verify-refile-target))
  '(org-refile-targets
    (quote
     ((nil :maxlevel . 9)
@@ -240,57 +155,6 @@ Source: %u, [[%:link][%:description]]
  '(org-refile-use-outline-path (quote file))
  '(org-special-ctrl-a/e (quote reversed))
  '(org-special-ctrl-k t)
- '(org-speed-commands-user
-   (quote
-    (("0" . ignore)
-     ("1" . ignore)
-     ("2" . ignore)
-     ("3" . ignore)
-     ("4" . ignore)
-     ("5" . ignore)
-     ("6" . ignore)
-     ("7" . ignore)
-     ("8" . ignore)
-     ("9" . ignore)
-     ("a" . ignore)
-     ("d" . ignore)
-     ("h" . bh/hide-other)
-     ("i" progn
-      (forward-char 1)
-      (call-interactively
-       (quote org-insert-heading-respect-content)))
-     ("k" . org-kill-note-or-show-branches)
-     ("l" . ignore)
-     ("m" . ignore)
-     ("q" . bh/show-org-agenda)
-     ("r" . ignore)
-     ("s" . org-save-all-org-buffers)
-     ("w" . org-refile)
-     ("x" . ignore)
-     ("y" . ignore)
-     ("z" . org-add-note)
-     ("A" . ignore)
-     ("B" . ignore)
-     ("E" . ignore)
-     ("F" . bh/restrict-to-file-or-follow)
-     ("G" . ignore)
-     ("H" . ignore)
-     ("J" . org-clock-goto)
-     ("K" . ignore)
-     ("L" . ignore)
-     ("M" . ignore)
-     ("N" . bh/narrow-to-org-subtree)
-     ("P" . bh/narrow-to-org-project)
-     ("Q" . ignore)
-     ("R" . ignore)
-     ("S" . ignore)
-     ("T" . bh/org-todo)
-     ("U" . bh/narrow-up-one-org-level)
-     ("V" . ignore)
-     ("W" . bh/widen)
-     ("X" . ignore)
-     ("Y" . ignore)
-     ("Z" . ignore))))
  '(org-startup-folded (quote content))
  '(org-stuck-projects (quote ("" nil nil "")))
  '(org-tag-alist
