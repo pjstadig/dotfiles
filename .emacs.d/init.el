@@ -208,8 +208,14 @@
 ;; C-c [letter] is reserved for users
 ;; <f5> through <f9> are reserved for users
 
+(defun pjs-org-agenda ()
+  (interactive)
+  (if (get-buffer "*Org Agenda*")
+      (switch-to-buffer "*Org Agenda*")
+    (org-agenda)))
+
 (global-set-key (kbd "s-r") 'pjs-reset)
-(global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c a") 'pjs-org-agenda)
 (global-set-key (kbd "C-c b") 'org-switchb)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c d") 'zk)
