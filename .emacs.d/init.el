@@ -1,3 +1,6 @@
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
@@ -123,9 +126,6 @@
                        (interactive)
                        (exwm-workspace-switch-create 9)))))
   (exwm-enable)
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
   (fringe-mode 1)
 
   (require 'exwm-randr)
@@ -778,13 +778,6 @@
   (require 'org-protocol))
 
 ;;; Copied from better-defaults package.
-
-(menu-bar-mode -1)
-(when (fboundp 'tool-bar-mode)
-  (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode)
-  (scroll-bar-mode -1))
-
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR." t)
 
