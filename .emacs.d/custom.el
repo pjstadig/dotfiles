@@ -253,4 +253,6 @@ Source: %u, [[%:link][%:description]]
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "CTDB" :family "Fira Mono"))))
  '(fixed-pitch ((t (:height 120 :family "Fira Mono"))))
  '(org-block ((t (:inherit shadow :family "Fira Mono"))))
+ '(org-checkbox ((t (:inherit bold :family "Fira Mono"))))
+ '(org-table ((t (:foreground "Blue1" :family "Fira Mono"))))
  '(variable-pitch ((t (:weight light :height 120 :family "Fira Sans")))))
