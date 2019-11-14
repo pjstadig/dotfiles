@@ -25,7 +25,9 @@
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
- '(emacs-lisp-mode-hook (quote (eldoc-mode checkdoc-minor-mode paredit-mode)))
+ '(emacs-lisp-mode-hook
+   (quote
+    (pjs-add-eval-buffer-binding eldoc-mode checkdoc-minor-mode paredit-mode)))
  '(exwm-init-hook (quote (exwm-randr--init pjs-start-initial-programs)))
  '(exwm-input-prefix-keys
    (quote
@@ -233,6 +235,9 @@ Source: %u, [[%:link][%:description]]
      (clojure-test-ns-segment-position . 1))))
  '(show-paren-delay 0.25)
  '(sql-input-ring-file-name "~/.sql-mode-history")
+ '(text-mode-hook
+   (quote
+    (pjs-configure-text-mode-fill-column writegood-mode flyspell-mode text-mode-hook-identify)))
  '(whitespace-style
    (quote
     (face trailing tabs lines-tail newline empty indentation::space)))

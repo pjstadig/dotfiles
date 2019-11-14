@@ -4,7 +4,13 @@
 (defun pjs-add-eval-buffer-binding ()
   (local-set-key (kbd "C-c C-k") 'eval-buffer))
 
-(add-hook 'emacs-lisp-mode-hook 'pjs-add-eval-buffer-binding)
+(add-hook 'clojure-mode-hook 'paredit-mode)
+(add-hook 'clojure-mode-hook 'eldoc-mode)
+
+(add-hook 'visual-fill-column-mode-hook 'visual-line-mode)
+(add-hook 'markdown-mode-hook 'visual-fill-column-mode)
+(add-hook 'markdown-mode-hook 'variable-pitch-mode)
+(add-hook 'markdown-mode-hook 'typo-mode)
 
 ;; Setup package
 (require 'package)
@@ -241,8 +247,6 @@
 ;;     (switch-to-buffer "*Org Agenda*"))
 ;;   (delete-other-windows))
 
-(add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'clojure-mode-hook 'eldoc-mode)
 
 (defun pjs-sort-symbols (reverse beg end)
   "Sort symbols in region alphabetically, in REVERSE if negative.
@@ -253,11 +257,6 @@
 (defun pjs-configure-text-mode-fill-column ()
   (setq fill-column 80))
 
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'text-mode-hook 'writegood-mode)
-(add-hook 'text-mode-hook 'pjs-configure-text-mode-fill-column)
-
-(add-hook 'visual-fill-column-mode-hook 'visual-line-mode)
 (setq split-window-preferred-function 'visual-fill-column-split-window-sensibly)
 (advice-add 'text-scale-adjust :after 'visual-fill-column-adjust)
 
@@ -773,10 +772,6 @@
 ;;                   nil))  ; available to archive
 ;;             (or subtree-end (point-max)))
 ;;         next-headline))))
-
-(add-hook 'markdown-mode-hook 'visual-fill-column-mode)
-(add-hook 'markdown-mode-hook 'variable-pitch-mode)
-(add-hook 'markdown-mode-hook 'typo-mode)
 
 (with-eval-after-load 'org
   (set-face-attribute 'org-checkbox nil :family "Fira Mono")
