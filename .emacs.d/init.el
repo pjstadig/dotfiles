@@ -282,8 +282,6 @@
 (add-hook 'org-mode-hook 'org-autolist-mode)
 (add-hook 'org-mode-hook 'zk-navigate-keys)
 
-(add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
-
 ;; taken from http://doc.norang.ca/org-mode.html
 ;; (defun bh/verify-refile-target ()
 ;;   "Exclude todo keywords with a done state from refile targets"

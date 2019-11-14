@@ -97,7 +97,7 @@
  '(org-agenda-persistent-filter t)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
- '(org-archive-location "%s_archive::")
+ '(org-archive-location "~/org/archive.org::")
  '(org-capture-templates
    (quote
     (("t" "todo" entry
