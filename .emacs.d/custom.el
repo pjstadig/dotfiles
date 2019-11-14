@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-sources (quote ("~/.netrc.gpg")))
+ '(backup-directory-alist (quote (("." . "~/.emacs.d/backups"))))
  '(checkdoc-force-docstrings-flag nil)
  '(cider-auto-jump-to-error nil)
  '(cider-auto-select-error-buffer nil)
@@ -82,8 +83,11 @@
  '(flycheck-checkers
    (quote
     (clj-kondo-edn clj-kondo-cljc clj-kondo-cljs clj-kondo-clj ada-gnat asciidoctor asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint d-dmd dockerfile-hadolint elixir-dogma emacs-lisp erlang-rebar3 erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-megacheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-jscs javascript-standard json-jsonlint json-python-json less less-stylelint llvm-llc lua-luacheck lua perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint markdown-mdl nix rst-sphinx rst ruby-rubocop ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
+ '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(linum-format "%d ")
+ '(load-prefer-newer t)
+ '(mouse-yank-at-point t)
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
    (quote
@@ -205,6 +209,7 @@ Source: %u, [[%:link][%:description]]
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
+ '(require-final-newline t)
  '(safe-local-variable-values
    (quote
     ((elisp-lint-indent-specs
@@ -233,11 +238,16 @@ Source: %u, [[%:link][%:description]]
            (whitespace-mode 0)
            (whitespace-mode 1))
      (clojure-test-ns-segment-position . 1))))
+ '(save-interprogram-paste-before-kill t)
+ '(save-place-file "~/.emacs.d/places")
+ '(select-enable-clipboard t)
+ '(select-enable-primary t)
  '(show-paren-delay 0.25)
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
    (quote
     (pjs-configure-text-mode-fill-column writegood-mode flyspell-mode text-mode-hook-identify)))
+ '(visible-bell t)
  '(whitespace-style
    (quote
     (face trailing tabs lines-tail newline empty indentation::space)))
