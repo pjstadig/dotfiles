@@ -247,6 +247,8 @@
 ;;     (switch-to-buffer "*Org Agenda*"))
 ;;   (delete-other-windows))
 
+(defun pjs-prog-mode-local-bindings ()
+  (local-set-key (kbd "C-c n") 'pjs-cleanup-buffer))
 
 (defun pjs-sort-symbols (reverse beg end)
   "Sort symbols in region alphabetically, in REVERSE if negative.

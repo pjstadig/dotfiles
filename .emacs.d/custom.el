@@ -204,7 +204,7 @@ Source: %u, [[%:link][%:description]]
     (org-autolist deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
-    (flyspell-prog-mode linum-mode whitespace-mode company-mode column-number-mode flycheck-mode)))
+    (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
  '(safe-local-variable-values
    (quote
     ((elisp-lint-indent-specs
