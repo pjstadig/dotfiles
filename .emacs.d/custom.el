@@ -171,22 +171,14 @@ Source: %u, [[%:link][%:description]]
  '(org-tag-alist
    (quote
     ((:startgroup)
-     ("@errand" . 101)
-     ("@office" . 111)
      ("@home" . 72)
+     ("@mobile" . 77)
      (:endgroup)
+     ("SOMEDAY" . 115)
+     ("MAYBE" . 109)
      ("WAITING" . 119)
-     ("HOLD" . 104)
-     ("PERSONAL" . 80)
-     ("WORK" . 87)
-     ("FARM" . 70)
-     ("ORG" . 79)
-     ("NORANG" . 78)
      ("crypt" . 69)
-     ("NOTE" . 110)
-     ("CANCELLED" . 99)
-     ("FLAGGED" . 63)
-     ("REFILE" . 114))))
+     ("FLAGGED" . 63))))
  '(org-tags-column -77)
  '(org-todo-keyword-faces
    (quote
