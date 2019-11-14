@@ -134,7 +134,7 @@
 
 (defun pjs-reset ()
   (interactive)
-  (byte-recompile-file (concat user-emacs-directory "init.el"))
+  (byte-recompile-file (concat user-emacs-directory "init.el") nil 0)
   (load (concat user-emacs-directory "init.el"))
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
   (byte-recompile-directory (concat user-emacs-directory "lib") 0)
