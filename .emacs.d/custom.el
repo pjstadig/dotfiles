@@ -92,7 +92,7 @@
  '(org-agenda-custom-commands
    (quote
     (("n" "Next actions"
-      ((tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"|FILE<>{tasks.org$}-SOMEDAY-MAYBE+SCHEDULED<=\"<today>\"|FILE={tasks.org$}+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"" nil))
+      ((tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"|+CATEGORY=\"tasks\"-SOMEDAY-MAYBE+SCHEDULED<=\"<today>\"|+CATEGORY=\"tasks\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"" nil))
       nil)
      ("i" "Inbox" alltodo ""
       ((org-agenda-files
