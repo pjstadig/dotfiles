@@ -91,13 +91,16 @@
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
    (quote
-    (("n" "Agenda and all TODOs"
-      ((agenda "" nil)
-       (tags-todo "+LEVEL=2+STANDALONE|TODO=\"NEXT\"" nil))
-      nil))))
+    (("n" "Next actions"
+      ((tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"|FILE<>{tasks.org$}-SOMEDAY-MAYBE+SCHEDULED<=\"<today>\"|FILE={tasks.org$}+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"" nil))
+      nil)
+     ("i" "Inbox" alltodo ""
+      ((org-agenda-files
+        (quote
+         ("~/org/in.org"))))))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
- '(org-agenda-files (quote ("~/org/projects.org")))
+ '(org-agenda-files (quote ("~/org/projects.org" "~/org/tasks.org")))
  '(org-agenda-persistent-filter t)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
@@ -105,7 +108,7 @@
  '(org-capture-templates
    (quote
     (("t" "todo" entry
-      (file "~/org/inbox.org")
+      (file "~/org/in.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
@@ -117,7 +120,7 @@
 :CREATED: %U
 :END:" :prepend t)
      ("n" "note" entry
-      (file "~/org/inbox.org")
+      (file "~/org/in.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
@@ -177,13 +180,11 @@ Source: %u, [[%:link][%:description]]
  '(org-tag-alist
    (quote
     ((:startgroup)
-     ("@home" . 72)
-     ("@mobile" . 77)
+     ("@HOME" . 72)
+     ("@MOBILE" . 77)
      (:endgroup)
      ("SOMEDAY" . 115)
      ("MAYBE" . 109)
-     ("WAITING" . 119)
-     ("crypt" . 69)
      ("FLAGGED" . 63))))
  '(org-tags-column -77)
  '(org-todo-keyword-faces
