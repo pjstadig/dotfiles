@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-sources (quote ("~/.netrc.gpg")))
+ '(auto-save-visited-file-name t)
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backups"))))
  '(checkdoc-force-docstrings-flag nil)
  '(cider-auto-jump-to-error nil)
@@ -92,12 +93,18 @@
  '(org-agenda-custom-commands
    (quote
     (("n" "Next actions"
-      ((tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"|+CATEGORY=\"tasks\"-SOMEDAY-MAYBE+SCHEDULED<=\"<today>\"|+CATEGORY=\"tasks\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"" nil))
+      ((tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"|-SOMEDAY-MAYBE+SCHEDULED<=\"<today>\"|+CATEGORY=\"tasks\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<today>\"" nil))
       nil)
-     ("i" "Inbox" alltodo ""
-      ((org-agenda-files
-        (quote
-         ("~/org/in.org"))))))))
+     ("i" "Inbox"
+      ((alltodo ""
+                ((org-agenda-files
+                  (quote
+                   ("~/org/in.org")))))
+       (tags-todo "+SOMEDAY+MAYBE"
+                  ((org-agenda-files
+                    (quote
+                     ("~/org/projects.org"))))))
+      nil))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files (quote ("~/org/projects.org" "~/org/tasks.org")))
@@ -154,6 +161,7 @@ Source: %u, [[%:link][%:description]]
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-dependencies t)
  '(org-fast-tag-selection-single-key t)
+ '(org-footnote-auto-adjust t)
  '(org-id-link-to-org-use-id (quote create-if-interactive-and-no-custom-id))
  '(org-indirect-buffer-display (quote current-window))
  '(org-list-allow-alphabetical t)
@@ -166,7 +174,8 @@ Source: %u, [[%:link][%:description]]
    (quote
     ((nil :maxlevel . 9)
      (org-agenda-files :maxlevel . 9)
-     ("~/org/read.org" :level . 0))))
+     ("~/org/read.org" :level . 0)
+     ("~/org/reference.org" :level . 0))))
  '(org-refile-use-outline-path (quote file))
  '(org-special-ctrl-a/e (quote reversed))
  '(org-special-ctrl-k t)
