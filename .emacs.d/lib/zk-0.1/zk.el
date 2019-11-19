@@ -172,11 +172,6 @@ For example, .tex files may be generated from `org-mode' or Pandoc."
   "Face for Zk file titles."
   :group 'zk-faces)
 
-(defface zk-separator-face
-  '((t :inherit font-lock-comment-delimiter-face))
-  "Face for Zk separator string."
-  :group 'zk-faces)
-
 (defface zk-summary-face
   '((t :inherit font-lock-comment-face))
   "Face for Zk file summary strings."
@@ -193,9 +188,6 @@ For example, .tex files may be generated from `org-mode' or Pandoc."
 
 (defconst zk-buffer "*Zk*"
   "Zk buffer name.")
-
-(defconst zk-separator " --- "
-  "Text used to separate file titles and summaries.")
 
 (defconst zk-empty-file-title "[Empty file]"
   "Text to use as title for empty files.")
@@ -733,15 +725,11 @@ handles nil values gracefully."
     (let* ((id (zk-lift-id file))
            (title (zk-file-title file))
            (summary (or (zk-file-summary file) id))
-           (mtime (when zk-time-format
-                    (format-time-string zk-time-format (zk-file-mtime file))))
-           (mtime-width (zk-string-width mtime))
-           (line-width (- zk-window-width mtime-width))
-           (title-width (min line-width (zk-string-width title)))
+           (title-width (min zk-window-width (zk-string-width title)))
            (summary-width (min (zk-string-width summary)
-                               (- line-width
+                               (- zk-window-width
                                   title-width
-                                  (length zk-separator)))))
+                                  1))))
       (widget-create 'link
                      :button-prefix ""
                      :button-suffix ""
@@ -754,13 +742,9 @@ handles nil values gracefully."
                      (if title (truncate-string-to-width title title-width)
                        zk-empty-file-title))
       (when (> summary-width 0)
-        (widget-insert (propertize zk-separator 'face 'zk-separator-face))
+        (widget-insert " ")
         (widget-insert (propertize (truncate-string-to-width summary summary-width)
                                    'face 'zk-summary-face)))
-      (when mtime
-        (while (< (current-column) line-width)
-          (widget-insert " "))
-        (widget-insert (propertize mtime 'face 'zk-time-face)))
       (widget-insert "\n"))))
 
 (defun zk-buffer-visible-p ()
