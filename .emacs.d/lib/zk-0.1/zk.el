@@ -100,6 +100,29 @@ recursively, that is, when `zk-recursive' is non-nil."
   :safe 'stringp
   :group 'zk)
 
+(defcustom zk-parse-title-function 'zk-strip-title
+  "Function for post-processing file titles."
+  :type 'function
+  :group 'zk)
+
+(defcustom zk-strip-title-regexp
+  (concat "\\(?:"
+          "^%+" ; line beg with %
+          "\\|^#\\+TITLE: *" ; org-mode title
+          "\\|^[#* ]+" ; line beg with #, * and/or space
+          "\\|-\\*-[[:alpha:]]+-\\*-" ; -*- .. -*- lines
+          "\\|^Title:[\t ]*" ; MultiMarkdown metadata
+          "\\|#+" ; line with just # chars
+          "$\\)")
+  "Regular expression to remove from file titles.
+Presently, it removes leading LaTeX comment delimiters, leading
+and trailing hash marks from Markdown ATX headings, leading
+astersisks from Org Mode headings, and Emacs mode lines of the
+form -*-mode-*-."
+  :type 'regexp
+  :safe 'stringp
+  :group 'zk)
+
 (defcustom zk-strip-summary-regexp
   (concat "\\("
           "[\n\t]" ;; blank
@@ -144,9 +167,14 @@ For example, .tex files may be generated from `org-mode' or Pandoc."
   "Face for Zk filter string when regexp is invalid."
   :group 'zk-faces)
 
-(defface zk-id-face
+(defface zk-title-face
   '((t :inherit font-lock-function-name-face :bold t))
-  "Face for Zk last modified times."
+  "Face for Zk file titles."
+  :group 'zk-faces)
+
+(defface zk-separator-face
+  '((t :inherit font-lock-comment-delimiter-face))
+  "Face for Zk separator string."
   :group 'zk-faces)
 
 (defface zk-summary-face
@@ -165,6 +193,12 @@ For example, .tex files may be generated from `org-mode' or Pandoc."
 
 (defconst zk-buffer "*Zk*"
   "Zk buffer name.")
+
+(defconst zk-separator " --- "
+  "Text used to separate file titles and summaries.")
+
+(defconst zk-empty-file-title "[Empty file]"
+  "Text to use as title for empty files.")
 
 ;; Global variables
 
@@ -201,11 +235,11 @@ regexp.")
 (defvar zk-hash-mtimes nil
   "Hash containing cached file modification times, keyed by filename.")
 
+(defvar zk-hash-titles nil
+  "Hash containing cached file titles, keyed by filename.")
+
 (defvar zk-hash-summaries nil
   "Hash containing cached file summaries, keyed by filename.")
-
-(defvar zk-id-first-max "0"
-  "Maximum id first segment in `zk-directory'.")
 
 (defvar zk-auto-save-buffers nil
   "List of buffers that will be automatically saved.")
@@ -385,9 +419,8 @@ is the complete regexp."
 (defun zk-number-string-p (str)
   (string-match "^[0-9]+$" str))
 
-(defun zk-id-inc (&optional prev-id)
-  (let* ((prev-id (or prev-id zk-id-first-max))
-         (last (zk-id-parse-last prev-id))
+(defun zk-id-inc (prev-id)
+  (let* ((last (zk-id-parse-last prev-id))
          (prefix (zk-id-but-last prev-id last)))
     (concat prefix (if (zk-number-string-p last)
                        (zk-alpha-inc last ?0 ?9)
@@ -423,9 +456,8 @@ is the complete regexp."
 (defun zk-id-branch (parent-id)
   (concat parent-id ">a1"))
 
-(defun zk-id-new (&optional prev-id)
-  (let ((prev-id (or prev-id zk-id-first-max))
-        (id (zk-id-inc prev-id)))
+(defun zk-id-new (prev-id)
+  (let ((id (zk-id-inc prev-id)))
     (when (zk-id-used-p id)
       (setq id (zk-id-insert prev-id))
       (while (zk-id-used-p id)
@@ -540,6 +572,18 @@ See `zk-generation-rules'."
                 (setq val t)))))))
     val))
 
+(defun zk-strip-title (title)
+  "Remove all strings matching `zk-strip-title-regexp' from TITLE."
+  (zk-chomp (replace-regexp-in-string zk-strip-title-regexp "" title)))
+
+(defun zk-parse-title (file contents)
+  "Parse the given FILE and CONTENTS and determine the title.
+The title is taken to be the first non-empty line of the FILE."
+  (let ((begin (string-match "^.+$" contents)))
+    (if begin
+        (funcall zk-parse-title-function
+                 (substring contents begin (match-end 0))))))
+
 (defun zk-parse-summary (contents)
   "Parse the file CONTENTS and extract a summary."
   (zk-chomp
@@ -551,19 +595,10 @@ See `zk-generation-rules'."
       (and (= (length id1) (length id2))
            (string> id1 id2))))
 
-(defun zk-update-id-first-max (file)
-  (let ((first-id (zk-id-parse-first (file-name-base file))))
-    (when first-id
-      (setq zk-id-first-max
-            (if (zk-id> first-id zk-id-first-max)
-                first-id
-              zk-id-first-max)))))
-
 (defun zk-cache-file (file)
   "Update file cache if FILE exists."
   (when (file-exists-p file)
     (add-to-list 'zk-all-files file)
-    (zk-update-id-first-max file)
     (let ((mtime-cache (zk-file-mtime file))
           (mtime-file (nth 5 (file-attributes (file-truename file)))))
       (if (or (not mtime-cache)
@@ -574,12 +609,15 @@ See `zk-generation-rules'."
   "Update cached information for FILE with given MTIME."
   ;; Modification time
   (puthash file mtime zk-hash-mtimes)
-  (let (contents)
+  (let (contents title)
     ;; Contents
     (with-current-buffer (get-buffer-create "*Zk temp*")
       (insert-file-contents file nil nil nil t)
       (setq contents (concat (buffer-string))))
     (puthash file contents zk-hash-contents)
+    ;; Title
+    (setq title (zk-parse-title file contents))
+    (puthash file title zk-hash-titles)
     ;; Summary
     (puthash file (zk-parse-summary contents) zk-hash-summaries))
   (kill-buffer "*Zk temp*"))
@@ -595,6 +633,7 @@ See `zk-generation-rules'."
   "Initialize hash tables for caching files."
   (setq zk-hash-contents (make-hash-table :test 'equal))
   (setq zk-hash-mtimes (make-hash-table :test 'equal))
+  (setq zk-hash-titles (make-hash-table :test 'equal))
   (setq zk-hash-summaries (make-hash-table :test 'equal)))
 
 (defun zk-cache-update-all ()
@@ -617,6 +656,10 @@ See `zk-generation-rules'."
 (defun zk-file-mtime (file)
   "Retrieve modified time of FILE from cache."
   (gethash file zk-hash-mtimes))
+
+(defun zk-file-title (file)
+  "Retrieve title of FILE from cache."
+  (gethash file zk-hash-titles))
 
 (defun zk-file-summary (file)
   "Retrieve summary of FILE from cache."
@@ -688,23 +731,36 @@ handles nil values gracefully."
   "Add a line to the file browser for the given FILE."
   (when file
     (let* ((id (zk-lift-id file))
+           (title (zk-file-title file))
            (summary (or (zk-file-summary file) id))
            (mtime (when zk-time-format
-                    (format-time-string zk-time-format (zk-file-mtime file)))))
+                    (format-time-string zk-time-format (zk-file-mtime file))))
+           (mtime-width (zk-string-width mtime))
+           (line-width (- zk-window-width mtime-width))
+           (title-width (min line-width (zk-string-width title)))
+           (summary-width (min (zk-string-width summary)
+                               (- line-width
+                                  title-width
+                                  (length zk-separator)))))
       (widget-create 'link
                      :button-prefix ""
                      :button-suffix ""
-                     :button-face 'zk-id-face
+                     :button-face 'zk-title-face
                      :format "%[%v%]"
                      :tag file
-                     :help-echo ""
+                     :help-echo "Edit this file"
                      :notify (lambda (widget &rest ignore)
                                (zk-open-file (widget-get widget :tag)))
-                     id)
-      (widget-insert " ")
-      (widget-insert (propertize mtime 'face 'zk-time-face))
-      (widget-insert "\n")
-      (widget-insert (propertize summary 'face 'zk-summary-face))
+                     (if title (truncate-string-to-width title title-width)
+                       zk-empty-file-title))
+      (when (> summary-width 0)
+        (widget-insert (propertize zk-separator 'face 'zk-separator-face))
+        (widget-insert (propertize (truncate-string-to-width summary summary-width)
+                                   'face 'zk-summary-face)))
+      (when mtime
+        (while (< (current-column) line-width)
+          (widget-insert " "))
+        (widget-insert (propertize mtime 'face 'zk-time-face)))
       (widget-insert "\n"))))
 
 (defun zk-buffer-visible-p ()
@@ -818,7 +874,7 @@ FILE must be a relative or absolute path, with extension."
   "Create a new file quickly using an automatically generated filename.  If the
 filter string is non-nil, use it as the initial file contents."
   (interactive)
-  (zk-new-file-named (zk-id-new)
+  (zk-new-file-named (zk-id-new-child "0")
                      (when zk-filter-regexp
                        (concat
                         (zk-whole-filter-regexp)
@@ -1247,7 +1303,7 @@ the current file (if it is a zk file)."
   (local-set-key (kbd "M-g M-p") 'zk-prev-result)
   (local-set-key (kbd "C-c n n") 'zk-new-next)
   (local-set-key (kbd "C-c n c") 'zk-new-child)
-  (local-set-key (kbd "C-c n l") 'zk-link-new)
+  (local-set-key (kbd "C-c n f") 'zk-new-file)
   (local-set-key (kbd "C-c l") 'zk-link)
   (local-set-key (kbd "C-c f n") 'zk-next)
   (local-set-key (kbd "C-c f p") 'zk-prev)
@@ -1262,10 +1318,12 @@ the current file (if it is a zk file)."
 (defun org-zk-store-link ()
   "Store the Zk widget at point as an org-mode link."
   (when (equal major-mode 'zk-mode)
-    (let ((link (concat "zk:" (file-name-nondirectory (zk-filename-at-point)))))
+    (let ((link (concat "zk:" (file-name-nondirectory (zk-filename-at-point))))
+          (title (zk-file-title (zk-filename-at-point))))
       (org-store-link-props
        :type "zk"
-       :link link))))
+       :link link
+       :description title))))
 
 (with-eval-after-load 'org
   (if (fboundp 'org-link-set-parameters)
@@ -1283,7 +1341,8 @@ the current file (if it is a zk file)."
    (zk-absolute-filename id)))
 
 (defun zk-make-link (id)
-  (concat "[[zk:" id "]]"))
+  (let ((file (expand-file-name (concat zk-directory id ".org"))))
+    (concat "[[zk:" id "][" (zk-file-title file) "]]")))
 
 (defun zk-lift-id (fname)
   "Extract the zk ID from STR."
@@ -1318,20 +1377,11 @@ the current file (if it is a zk file)."
     (setq zk-complete-insert-buffer buf)
     (setq zk-complete-fun 'zk-complete-insert-link)))
 
-(defun zk-link-new ()
-  (interactive)
-  (let ((id (zk-id-new)))
-    (zk-update-id-first-max id)
-    (insert (zk-make-link id))
-    (zk-push-history (point-marker))
-    (zk-new-file-named id)))
-
 (defun zk-new-next ()
   (interactive)
   (let* ((curr-buf (current-buffer))
          (current-id (zk-current-id))
          (next-id (zk-id-new current-id)))
-    (zk-update-id-first-max next-id)
     (zk-push-history (point-marker))
     (zk-new-file-named next-id)))
 
@@ -1340,7 +1390,6 @@ the current file (if it is a zk file)."
   (let* ((curr-buf (current-buffer))
          (current-id (zk-current-id))
          (child-id (zk-id-new-child current-id)))
-    (zk-update-id-first-max child-id)
     (zk-push-history (point-marker))
     (zk-new-file-named child-id)))
 
