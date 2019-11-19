@@ -249,7 +249,7 @@
 (global-set-key (kbd "C-c u") 'pjs-pop-read-queue)
 ;; (global-set-key (kbd "C-c t") 'bh/org-todo)
 ;; (global-set-key (kbd "C-c w") 'bh/widen)
-(global-set-key (kbd "C-c z") 'zk)
+(global-set-key (kbd "C-c z z") 'zk)
 (global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
 

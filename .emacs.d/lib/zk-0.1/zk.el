@@ -1285,13 +1285,13 @@ the current file (if it is a zk file)."
   (local-set-key (kbd "M-,") 'zk-back)
   (local-set-key (kbd "M-g M-n") 'zk-next-result)
   (local-set-key (kbd "M-g M-p") 'zk-prev-result)
-  (local-set-key (kbd "C-c n n") 'zk-new-next)
-  (local-set-key (kbd "C-c n c") 'zk-new-child)
-  (local-set-key (kbd "C-c n f") 'zk-new-file)
-  (local-set-key (kbd "C-c l") 'zk-link)
-  (local-set-key (kbd "C-c f n") 'zk-next)
-  (local-set-key (kbd "C-c f p") 'zk-prev)
-  (local-set-key (kbd "C-c f u") 'zk-up))
+  (local-set-key (kbd "C-c z n n") 'zk-new-next)
+  (local-set-key (kbd "C-c z n c") 'zk-new-child)
+  (local-set-key (kbd "C-c z n f") 'zk-new-file)
+  (local-set-key (kbd "C-c z l") 'zk-link)
+  (local-set-key (kbd "C-c z f n") 'zk-next)
+  (local-set-key (kbd "C-c z f p") 'zk-prev)
+  (local-set-key (kbd "C-c z f u") 'zk-up))
 
 ;;; Link management
 
