@@ -162,6 +162,7 @@ Source: %u, [[%:link][%:description]]
  '(org-enforce-todo-dependencies t)
  '(org-fast-tag-selection-single-key t)
  '(org-footnote-auto-adjust t)
+ '(org-footnote-section nil)
  '(org-id-link-to-org-use-id (quote create-if-interactive-and-no-custom-id))
  '(org-indirect-buffer-display (quote current-window))
  '(org-list-allow-alphabetical t)
