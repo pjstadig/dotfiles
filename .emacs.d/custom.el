@@ -112,6 +112,7 @@
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
+ '(org-attach-directory "attachments/")
  '(org-capture-templates
    (quote
     (("t" "todo" entry
