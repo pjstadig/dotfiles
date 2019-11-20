@@ -170,6 +170,7 @@ Source: %u, [[%:link][%:description]]
  '(org-list-demote-modify-bullet (quote (("-" . "+") ("+" . "*") ("*" . "-"))))
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
+ '(org-log-reschedule (quote note))
  '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-targets
