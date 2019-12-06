@@ -93,7 +93,9 @@
  '(org-agenda-custom-commands
    (quote
     (("n" "Next actions"
-      ((tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<now>\"|-SOMEDAY-MAYBE+SCHEDULED<=\"<now>\"|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<now>\""
+      ((tags-todo "+TODO=\"WAITING\""
+                  ((org-agenda-overriding-header "Waiting")))
+       (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<now>\"|-SOMEDAY-MAYBE+SCHEDULED<=\"<now>\"|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<now>\""
                   ((org-agenda-overriding-header "Next actions"))))
       nil)
      ("i" "Inbox & someday/maybe"
