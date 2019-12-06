@@ -93,21 +93,23 @@
  '(org-agenda-custom-commands
    (quote
     (("n" "Next actions"
-      ((tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<now>\"|-SOMEDAY-MAYBE+SCHEDULED<=\"<now>\"|+CATEGORY=\"tasks\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<now>\"" nil))
+      ((tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<now>\"|-SOMEDAY-MAYBE+SCHEDULED<=\"<now>\"|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<now>\""
+                  ((org-agenda-overriding-header "Next actions"))))
       nil)
-     ("i" "Inbox"
+     ("i" "Inbox & someday/maybe"
       ((alltodo ""
                 ((org-agenda-files
                   (quote
-                   ("~/org/in.org")))))
+                   ("~/org/in.org")))
+                 (org-agenda-overriding-header "Inbox")))
        (tags-todo "+SOMEDAY+MAYBE"
-                  ((org-agenda-files
-                    (quote
-                     ("~/org/projects.org"))))))
+                  ((org-agenda-overriding-header "Someday/maybe"))))
       nil))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
- '(org-agenda-files (quote ("~/org/projects.org" "~/org/tasks.org")))
+ '(org-agenda-files
+   (quote
+    ("~/org/projects.org" "~/org/tasks.org" "~/org/someday-maybe.org")))
  '(org-agenda-persistent-filter t)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
@@ -185,10 +187,9 @@ Source: %u, [[%:link][%:description]]
  '(org-startup-folded (quote content))
  '(org-stuck-projects
    (quote
-    ("+LEVEL=1+TODO=\"TODO\""
+    ("+LEVEL=1+TODO=\"TODO\"-CATEGORY=\"Standalone\"-SOMEDAY-MAYBE"
      ("NEXT")
-     ("someday" "maybe")
-     "")))
+     nil "")))
  '(org-tag-alist
    (quote
     ((:startgroup)
