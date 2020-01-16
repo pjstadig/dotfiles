@@ -80,6 +80,10 @@
   :ensure t)
 (use-package zk
   :load-path "lib/zk-0.1")
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install))
 
 ;; Configuration
 (defgroup pjs nil

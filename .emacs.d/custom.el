@@ -221,7 +221,7 @@ Source: %u, [[%:link][%:description]]
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (org-autolist deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
+    (pdf-tools org-autolist deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
