@@ -99,11 +99,11 @@
                   ((org-agenda-overriding-header "Next actions"))))
       nil)
      ("i" "Inbox & someday/maybe"
-      ((alltodo ""
-                ((org-agenda-files
-                  (quote
-                   ("~/org/in.org")))
-                 (org-agenda-overriding-header "Inbox")))
+      ((tags "LEVEL=1"
+             ((org-agenda-files
+               (quote
+                ("~/org/in.org")))
+              (org-agenda-overriding-header "Inbox")))
        (tags-todo "+SOMEDAY+MAYBE"
                   ((org-agenda-overriding-header "Someday/maybe"))))
       nil))))
