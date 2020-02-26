@@ -128,7 +128,8 @@
                        (exwm-workspace-switch-create 8)))
           ([?\s-0] . (lambda ()
                        (interactive)
-                       (exwm-workspace-switch-create 9)))))
+                       (exwm-workspace-switch-create 9)))
+          ([?\s-r] . pjs-reset)))
   (exwm-enable)
   (fringe-mode 1)
 
@@ -236,7 +237,6 @@
           (message "Deleted file %s" filename)
           (kill-buffer))))))
 
-(global-set-key (kbd "s-r") 'pjs-reset)
 (global-set-key (kbd "C-c a") 'pjs-org-agenda)
 (global-set-key (kbd "C-c b") 'org-switchb)
 (global-set-key (kbd "C-c c") 'org-capture)
