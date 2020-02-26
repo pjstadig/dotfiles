@@ -215,7 +215,8 @@ Source: %u, [[%:link][%:description]]
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)"))))
+     (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)")
+     (sequence "NOTE"))))
  '(org-treat-S-cursor-todo-selection-as-state-change nil)
  '(org-use-speed-commands t)
  '(org-yank-adjusted-subtrees t)
