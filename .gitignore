@@ -13,6 +13,7 @@
 .localized
 /.*history
 /.ICEauthority
+/.Trash/
 /.Xauthority
 /.adobe/
 /.cache/
