@@ -30,6 +30,7 @@
  '(emacs-lisp-mode-hook
    (quote
     (pjs-add-eval-buffer-binding eldoc-mode checkdoc-minor-mode paredit-mode)))
+ '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "JAVA_HOME")))
  '(exwm-init-hook (quote (exwm-randr--init pjs-start-initial-programs)))
  '(exwm-input-prefix-keys
    (quote
@@ -222,7 +223,7 @@ Source: %u, [[%:link][%:description]]
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (pdf-tools org-autolist deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
+    (exec-path-from-shell pdf-tools org-autolist deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
@@ -259,6 +260,7 @@ Source: %u, [[%:link][%:description]]
  '(save-place-file "~/.emacs.d/places")
  '(select-enable-clipboard t)
  '(select-enable-primary t)
+ '(sh-basic-offset 2)
  '(show-paren-delay 0.25)
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
