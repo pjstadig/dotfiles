@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuxo pipefail
+
+# Format any *.tf files according to the hashicorp convention
+commit_files=$(git diff --diff-filter=d --cached --name-only)
+for f in $commit_files; do
+  if [ -e "$f" ] && [[ "$f" == *.tf ]]; then
+    terraform fmt "$f"
+    git add "$f"
+  fi
+done
