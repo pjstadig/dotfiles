@@ -175,16 +175,16 @@ story id to generate and insert a url to the story."
   (exwm-randr-enable)
   (setq pjs-exwm-configured-p 't))
 
-(defvar pjs-local-file
-  (expand-file-name (concat user-emacs-directory "local.el")))
+(defvar pjs-system-file
+  (expand-file-name (concat user-emacs-directory (system-name) ".el")))
 
 (defun pjs-reset ()
   (interactive)
   (byte-recompile-file (concat user-emacs-directory "init.el") nil 0)
   (load (concat user-emacs-directory "init.el"))
-  (when (file-exists-p pjs-local-file)
-    (byte-recompile-file pjs-local-file nil 0)
-    (load pjs-local-file))
+  (when (file-exists-p pjs-system-file)
+    (byte-recompile-file pjs-system-file nil 0)
+    (load pjs-system-file))
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
   (byte-recompile-directory (concat user-emacs-directory "lib") 0)
   (when pjs-exwm-configured-p
@@ -873,5 +873,5 @@ story id to generate and insert a url to the story."
 (when (not (eq (server-running-p) 't))
   (server-start))
 
-(when (file-exists-p pjs-local-file)
-  (load pjs-local-file))
+(when (file-exists-p pjs-system-file)
+  (load pjs-system-file))

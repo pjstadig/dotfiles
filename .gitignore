@@ -68,7 +68,6 @@
 /.emacs.d/elpa/pdf-tools-0.90/epdfinfo
 /.emacs.d/flycheck_*.el
 /.emacs.d/ido.last
-/.emacs.d/local.el
 /.emacs.d/network-security.data
 /.emacs.d/projectile-bookmarks.eld
 /.emacs.d/projectile.cache
