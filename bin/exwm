@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S zsh -l
 
 emacs -f pjs-configure-exwm
 xfce4-session-logout -l -f

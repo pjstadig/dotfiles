@@ -32,7 +32,7 @@
 (use-package exec-path-from-shell
   :ensure t
   :config
-  (when (memq window-system '(mac ns x))
+  (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
 (use-package gnu-elpa-keyring-update
   :ensure t
