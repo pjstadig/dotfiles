@@ -223,7 +223,8 @@ story id to generate and insert a url to the story."
       (untabify (point-min) (point-max))
       (indent-region (point-min) (point-max))
       (when (derived-mode-p 'clojure-mode)
-        (ignore-errors (clojure-sort-ns))))))
+        (ignore-errors (clojure-sort-ns))
+        (clojure-align (point-min) (point-max))))))
 
 (defun save-buffer-advice (old-save-buffer &optional arg)
   (interactive "p")
