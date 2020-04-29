@@ -15,3 +15,5 @@ compinit
 
 autoload -U promptinit; promptinit
 prompt spaceship
+
+autoload devaws devawsenv sudoaws

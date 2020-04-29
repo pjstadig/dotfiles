@@ -7,9 +7,10 @@
 !/.*/**
 *.elc
 *.log
+*.zwc
 *~
-.cpcache/
 .DS_Store
+.cpcache/
 .localized
 /.*history
 /.ICEauthority
