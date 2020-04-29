@@ -12,3 +12,6 @@ zstyle :compinstall filename '/home/paul/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+
+autoload -U promptinit; promptinit
+prompt spaceship
