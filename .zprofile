@@ -44,7 +44,14 @@ export PATH="${PATH}:${GRAALVM_HOME}/bin"
 # set PATH to include user's private bin
 export PATH="${HOME}/bin:${HOME}/.local/bin:${PATH}"
 
+# set FPATH
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
+
 export FPATH="${HOME}/.local/zfunctions:${FPATH}"
+
+# configure spaceship prompt
 export SPACESHIP_EXIT_CODE_SHOW=true
 
 # Enable 256 color capabilities for appropriate terminals
