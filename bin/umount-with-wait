@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuo pipefail
+
+busy=true
+while $busy
+do
+  if mountpoint -q "${1}"
+  then
+    if ! umount "${1}" 2> /dev/null
+    then
+      busy=false  # umount successful
+    else
+      echo -n '.'  # output to show that the script is alive
+      sleep 6
+    fi
+  else
+    busy=false  # not mounted
+  fi
+done

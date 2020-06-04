@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+set -Eeuxo pipefail
+
+snapshot_dir="${HOME}/secure-backup/latest"
+if ! [ -z ${1:-} ]; then
+  snapshot_dir="${1}"
+fi
+
+cd ${snapshot_dir} &&
+  md5sum -c <(find "${HOME}/archive" -type f -print0 | xargs -0 md5sum)
