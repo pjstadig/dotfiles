@@ -114,7 +114,10 @@
 /.pki/
 /.postgresql/
 /.shutter/
-/.ssh/
+/.ssh/authorized_keys
+/.ssh/id_ecdsa
+/.ssh/id_ecdsa.pub
+/.ssh/known_hosts
 /.steam/
 /.steampath
 /.steampid
