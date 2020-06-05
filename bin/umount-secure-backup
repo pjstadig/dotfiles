@@ -4,8 +4,8 @@
 set -Eeuo pipefail
 
 echo -n "Unmounting secure drive"
-sudo umount-with-wait /home/paul/secure-backup || true
+umount-with-wait /home/paul/secure-backup || true
 echo
 echo -n "Unmounting s3backer"
-sudo umount-with-wait "/run/user/$(id -u)/s3backer"
+umount-with-wait "/run/user/$(id -u ${SUDO_USER:-${USER}})/s3backer"
 echo

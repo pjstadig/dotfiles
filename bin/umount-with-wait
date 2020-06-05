@@ -8,7 +8,7 @@ while $busy
 do
   if mountpoint -q "${1}"
   then
-    if ! umount "${1}" 2> /dev/null
+    if ! sudo umount "${1}" 2> /dev/null
     then
       busy=false  # umount successful
     else
