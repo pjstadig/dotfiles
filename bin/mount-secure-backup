@@ -5,8 +5,7 @@ set -Eeuo pipefail
 
 s3backer_dir="/run/user/$(id -u)/s3backer"
 if ! [ -d "${s3backer_dir}" ]; then
-  sudo mkdir -p "${s3backer_dir}" &&
-    sudo chown -R paul:users "${s3backer_dir}"
+  mkdir "${s3backer_dir}"
 fi
 
 bucket="de6c0c18-d131-43ea-962e-51feafbc2444"
@@ -16,7 +15,7 @@ fi
 
 mount_dir="${HOME}/secure-backup"
 if ! [ -d "${mount_dir}" ]; then
-  mkdir -p "${mount_dir}"
+  mkdir "${mount_dir}"
 fi
 
 if ! mountpoint -q "${mount_dir}"; then
