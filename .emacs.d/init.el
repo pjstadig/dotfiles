@@ -122,6 +122,9 @@ story id to generate and insert a url to the story."
   :ensure t
   :config
   (pdf-tools-install))
+(use-package cljstyle-mode
+  :load-path "lib/cljstyle-mode-0.1"
+  :bind (("C-c C-n" . cljstyle)))
 
 ;; Configuration
 (defgroup pjs nil
@@ -215,16 +218,37 @@ story id to generate and insert a url to the story."
   :type 'boolean
   :safe #'booleanp)
 
+(defcustom pjs-inhibit-indent-on-save nil
+  "If true will disable indenting on save."
+  :group 'pjs
+  :type 'boolean
+  :safe #'booleanp)
+
+(defcustom pjs-inhibit-clojure-sort-ns-on-save nil
+  "If true will disable sorting clojure 'ns on save."
+  :group 'pjs
+  :type 'boolean
+  :safe #'booleanp)
+
+(defcustom pjs-inhibit-clojure-align-on-save nil
+  "If true will disable aligning clojure 'let on save."
+  :group 'pjs
+  :type 'boolean
+  :safe #'booleanp)
+
 (defun pjs-cleanup-buffer ()
   (interactive)
   (when (derived-mode-p 'prog-mode)
     (let ((inhibit-redisplay 't))
       (delete-trailing-whitespace)
       (untabify (point-min) (point-max))
-      (indent-region (point-min) (point-max))
+      (when (not pjs-inhibit-indent-on-save)
+        (indent-region (point-min) (point-max)))
       (when (derived-mode-p 'clojure-mode)
-        (ignore-errors (clojure-sort-ns))
-        (clojure-align (point-min) (point-max))))))
+        (when (not pjs-inhibit-clojure-sort-ns-on-save)
+          (ignore-errors (clojure-sort-ns)))
+        (when (not pjs-inhibit-clojure-align-on-save)
+          (clojure-align (point-min) (point-max)))))))
 
 (defun save-buffer-advice (old-save-buffer &optional arg)
   (interactive "p")
@@ -291,7 +315,6 @@ story id to generate and insert a url to the story."
 (global-set-key (kbd "C-c e l") 'pjs-lock-screen)
 (global-set-key (kbd "C-c i") 'imenu)
 (global-set-key (kbd "C-c C-i") 'imenu)
-(global-set-key (kbd "C-c C-n") 'pjs-cleanup-buffer)
 (global-set-key (kbd "C-c o o") 'org-cycle-agenda-files)
 ;; (global-set-key (kbd "C-c o a") 'bh/show-org-agenda)
 (global-set-key (kbd "C-c r") 'pjs-revert)

@@ -223,7 +223,7 @@ Source: %u, [[%:link][%:description]]
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (clojure-mode clojure-mode-extra-font-locking exec-path-from-shell pdf-tools org-autolist deft cider company exwm flycheck-clj-kondo gnu-elpa-keyring-update helm-ag helm-projectile magit markdown-mode org-bullets paredit pinentry typo use-package visual-fill-column writegood-mode)))
+    (cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo gnu-elpa-keyring-update helm helm-ag helm-projectile magit markdown-mode org-autolist org-bullets paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
