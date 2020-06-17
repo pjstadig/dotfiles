@@ -5,7 +5,6 @@ fi
 # setup clubhouse
 export CLUBHOUSE_HOME=~/src
 export PATH="${CLUBHOUSE_HOME}/backend/bin:${CLUBHOUSE_HOME}/backend/infrastructure/build-support:${PATH}"
-export _USE_CLUBHOUSE_VPN=1
 
 export EDITOR="emacs -nw"
 
