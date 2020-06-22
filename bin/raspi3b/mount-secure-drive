@@ -1,4 +1,17 @@
 #!/usr/bin/env bash
 
-sudo cryptsetup open /dev/sda2 secure
-sudo mount /dev/mapper/secure /home/paul/secure
+set -Eeuo pipefail
+
+mapper_dir="/dev/mapper/secure"
+secure_dir="${HOME}/secure"
+
+if ! [ -d "${secure_dir}" ]; then
+  if ! [ -d "${mapper_dir}" ]; then
+    sudo cryptsetup open /dev/sda2 secure
+  else
+    echo "Encrypted drive already mounted."
+  fi
+  sudo mount /dev/mapper/secure /home/paul/secure
+else
+  echo "Secure directory already mounted."
+fi
