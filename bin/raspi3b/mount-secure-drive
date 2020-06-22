@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sudo cryptsetup open /dev/sda2 secure
+sudo mount /dev/mapper/secure /home/paul/secure
