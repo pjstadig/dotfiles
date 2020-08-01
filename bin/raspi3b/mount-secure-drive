@@ -6,12 +6,16 @@ mapper_dir="/dev/mapper/secure"
 secure_dir="${HOME}/secure"
 
 if ! [ -d "${secure_dir}" ]; then
-  if ! [ -d "${mapper_dir}" ]; then
-    sudo cryptsetup open /dev/sda2 secure
-  else
-    echo "Encrypted drive already mounted."
-  fi
-  sudo mount /dev/mapper/secure /home/paul/secure
+  echo "Creating secure directory."
+  mkdir -p "${secure_dir}"
 else
-  echo "Secure directory already mounted."
+  echo "Secure directory already exists."
+fi
+
+if ! [ -d "${mapper_dir}" ]; then
+  echo "Mounting encrypted drive."
+  sudo cryptsetup open /dev/sda2 secure
+  sudo mount "${mapper_dir}" "${secure_dir}"
+else
+  echo "Encrypted drive already mounted."
 fi
