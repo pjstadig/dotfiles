@@ -73,6 +73,66 @@
        ("" . "")
        ([134217751]
         . ""))
+      workspace 1)
+     ((string-equal exwm-class-name "Google-chrome")
+      simulation-keys
+      (("" .
+        [left])
+       ("" .
+        [right])
+       ("" .
+        [up])
+       ("" .
+        [down])
+       ("" .
+        [home])
+       ("" .
+        [end])
+       ([134217846]
+        .
+        [prior])
+       ("" .
+        [next])
+       ("" .
+        [delete])
+       ("" .
+        [S-end delete])
+       ([134217847]
+        . "")
+       ("" . "")
+       ("" . "")
+       ([134217751]
+        . ""))
+      workspace 1)
+     ((string-equal exwm-class-name "Anki")
+      simulation-keys
+      (("" .
+        [left])
+       ("" .
+        [right])
+       ("" .
+        [up])
+       ("" .
+        [down])
+       ("" .
+        [home])
+       ("" .
+        [end])
+       ([134217846]
+        .
+        [prior])
+       ("" .
+        [next])
+       ("" .
+        [delete])
+       ("" .
+        [S-end delete])
+       ([134217847]
+        . "")
+       ("" . "")
+       ("" . "")
+       ([134217751]
+        . ""))
       workspace 1))))
  '(exwm-randr-workspace-monitor-plist (quote (9 "HDMI1")))
  '(exwm-replace t)
