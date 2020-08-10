@@ -114,6 +114,7 @@
    (quote
     ("~/org/projects.org" "~/org/tasks.org" "~/org/someday-maybe.org")))
  '(org-agenda-persistent-filter t)
+ '(org-agenda-tags-column 0)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
@@ -205,7 +206,7 @@ Source: %u, [[%:link][%:description]]
      ("SOMEDAY" . 115)
      ("MAYBE" . 109)
      ("FLAGGED" . 63))))
- '(org-tags-column -77)
+ '(org-tags-column 0)
  '(org-todo-keyword-faces
    (quote
     (("TODO" :foreground "red" :weight bold)
