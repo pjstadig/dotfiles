@@ -176,6 +176,9 @@ Source: %u, [[%:link][%:description]]
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
  '(org-log-reschedule (quote note))
+ '(org-modules
+   (quote
+    (org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m)))
  '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-targets
