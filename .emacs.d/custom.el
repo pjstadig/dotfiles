@@ -241,7 +241,7 @@
 :CREATED: %U
 :END:" :immediate-finish t)
      ("z" "org-protocol-quote" entry
-      (file "~/org/inbox.org")
+      (file "~/org/in.org")
       "* %^{Title}
 :PROPERTIES:
 :CREATED: %U
