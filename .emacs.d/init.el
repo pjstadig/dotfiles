@@ -362,7 +362,6 @@ story id to generate and insert a url to the story."
 ;;
 ;; So ...
 (add-hook 'org-mode-hook 'visual-fill-column-mode)
-(add-hook 'org-mode-hook 'variable-pitch-mode)
 (add-hook 'org-mode-hook 'typo-mode)
 (add-hook 'org-mode-hook 'org-indent-mode)
 (add-hook 'org-mode-hook 'org-bullets-mode)
