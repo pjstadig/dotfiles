@@ -893,6 +893,33 @@ story id to generate and insert a url to the story."
     (save-buffer))
   (exwm-workspace-switch-to-buffer "Firefox"))
 
+;; Source: https://blog.aaronbieber.com/2016/09/24/an-agenda-for-life-with-org-mode.html
+(defun air-org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+
+(defun air-org-skip-subtree-if-habit ()
+  "Skip an agenda entry if it has a STYLE property equal to \"habit\"."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (if (string= (org-entry-get nil "STYLE") "habit")
+        subtree-end
+      nil)))
+
+(defun pjs-org-skip-subtree-if-project ()
+  "Skip an agenda entry if it is a project."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (if (and (string= (org-entry-get nil "CATEGORY") "projects")
+             (= (org-outline-level) 1))
+        subtree-end
+      nil)))
+
 (when (not (eq (server-running-p) 't))
   (server-start))
 

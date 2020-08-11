@@ -167,7 +167,36 @@
               (org-agenda-overriding-header "Inbox")))
        (tags-todo "+SOMEDAY+MAYBE"
                   ((org-agenda-overriding-header "Someday/maybe"))))
-      nil))))
+      nil)
+     ("d" "Daily agenda and all TODOs"
+      ((agenda ""
+               ((org-agenda-span
+                 (quote day))))
+       (tags "LEVEL=1"
+             ((org-agenda-files
+               (quote
+                ("~/org/in.org")))
+              (org-agenda-overriding-header "Inbox:")))
+       (tags "PRIORITY=\"A\""
+             ((org-agenda-overriding-header "Priority tasks:")
+              (org-agenda-skip-function
+               (quote
+                (org-agenda-skip-entry-if
+                 (quote todo)
+                 (quote done))))))
+       (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE"
+                  ((org-agenda-overriding-header "Next actions")
+                   (org-agenda-skip-function
+                    (quote
+                     (or
+                      (air-org-skip-subtree-if-habit)
+                      (air-org-skip-subtree-if-priority 65)
+                      (pjs-org-skip-subtree-if-project)
+                      (org-agenda-skip-if nil
+                                          (quote
+                                           (scheduled deadline))))))))
+       (stuck "" nil))
+      ((org-agenda-compact-blocks t))))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
@@ -239,7 +268,7 @@ Source: %u, [[%:link][%:description]]
  '(org-log-reschedule (quote note))
  '(org-modules
    (quote
-    (org-bbdb org-bibtex org-docview org-gnus org-habit org-info org-irc org-mhe org-rmail org-w3m)))
+    (org-bbdb org-bibtex org-docview org-gnus org-habit org-id org-info org-irc org-mhe org-rmail org-w3m)))
  '(org-outline-path-complete-in-steps nil)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-targets
@@ -256,7 +285,8 @@ Source: %u, [[%:link][%:description]]
    (quote
     ("+LEVEL=1+TODO=\"TODO\"-CATEGORY=\"Standalone\"-SOMEDAY-MAYBE"
      ("NEXT")
-     nil "")))
+     ("ROUTINE")
+     "")))
  '(org-tag-alist
    (quote
     ((:startgroup)
