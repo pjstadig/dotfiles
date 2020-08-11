@@ -347,5 +347,6 @@ Source: %u, [[%:link][%:description]]
  '(fixed-pitch ((t (:height 120 :family "Fira Mono"))))
  '(org-block ((t (:inherit shadow :family "Fira Mono"))))
  '(org-checkbox ((t (:inherit bold :family "Fira Mono"))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
  '(org-table ((t (:foreground "Blue1" :family "Fira Mono"))))
  '(variable-pitch ((t (:weight light :height 120 :family "Fira Sans")))))
