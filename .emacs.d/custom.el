@@ -221,7 +221,7 @@
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
-:END:" :jump-to-captured t)
+:END:" :prepend t :jump-to-captured t)
      ("n" "note" entry
       (file "~/org/in.org")
       "* %?
