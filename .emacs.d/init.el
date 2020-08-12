@@ -920,6 +920,32 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
         subtree-end
       nil)))
 
+(defun pjs-org-capture-to-heading ()
+  ;; :annotation is the link
+  (let* ((link (plist-get org-capture-plist :annotation))
+         (heading (org-find-exact-headline-in-buffer link (current-buffer) nil)))
+    (if heading
+        (goto-char (marker-position heading))
+      (progn
+        (org-insert-heading)
+        (insert link)
+        (org-find-exact-headline-in-buffer link nil nil)))))
+
+(defun pjs-review-quotes ()
+  (interactive)
+  (switch-to-buffer (find-file-noselect "~/org/notes.org"))
+  (org-show-todo-tree 6))
+
+(defun pjs-review-italics ()
+  (interactive)
+  (switch-to-buffer (find-file-noselect "~/org/notes.org"))
+  (org-show-todo-tree 7))
+
+(defun pjs-review-bold ()
+  (interactive)
+  (switch-to-buffer (find-file-noselect "~/org/notes.org"))
+  (org-show-todo-tree 8))
+
 (when (not (eq (server-running-p) 't))
   (server-start))
 

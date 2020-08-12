@@ -141,7 +141,7 @@
  '(exwm-workspace-number 10)
  '(exwm-workspace-show-all-buffers nil)
  '(exwm-workspace-switch-create-limit 10)
- '(fill-column 80)
+ '(fill-column 90)
  '(flycheck-checkers
    (quote
     (clj-kondo-edn clj-kondo-cljc clj-kondo-cljs clj-kondo-clj ada-gnat asciidoctor asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint d-dmd dockerfile-hadolint elixir-dogma emacs-lisp erlang-rebar3 erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-megacheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-jscs javascript-standard json-jsonlint json-python-json less less-stylelint llvm-llc lua-luacheck lua perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint markdown-mdl nix rst-sphinx rst ruby-rubocop ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
@@ -185,7 +185,7 @@
                  (quote todo)
                  (quote done))))))
        (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE"
-                  ((org-agenda-overriding-header "Next actions")
+                  ((org-agenda-overriding-header "Next actions:")
                    (org-agenda-skip-function
                     (quote
                      (or
@@ -201,8 +201,14 @@
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/projects.org" "~/org/tasks.org" "~/org/someday-maybe.org")))
+    ("~/org/in.org" "~/org/projects.org" "~/org/tasks.org" "~/org/someday-maybe.org" "~/org/notes.org")))
  '(org-agenda-persistent-filter t)
+ '(org-agenda-prefix-format
+   (quote
+    ((agenda . "  %?-12t% s")
+     (todo . "  ")
+     (tags . "  ")
+     (search . "  "))))
  '(org-agenda-tags-column 0)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
@@ -215,13 +221,13 @@
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
-:END:")
+:END:" :prepend t :empty-lines-after 1)
      ("p" "project" entry
       (file "~/org/projects.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
-:END:" :prepend t :jump-to-captured t)
+:END:" :prepend t :jump-to-captured t :empty-lines-after 1)
      ("n" "note" entry
       (file "~/org/in.org")
       "* %?
@@ -241,12 +247,11 @@
 :CREATED: %U
 :END:" :immediate-finish t)
      ("z" "org-protocol-quote" entry
-      (file "~/org/in.org")
-      "* %^{Title}
+      (file+function "~/org/notes.org" pjs-org-capture-to-heading)
+      "* QUOTE
 :PROPERTIES:
 :CREATED: %U
 :END:
-Source: %u, [[%:link][%:description]]
 #+BEGIN_QUOTE
 %i
 #+END_QUOTE
@@ -259,6 +264,10 @@ Source: %u, [[%:link][%:description]]
  '(org-fast-tag-selection-single-key t)
  '(org-footnote-auto-adjust t)
  '(org-footnote-section nil)
+ '(org-habit-following-days 1)
+ '(org-habit-graph-column 75)
+ '(org-habit-preceding-days 14)
+ '(org-habit-show-all-today t)
  '(org-id-link-to-org-use-id (quote create-if-interactive-and-no-custom-id))
  '(org-indirect-buffer-display (quote current-window))
  '(org-list-allow-alphabetical t)
@@ -270,6 +279,7 @@ Source: %u, [[%:link][%:description]]
    (quote
     (org-bbdb org-bibtex org-docview org-gnus org-habit org-id org-info org-irc org-mhe org-rmail org-w3m)))
  '(org-outline-path-complete-in-steps nil)
+ '(org-pretty-entities t)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
  '(org-refile-targets
    (quote
@@ -283,7 +293,7 @@ Source: %u, [[%:link][%:description]]
  '(org-startup-folded (quote content))
  '(org-stuck-projects
    (quote
-    ("+LEVEL=1+TODO=\"TODO\"-CATEGORY=\"Standalone\"-SOMEDAY-MAYBE"
+    ("+LEVEL=1+TODO=\"TODO\"+CATEGORY=\"Projects\"-SOMEDAY-MAYBE"
      ("NEXT")
      ("ROUTINE")
      "")))
@@ -297,6 +307,7 @@ Source: %u, [[%:link][%:description]]
      ("MAYBE" . 109)
      ("FLAGGED" . 63))))
  '(org-tags-column 0)
+ '(org-tags-exclude-from-inheritance (quote ("ROUTINE")))
  '(org-todo-keyword-faces
    (quote
     (("TODO" :foreground "red" :weight bold)
@@ -311,7 +322,7 @@ Source: %u, [[%:link][%:description]]
    (quote
     ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
      (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)")
-     (sequence "NOTE"))))
+     (sequence "QUOTE(q)" "ITALIC(i!)" "|" "BOLD(b!)"))))
  '(org-treat-S-cursor-todo-selection-as-state-change nil)
  '(org-use-speed-commands t)
  '(org-yank-adjusted-subtrees t)
