@@ -363,8 +363,6 @@
      (clojure-test-ns-segment-position . 1))))
  '(save-interprogram-paste-before-kill t)
  '(save-place-file "~/.emacs.d/places")
- '(select-enable-clipboard t)
- '(select-enable-primary t)
  '(sh-basic-offset 2)
  '(show-paren-delay 0.25)
  '(sql-input-ring-file-name "~/.sql-mode-history")
