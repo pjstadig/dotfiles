@@ -267,7 +267,6 @@
  '(org-habit-following-days 1)
  '(org-habit-graph-column 75)
  '(org-habit-preceding-days 14)
- '(org-habit-show-all-today t)
  '(org-id-link-to-org-use-id (quote create-if-interactive-and-no-custom-id))
  '(org-indirect-buffer-display (quote current-window))
  '(org-list-allow-alphabetical t)
