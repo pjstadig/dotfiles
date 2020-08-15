@@ -370,6 +370,7 @@
    (quote
     (pjs-configure-text-mode-fill-column writegood-mode flyspell-mode text-mode-hook-identify)))
  '(visible-bell t)
+ '(whitespace-line-column nil)
  '(whitespace-style
    (quote
     (face trailing tabs lines-tail newline empty indentation::space)))
