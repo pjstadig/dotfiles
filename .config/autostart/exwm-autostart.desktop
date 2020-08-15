@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=Emacs Autostart
-Exec=exwm
+Exec=/home/paul/bin/exwm
 Terminal=false
