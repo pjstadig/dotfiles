@@ -276,7 +276,7 @@
  '(org-log-reschedule (quote note))
  '(org-modules
    (quote
-    (org-bbdb org-bibtex org-docview org-gnus org-habit org-id org-info org-irc org-mhe org-rmail org-w3m)))
+    (org-bbdb org-bibtex org-docview org-gnus org-habit org-id org-info org-irc org-mhe org-rmail org-w3m org-drill)))
  '(org-outline-path-complete-in-steps nil)
  '(org-pretty-entities t)
  '(org-refile-allow-creating-parent-nodes (quote confirm))
@@ -327,7 +327,7 @@
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo gnu-elpa-keyring-update helm helm-ag helm-projectile magit markdown-mode org-autolist org-bullets paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
+    (cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))

@@ -5,7 +5,8 @@
     (ghub "3.0.0")
     (git-commit "2.90.0")
     (magit-popup "2.12.4")
-    (with-editor "2.8.0")))
+    (with-editor "2.8.0"))
+  :commit "791901b2f1d26fa0a383147fe77948a9abc753da")
 ;; Local Variables:
 ;; no-byte-compile: t
 ;; End:

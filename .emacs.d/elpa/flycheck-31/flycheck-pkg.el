@@ -4,7 +4,7 @@
     (let-alist "1.0.4")
     (seq "1.11")
     (emacs "24.3"))
-  :keywords
+  :commit "401b115d10e202a1b31f57340438420081af21ce" :keywords
   '("convenience" "languages" "tools")
   :authors
   '(("Sebastian Wiesner" . "swiesner@lunaryorn.com"))

@@ -82,6 +82,8 @@ story id to generate and insert a url to the story."
   :ensure t)
 (use-package org-autolist
   :ensure t)
+(use-package org-drill
+  :ensure t)
 (use-package flycheck-clj-kondo
   :ensure t)
 (use-package clojure-mode

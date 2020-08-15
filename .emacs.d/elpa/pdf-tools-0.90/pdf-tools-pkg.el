@@ -2,7 +2,7 @@
   '((emacs "24.3")
     (tablist "0.70")
     (let-alist "1.0.4"))
-  :keywords
+  :commit "af1a5949c2dae59ffcbcf21cc4299fa2fc57ce72" :keywords
   '("files" "multimedia")
   :authors
   '(("Andreas Politz" . "politza@fh-trier.de"))
