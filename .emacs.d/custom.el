@@ -196,7 +196,10 @@
                                           (quote
                                            (scheduled deadline))))))))
        (stuck "" nil))
-      ((org-agenda-compact-blocks t))))))
+      ((org-agenda-compact-blocks t)
+       (org-agenda-tag-filter-preset
+        (quote
+         ("-drill"))))))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
