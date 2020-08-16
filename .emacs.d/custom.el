@@ -261,7 +261,7 @@
 #+END_QUOTE
 %?"))))
  '(org-clock-out-remove-zero-time-clocks t)
- '(org-default-notes-file "~/org/inbox.org")
+ '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
  '(org-drill-question-tag "NOTE")
  '(org-drill-save-buffers-after-drill-sessions-p t)
