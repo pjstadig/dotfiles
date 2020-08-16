@@ -195,28 +195,35 @@
                       (org-agenda-skip-if nil
                                           (quote
                                            (scheduled deadline))))))))
-       (stuck "" nil))
-      ((org-agenda-compact-blocks t)
-       (org-agenda-tag-filter-preset
+       (stuck ""
+              ((org-agenda-prefix-format "  ")
+               (org-agenda-sorting-strategy
+                (quote
+                 (user-defined-up alpha-up)))
+               (org-agenda-cmp-user-defined
+                (quote pjs/org-agenda-sort-created))))
+       (tags "*"
+             ((org-agenda-overriding-header "Reading queue:")
+              (org-agenda-files
+               (quote
+                ("~/org/read.org")))
+              (org-agenda-prefix-format "  ")
+              (org-agenda-max-entries 10))))
+      ((org-agenda-tag-filter-preset
         (quote
-         ("-drill"))))))))
+         ("-NOTE"))))))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/in.org" "~/org/projects.org" "~/org/tasks.org" "~/org/someday-maybe.org" "~/org/notes.org")))
+    ("~/org/in.org" "~/org/tasks.org" "~/org/projects.org" "~/org/someday-maybe.org" "~/org/notes.org")))
  '(org-agenda-persistent-filter t)
- '(org-agenda-prefix-format
-   (quote
-    ((agenda . "  %?-12t% s")
-     (todo . "  ")
-     (tags . "  ")
-     (search . "  "))))
  '(org-agenda-tags-column 0)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
  '(org-attach-directory "attachments/")
+ '(org-attach-id-dir "attachments/")
  '(org-capture-prepare-finalize-hook (quote (pjs/ensure-ending-newline)))
  '(org-capture-templates
    (quote

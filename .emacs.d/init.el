@@ -946,6 +946,21 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
             (goto-char (point-max))
             (insert "\n"))))))
 
+(defun pjs/org-agenda-sort-created (a b)
+  (let* ((a-marker (get-text-property 0 'org-marker a))
+         (b-marker (get-text-property 0 'org-marker b))
+         (created-a (org-entry-get a-marker "CREATED"))
+         (created-b (org-entry-get b-marker "CREATED")))
+    (cond
+     ((and created-a
+           (or (null created-b)
+               (string-greaterp created-a created-b)))
+      1)
+     ((and (or (null created-a)
+               (string-lessp created-a created-b))
+           created-b)
+      -1)
+     (t 0))))
 
 (eval-after-load 'org-drill
   (progn (defun pjs/org-drill-hide-comments ()
