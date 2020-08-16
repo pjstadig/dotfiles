@@ -37,14 +37,6 @@
 (use-package gnu-elpa-keyring-update
   :ensure t
   :config (gnu-elpa-keyring-update))
-(use-package magit
-  :ensure t
-  :bind (("C-c g" . magit-status)
-         :map git-commit-mode-map
-         ("C-c l" . 'tc/insert-clubhouse-story-url)
-         ("C-c C-l" . 'tc/insert-clubhouse-story-url)
-         ("C-c a" . 'tc/insert-co-authored-by)
-         ("C-c C-a" . 'tc/insert-co-authored-by)))
 
 (defun tc/insert-clubhouse-story-url ()
   "Looks forward in the buffer for a story branch, and uses the
@@ -72,6 +64,15 @@ story id to generate and insert a url to the story."
                   (completing-read "co-author: "
                                    (save-excursion
                                      (tc/get-recent-git-authors 50))))))
+
+(use-package magit
+  :ensure t
+  :bind (("C-c g" . magit-status)
+         :map git-commit-mode-map
+         ("C-c l" . 'tc/insert-clubhouse-story-url)
+         ("C-c C-l" . 'tc/insert-clubhouse-story-url)
+         ("C-c a" . 'tc/insert-co-authored-by)
+         ("C-c C-a" . 'tc/insert-co-authored-by)))
 
 (use-package pinentry
   :ensure t
@@ -925,13 +926,13 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 (defun pjs-org-capture-to-heading ()
   ;; :annotation is the link
   (let* ((link (plist-get org-capture-plist :annotation))
-         (heading (org-find-exact-headline-in-buffer link (current-buffer) nil)))
+         (heading (org-find-exact-headline-in-buffer link (current-buffer) t)))
     (if heading
-        (goto-char (marker-position heading))
+        (goto-char heading)
       (progn
-        (org-insert-heading)
-        (insert link)
-        (org-find-exact-headline-in-buffer link nil nil)))))
+        (goto-char (point-max))
+        (org-insert-heading nil nil t)
+        (insert link)))))
 
 (defun pjs-ensure-ending-newline ()
   "Add a newline at the end of the buffer if there isn't any."
