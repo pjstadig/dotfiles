@@ -217,6 +217,7 @@
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
  '(org-attach-directory "attachments/")
+ '(org-capture-prepare-finalize-hook (quote (pjs-ensure-ending-newline)))
  '(org-capture-templates
    (quote
     (("t" "todo" entry
@@ -224,13 +225,13 @@
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
-:END:" :prepend t :empty-lines-after 1)
+:END:" :prepend t)
      ("p" "project" entry
       (file "~/org/projects.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
-:END:" :prepend t :jump-to-captured t :empty-lines-after 1)
+:END:" :prepend t :jump-to-captured t)
      ("n" "note" entry
       (file "~/org/notes.org")
       "* %? :NOTE:
