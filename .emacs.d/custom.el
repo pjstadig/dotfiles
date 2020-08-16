@@ -189,8 +189,8 @@
                    (org-agenda-skip-function
                     (quote
                      (or
-                      (air-org-skip-subtree-if-habit)
-                      (air-org-skip-subtree-if-priority 65)
+                      (air/org-skip-subtree-if-habit)
+                      (air/org-skip-subtree-if-priority 65)
                       (pjs/org-skip-subtree-if-project)
                       (org-agenda-skip-if nil
                                           (quote
