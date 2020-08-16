@@ -933,20 +933,16 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
         (insert link)
         (org-find-exact-headline-in-buffer link nil nil)))))
 
-(defun pjs-review-quotes ()
-  (interactive)
-  (switch-to-buffer (find-file-noselect "~/org/notes.org"))
-  (org-show-todo-tree 6))
-
-(defun pjs-review-italics ()
-  (interactive)
-  (switch-to-buffer (find-file-noselect "~/org/notes.org"))
-  (org-show-todo-tree 7))
-
-(defun pjs-review-bold ()
-  (interactive)
-  (switch-to-buffer (find-file-noselect "~/org/notes.org"))
-  (org-show-todo-tree 8))
+(defun pjs-ensure-ending-newline ()
+  "Add a newline at the end of the buffer if there isn't any."
+  ;; from https://emacs.stackexchange.com/questions/38754/capture-template-like-org-journal
+  (save-excursion
+    (save-restriction
+      (goto-char (1- (point-max)))
+      (if (not (looking-at "\n"))
+          (progn
+            (goto-char (point-max))
+            (insert "\n"))))))
 
 (when (not (eq (server-running-p) 't))
   (server-start))
