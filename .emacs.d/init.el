@@ -4,7 +4,7 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
-(defun pjs-add-eval-buffer-binding ()
+(defun pjs/add-eval-buffer-binding ()
   (local-set-key (kbd "C-c C-k") 'eval-buffer))
 
 (add-hook 'clojure-mode-hook 'paredit-mode)
@@ -134,9 +134,9 @@ story id to generate and insert a url to the story."
   "My config variables."
   :group 'default)
 
-(defvar pjs-exwm-configured-p nil)
+(defvar pjs/exwm-configured-p nil)
 
-(defun pjs-configure-exwm ()
+(defun pjs/configure-exwm ()
   (require 'exwm)
   (setq exwm-input-global-keys
         '(([?\s-w] . exwm-workspace-switch)
@@ -173,115 +173,115 @@ story id to generate and insert a url to the story."
           ([?\s-0] . (lambda ()
                        (interactive)
                        (exwm-workspace-switch-create 9)))
-          ([?\s-r] . pjs-reset)))
+          ([?\s-r] . pjs/reset)))
   (exwm-enable)
   (fringe-mode 1)
 
   (require 'exwm-randr)
   (exwm-randr-enable)
-  (setq pjs-exwm-configured-p 't))
+  (setq pjs/exwm-configured-p 't))
 
-(defvar pjs-system-file
+(defvar pjs/system-file
   (expand-file-name (concat user-emacs-directory (system-name) ".el")))
 
-(defun pjs-reset ()
+(defun pjs/reset ()
   (interactive)
   (byte-recompile-file (concat user-emacs-directory "init.el") nil 0)
   (load (concat user-emacs-directory "init.el"))
-  (when (file-exists-p pjs-system-file)
-    (byte-recompile-file pjs-system-file nil 0)
-    (load pjs-system-file))
+  (when (file-exists-p pjs/system-file)
+    (byte-recompile-file pjs/system-file nil 0)
+    (load pjs/system-file))
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
   (byte-recompile-directory (concat user-emacs-directory "lib") 0)
-  (when pjs-exwm-configured-p
+  (when pjs/exwm-configured-p
     (exwm-reset)))
 
-(defun pjs-set-exwm-buffer-name-to-class ()
+(defun pjs/set-exwm-buffer-name-to-class ()
   (exwm-workspace-rename-buffer exwm-class-name))
 
-(defun pjs-start-initial-programs ()
+(defun pjs/start-initial-programs ()
   (start-process-shell-command "firefox" nil "firefox")
   (start-process-shell-command "xfce4-terminal" nil "xfce4-terminal"))
 
-(defun pjs-erc-connect (server)
+(defun pjs/erc-connect (server)
   (interactive "Mserver: ")
   (let ((znc-password-file "~/.private/pjs-znc-password.el"))
     (if (file-exists-p znc-password-file)
         (load znc-password-file)
       (eval-when-compile
-        (defvar pjs-znc-password))))
+        (defvar pjs/znc-password))))
   (erc-tls :server server
            :port "6697"
            :nick "paul"
-           :password (concat "paul:" pjs-znc-password)))
+           :password (concat "paul:" pjs/znc-password)))
 
-(defcustom pjs-inhibit-cleanup-on-save nil
+(defcustom pjs/inhibit-cleanup-on-save nil
   "If true will disable buffer cleanup on save."
   :group 'pjs
   :type 'boolean
   :safe #'booleanp)
 
-(defcustom pjs-inhibit-indent-on-save nil
+(defcustom pjs/inhibit-indent-on-save nil
   "If true will disable indenting on save."
   :group 'pjs
   :type 'boolean
   :safe #'booleanp)
 
-(defcustom pjs-inhibit-clojure-sort-ns-on-save nil
+(defcustom pjs/inhibit-clojure-sort-ns-on-save nil
   "If true will disable sorting clojure 'ns on save."
   :group 'pjs
   :type 'boolean
   :safe #'booleanp)
 
-(defcustom pjs-inhibit-clojure-align-on-save nil
+(defcustom pjs/inhibit-clojure-align-on-save nil
   "If true will disable aligning clojure 'let on save."
   :group 'pjs
   :type 'boolean
   :safe #'booleanp)
 
-(defun pjs-cleanup-buffer ()
+(defun pjs/cleanup-buffer ()
   (interactive)
   (when (derived-mode-p 'prog-mode)
     (let ((inhibit-redisplay 't))
       (delete-trailing-whitespace)
       (untabify (point-min) (point-max))
-      (when (not pjs-inhibit-indent-on-save)
+      (when (not pjs/inhibit-indent-on-save)
         (indent-region (point-min) (point-max)))
       (when (derived-mode-p 'clojure-mode)
-        (when (not pjs-inhibit-clojure-sort-ns-on-save)
+        (when (not pjs/inhibit-clojure-sort-ns-on-save)
           (ignore-errors (clojure-sort-ns)))
-        (when (not pjs-inhibit-clojure-align-on-save)
+        (when (not pjs/inhibit-clojure-align-on-save)
           (clojure-align (point-min) (point-max)))))))
 
 (defun save-buffer-advice (old-save-buffer &optional arg)
   (interactive "p")
   (when (and (= (or arg 1) 1)
-             (not pjs-inhibit-cleanup-on-save))
-    (pjs-cleanup-buffer))
+             (not pjs/inhibit-cleanup-on-save))
+    (pjs/cleanup-buffer))
   (when old-save-buffer
     (funcall old-save-buffer)))
 
 (advice-add 'save-buffer :around 'save-buffer-advice)
 
-(defun pjs-restart-network-manager ()
+(defun pjs/restart-network-manager ()
   (interactive)
   (let ((display-buffer-alist
          '(("*Async Shell Command*" display-buffer-no-window))))
     (async-shell-command "sudo systemctl restart network-manager" nil)))
 
-(defun pjs-suspend ()
+(defun pjs/suspend ()
   (interactive)
   (start-process-shell-command "suspend" nil "systemctl suspend"))
 
-(defun pjs-lock-screen ()
+(defun pjs/lock-screen ()
   (interactive)
   (start-process-shell-command "lock-screen" nil "dm-tool lock"))
 
-(defun pjs-show-xfce-settings ()
+(defun pjs/show-xfce-settings ()
   (interactive)
   (start-process-shell-command "show-xfce-settings" nil "xfce4-settings-manager"))
 
-(defun pjs-revert ()
+(defun pjs/revert ()
   (interactive)
   (revert-buffer 'ignore-auto 'noconfirm 'preserve-mode))
 
@@ -291,7 +291,7 @@ story id to generate and insert a url to the story."
 ;; C-c [letter] is reserved for users
 ;; <f5> through <f9> are reserved for users
 
-(defun pjs-org-agenda ()
+(defun pjs/org-agenda ()
   (interactive)
   (if (get-buffer "*Org Agenda*")
       (switch-to-buffer "*Org Agenda*")
@@ -309,23 +309,23 @@ story id to generate and insert a url to the story."
           (message "Deleted file %s" filename)
           (kill-buffer))))))
 
-(global-set-key (kbd "C-c a") 'pjs-org-agenda)
+(global-set-key (kbd "C-c a") 'pjs/org-agenda)
 (global-set-key (kbd "C-c b") 'org-switchb)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c D") 'er-delete-file-and-buffer)
-(global-set-key (kbd "C-c e n") 'pjs-restart-network-manager)
-(global-set-key (kbd "C-c e s") 'pjs-suspend)
-(global-set-key (kbd "C-c e l") 'pjs-lock-screen)
+(global-set-key (kbd "C-c e n") 'pjs/restart-network-manager)
+(global-set-key (kbd "C-c e s") 'pjs/suspend)
+(global-set-key (kbd "C-c e l") 'pjs/lock-screen)
 (global-set-key (kbd "C-c i") 'imenu)
 (global-set-key (kbd "C-c C-i") 'imenu)
 (global-set-key (kbd "C-c o o") 'org-cycle-agenda-files)
 ;; (global-set-key (kbd "C-c o a") 'bh/show-org-agenda)
-(global-set-key (kbd "C-c r") 'pjs-revert)
-(global-set-key (kbd "C-c u") 'pjs-pop-read-queue)
+(global-set-key (kbd "C-c r") 'pjs/revert)
+(global-set-key (kbd "C-c u") 'pjs/pop-read-queue)
 ;; (global-set-key (kbd "C-c t") 'bh/org-todo)
 ;; (global-set-key (kbd "C-c w") 'bh/widen)
 (global-set-key (kbd "C-c z z") 'zk)
-(global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
+(global-set-key (kbd "<XF86Tools>") 'pjs/show-xfce-settings)
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
 
 ;; (defun bh/show-org-agenda ()
@@ -335,16 +335,16 @@ story id to generate and insert a url to the story."
 ;;     (switch-to-buffer "*Org Agenda*"))
 ;;   (delete-other-windows))
 
-(defun pjs-prog-mode-local-bindings ()
-  (local-set-key (kbd "C-c n") 'pjs-cleanup-buffer))
+(defun pjs/prog-mode-local-bindings ()
+  (local-set-key (kbd "C-c n") 'pjs/cleanup-buffer))
 
-(defun pjs-sort-symbols (reverse beg end)
+(defun pjs/sort-symbols (reverse beg end)
   "Sort symbols in region alphabetically, in REVERSE if negative.
     See `sort-words'."
   (interactive "*P\nr")
   (sort-regexp-fields reverse "\\(\\sw\\|\\s_\\)+" "\\&" beg end))
 
-(defun pjs-configure-text-mode-fill-column ()
+(defun pjs/configure-text-mode-fill-column ()
   (setq fill-column 80))
 
 (setq split-window-preferred-function 'visual-fill-column-split-window-sensibly)
@@ -885,7 +885,7 @@ story id to generate and insert a url to the story."
 
 (show-paren-mode 1)
 
-(defun pjs-pop-read-queue ()
+(defun pjs/pop-read-queue ()
   (interactive)
   (save-excursion
     (find-file-existing (concat org-directory "/read.org"))
@@ -915,7 +915,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
         subtree-end
       nil)))
 
-(defun pjs-org-skip-subtree-if-project ()
+(defun pjs/org-skip-subtree-if-project ()
   "Skip an agenda entry if it is a project."
   (let ((subtree-end (save-excursion (org-end-of-subtree t))))
     (if (and (string= (org-entry-get nil "CATEGORY") "projects")
@@ -923,7 +923,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
         subtree-end
       nil)))
 
-(defun pjs-org-capture-to-heading ()
+(defun pjs/org-capture-to-heading ()
   ;; :annotation is the link
   (let* ((link (plist-get org-capture-plist :annotation))
          (heading (org-find-exact-headline-in-buffer link (current-buffer) t)))
@@ -934,7 +934,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
         (org-insert-heading nil nil t)
         (insert link)))))
 
-(defun pjs-ensure-ending-newline ()
+(defun pjs/ensure-ending-newline ()
   "Add a newline at the end of the buffer if there isn't any."
   ;; from https://emacs.stackexchange.com/questions/38754/capture-template-like-org-journal
   (save-excursion
@@ -948,5 +948,5 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 (when (not (eq (server-running-p) 't))
   (server-start))
 
-(when (file-exists-p pjs-system-file)
-  (load pjs-system-file))
+(when (file-exists-p pjs/system-file)
+  (load pjs/system-file))

@@ -1,4 +1,4 @@
 #!/usr/bin/env -S zsh -li
 
-emacs -f pjs-configure-exwm
+emacs -f pjs/configure-exwm
 xfce4-session-logout -l -f

@@ -29,9 +29,9 @@
  '(emacs-lisp-docstring-fill-column t)
  '(emacs-lisp-mode-hook
    (quote
-    (pjs-add-eval-buffer-binding eldoc-mode checkdoc-minor-mode paredit-mode)))
+    (pjs/add-eval-buffer-binding eldoc-mode checkdoc-minor-mode paredit-mode)))
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "JAVA_HOME")))
- '(exwm-init-hook (quote (exwm-randr--init pjs-start-initial-programs)))
+ '(exwm-init-hook (quote (exwm-randr--init pjs/start-initial-programs)))
  '(exwm-input-prefix-keys
    (quote
     ("" "" ""
@@ -136,7 +136,7 @@
       workspace 1))))
  '(exwm-randr-workspace-monitor-plist (quote (9 "HDMI1")))
  '(exwm-replace t)
- '(exwm-update-class-hook (quote (pjs-set-exwm-buffer-name-to-class)))
+ '(exwm-update-class-hook (quote (pjs/set-exwm-buffer-name-to-class)))
  '(exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
  '(exwm-workspace-number 10)
  '(exwm-workspace-show-all-buffers nil)
@@ -191,7 +191,7 @@
                      (or
                       (air-org-skip-subtree-if-habit)
                       (air-org-skip-subtree-if-priority 65)
-                      (pjs-org-skip-subtree-if-project)
+                      (pjs/org-skip-subtree-if-project)
                       (org-agenda-skip-if nil
                                           (quote
                                            (scheduled deadline))))))))
@@ -217,7 +217,7 @@
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
  '(org-attach-directory "attachments/")
- '(org-capture-prepare-finalize-hook (quote (pjs-ensure-ending-newline)))
+ '(org-capture-prepare-finalize-hook (quote (pjs/ensure-ending-newline)))
  '(org-capture-templates
    (quote
     (("t" "todo" entry
@@ -245,7 +245,7 @@
 :CREATED: %U
 :END:" :immediate-finish t)
      ("z" "org-protocol-quote" entry
-      (file+function "~/org/notes.org" pjs-org-capture-to-heading)
+      (file+function "~/org/notes.org" pjs/org-capture-to-heading)
       "* %:description :NOTE:
 :PROPERTIES:
 :CREATED: %U
@@ -342,7 +342,7 @@
     (cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
-    (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
+    (flyspell-prog-mode linum-mode pjs/prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
  '(require-final-newline t)
  '(safe-local-variable-values
    (quote
@@ -379,7 +379,7 @@
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
    (quote
-    (pjs-configure-text-mode-fill-column writegood-mode flyspell-mode text-mode-hook-identify)))
+    (pjs/configure-text-mode-fill-column writegood-mode flyspell-mode text-mode-hook-identify)))
  '(visible-bell t)
  '(whitespace-line-column nil)
  '(whitespace-style
