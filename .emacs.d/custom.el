@@ -267,6 +267,7 @@
  '(org-drill-save-buffers-after-drill-sessions-p t)
  '(org-drill-scope (quote ("~/org/notes.org")))
  '(org-edit-src-content-indentation 0)
+ '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
  '(org-fast-tag-selection-single-key t)
  '(org-footnote-auto-adjust t)
