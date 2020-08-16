@@ -946,6 +946,16 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
             (goto-char (point-max))
             (insert "\n"))))))
 
+
+(eval-after-load 'org-drill
+  (progn (defun pjs/org-drill-hide-comments ()
+           "Hide comments."
+           (save-excursion
+             (while (re-search-forward "^#[^+].*$" nil t)
+               (org-drill-hide-region (match-beginning 0) (match-end 0)))))
+
+         (advice-add 'org-drill-hide-comments :override 'pjs/org-drill-hide-comments)))
+
 (when (not (eq (server-running-p) 't))
   (server-start))
 
