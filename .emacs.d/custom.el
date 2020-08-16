@@ -232,8 +232,8 @@
 :CREATED: %U
 :END:" :prepend t :jump-to-captured t :empty-lines-after 1)
      ("n" "note" entry
-      (file "~/org/in.org")
-      "* %?
+      (file "~/org/notes.org")
+      "* %? :NOTE:
 :PROPERTIES:
 :CREATED: %U
 :END:")
@@ -245,13 +245,13 @@
 :END:")
      ("y" "org-protocol-link" entry
       (file "~/org/read.org")
-      "* %? [[%:link][%:description]]
+      "* %? %a
 :PROPERTIES:
 :CREATED: %U
 :END:" :immediate-finish t)
      ("z" "org-protocol-quote" entry
       (file+function "~/org/notes.org" pjs-org-capture-to-heading)
-      "* QUOTE
+      "* %:description :NOTE:
 :PROPERTIES:
 :CREATED: %U
 :END:
@@ -262,6 +262,9 @@
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/inbox.org")
  '(org-directory "~/org")
+ '(org-drill-question-tag "NOTE")
+ '(org-drill-save-buffers-after-drill-sessions-p t)
+ '(org-drill-scope (quote ("~/org/notes.org")))
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-dependencies t)
  '(org-fast-tag-selection-single-key t)
@@ -301,10 +304,7 @@
      "")))
  '(org-tag-alist
    (quote
-    ((:startgroup)
-     ("@HOME" . 72)
-     ("@MOBILE" . 77)
-     (:endgroup)
+    (("NOTE" . 110)
      ("SOMEDAY" . 115)
      ("MAYBE" . 109)
      ("FLAGGED" . 63))))
@@ -323,8 +323,7 @@
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)")
-     (sequence "QUOTE(q)" "ITALIC(i!)" "|" "BOLD(b!)"))))
+     (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)"))))
  '(org-treat-S-cursor-todo-selection-as-state-change nil)
  '(org-use-speed-commands t)
  '(org-yank-adjusted-subtrees t)
