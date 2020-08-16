@@ -238,12 +238,6 @@
 :PROPERTIES:
 :CREATED: %U
 :END:")
-     ("j" "journal entry" entry
-      (file+olp+datetree "~/org/journal.org")
-      "* %?
-:PROPERTIES:
-:CREATED: %U
-:END:")
      ("y" "org-protocol-link" entry
       (file "~/org/read.org")
       "* %? %a
@@ -259,7 +253,21 @@
 #+BEGIN_QUOTE
 %i
 #+END_QUOTE
-%?"))))
+%?")
+     ("j" "journal entries")
+     ("jj" "plain journal entry" entry
+      (file+olp+datetree "~/org/journal.org")
+      "* %?
+:PROPERTIES:
+:CREATED: %U
+:END:")
+     ("jc" "Clubhouse journal" entry
+      (file+olp+datetree "~/org/journal.org")
+      "**** Reviews
+**** Stories
+**** PRs
+**** Meetings
+**** Other" :immediate-finish t :jump-to-captured t))))
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
