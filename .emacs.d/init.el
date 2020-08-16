@@ -65,7 +65,7 @@ story id to generate and insert a url to the story."
      "\n")))
 
 (defun tc/insert-co-authored-by ()
-  "Inserts a Co-authored-by header from a selction from authors
+  "Inserts a Co-authored-by header from a selection from authors
   for the 50 most recent commits."
   (interactive)
   (insert (format "Co-authored-by: %s"
