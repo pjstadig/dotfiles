@@ -365,9 +365,9 @@ story id to generate and insert a url to the story."
 ;;
 ;; So ...
 (add-hook 'org-mode-hook 'visual-fill-column-mode)
+(add-hook 'org-mode-hook 'variable-pitch-mode)
 (add-hook 'org-mode-hook 'typo-mode)
 (add-hook 'org-mode-hook 'org-indent-mode)
-(add-hook 'org-mode-hook 'org-bullets-mode)
 (add-hook 'org-mode-hook 'org-autolist-mode)
 (add-hook 'org-mode-hook 'zk-navigate-keys)
 
@@ -970,6 +970,114 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                (org-drill-hide-region (match-beginning 0) (match-end 0)))))
 
          (advice-add 'org-drill-hide-comments :override 'pjs/org-drill-hide-comments)))
+
+(defface org-level-1-bullet '((t :inherit (org-level-1 fixed-pitch)))
+  "Face used for level 1 headline bullets."
+  :group 'org-faces)
+
+(defface org-level-2-bullet '((t :inherit (org-level-2 fixed-pitch)))
+  "Face used for level 1 headline bullets."
+  :group 'org-faces)
+
+(defface org-level-3-bullet '((t :inherit (org-level-3 fixed-pitch)))
+  "Face used for level 3 headline bullets."
+  :group 'org-faces)
+
+(defface org-level-4-bullet '((t :inherit (org-level-4 fixed-pitch)))
+  "Face used for level 4 headline bullets."
+  :group 'org-faces)
+
+(defface org-level-5-bullet '((t :inherit (org-level-5 fixed-pitch)))
+  "Face used for level 5 headline bullets."
+  :group 'org-faces)
+
+(defface org-level-6-bullet '((t :inherit (org-level-6 fixed-pitch)))
+  "Face used for level 6 headline bullets."
+  :group 'org-faces)
+
+(defface org-level-7-bullet '((t :inherit (org-level-7 fixed-pitch)))
+  "Face used for level 7 headline bullets."
+  :group 'org-faces)
+
+(defface org-level-8-bullet '((t :inherit (org-level-8 fixed-pitch)))
+  "Face used for level 8 headline bullets."
+  :group 'org-faces)
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^\\(\\(\\*\\) \\)"
+    (1 'org-level-1-bullet)
+    (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "●"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^\\*\\{1\\}\\(\\(\\*\\) \\)"
+    (1 'org-level-2-bullet)
+    (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "◉"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^\\*\\{2\\}\\(\\(\\*\\) \\)"
+    (1 'org-level-3-bullet)
+    (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "○"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^\\*\\{3\\}\\(\\(\\*\\) \\)"
+    (1 'org-level-4-bullet)
+    (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "◆"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^\\*\\{4\\}\\(\\(\\*\\) \\)"
+    (1 'org-level-5-bullet)
+    (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "◇"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^\\*\\{5\\}\\(\\(\\*\\) \\)"
+    (1 'org-level-6-bullet)
+    (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "►"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^\\*\\{6\\}\\(\\(\\*\\) \\)"
+    (1 'org-level-7-bullet)
+    (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "●"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^\\*\\{7\\}\\(\\(\\*\\) \\)"
+    (1 'org-level-8-bullet)
+    (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "◉"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^ *\\(?1:-\\) "
+    (0 'fixed-pitch)
+    (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^ *\\(?:\\(?1:+\\)\\) "
+    (0 'fixed-pitch)
+    (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^ *[0-9][.)] "
+    (0 'fixed-pitch))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^ *[a-zA-Z][.)] "
+    (0 'fixed-pitch))))
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^ +\\(?1:[*]\\) "
+    (0 'fixed-pitch)
+    (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 (when (not (eq (server-running-p) 't))
   (server-start))
