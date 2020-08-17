@@ -172,11 +172,12 @@
       ((agenda ""
                ((org-agenda-span
                  (quote day))))
-       (tags "LEVEL=1"
-             ((org-agenda-files
+       (todo "TODO"
+             ((org-agenda-overriding-header "Inbox:")
+              (org-agenda-files
                (quote
                 ("~/org/in.org")))
-              (org-agenda-overriding-header "Inbox:")))
+              (org-agenda-max-entries 10)))
        (tags "PRIORITY=\"A\""
              ((org-agenda-overriding-header "Priority tasks:")
               (org-agenda-skip-function
@@ -194,14 +195,16 @@
                       (pjs/org-skip-subtree-if-project)
                       (org-agenda-skip-if nil
                                           (quote
-                                           (scheduled deadline))))))))
+                                           (scheduled deadline))))))
+                   (org-agenda-max-entries 10)))
        (stuck ""
               ((org-agenda-prefix-format "  ")
                (org-agenda-sorting-strategy
                 (quote
                  (user-defined-up alpha-up)))
                (org-agenda-cmp-user-defined
-                (quote pjs/org-agenda-sort-created))))
+                (quote pjs/org-agenda-sort-created))
+               (org-agenda-max-entries 10)))
        (tags "*"
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-files
