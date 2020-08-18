@@ -971,6 +971,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 
          (advice-add 'org-drill-hide-comments :override 'pjs/org-drill-hide-comments)))
 
+;; heading bullets
 (defface org-level-1-bullet '((t :inherit (org-level-1 fixed-pitch)))
   "Face used for level 1 headline bullets."
   :group 'org-faces)
@@ -1057,6 +1058,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
     (0 'fixed-pitch)
     (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
+;; plain list bullets
 (font-lock-add-keywords
  'org-mode
  '(("^ *\\(?:\\(?1:+\\)\\) "
@@ -1078,6 +1080,12 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
  '(("^ +\\(?1:[*]\\) "
     (0 'fixed-pitch)
     (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+;; space after checkbox
+(font-lock-add-keywords
+ 'org-mode
+ '(("[-+*.)] \\[[ X-]\\]\\( \\)"
+    (1 'fixed-pitch))))
 
 (when (not (eq (server-running-p) 't))
   (server-start))
