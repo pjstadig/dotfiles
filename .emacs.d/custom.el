@@ -30,7 +30,7 @@
  '(emacs-lisp-mode-hook
    (quote
     (pjs/add-eval-buffer-binding eldoc-mode checkdoc-minor-mode paredit-mode)))
- '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "JAVA_HOME")))
+ '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "JAVA_HOME" "ASPELL_CONF")))
  '(exwm-init-hook (quote (exwm-randr--init pjs/start-initial-programs)))
  '(exwm-input-prefix-keys
    (quote
