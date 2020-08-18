@@ -96,6 +96,13 @@ story id to generate and insert a url to the story."
   :ensure t)
 (use-package paredit
   :ensure t)
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode +1)
+  :bind
+  (("s-p" . projectile-command-map)
+   ("C-c p" . projectile-command-map)))
 (use-package helm
   :ensure t
   :bind (("C-x C-f" . helm-find-files)
@@ -107,7 +114,6 @@ story id to generate and insert a url to the story."
 (use-package helm-projectile
   :ensure t
   :config
-  (projectile-mode)
   (setq projectile-completion-system 'helm)
   (helm-projectile-on))
 (use-package visual-fill-column
