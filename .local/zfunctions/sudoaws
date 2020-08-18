@@ -1,0 +1,3 @@
+function sudoaws {
+  aws-vault exec admin -- "$@"
+}
