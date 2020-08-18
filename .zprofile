@@ -79,3 +79,4 @@ if [ -n "$local256" ] || [ -n "$SEND_256_COLORS_TO_REMOTE" ]; then
 fi
 
 unset local256
+export ASPELL_CONF="conf .aspell.$(hostname -s).conf; conf-dir ${HOME}"
