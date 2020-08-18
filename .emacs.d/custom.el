@@ -347,6 +347,7 @@
      (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)"))))
  '(org-treat-S-cursor-todo-selection-as-state-change nil)
  '(org-use-speed-commands t)
+ '(org-use-sub-superscripts (quote {}))
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
