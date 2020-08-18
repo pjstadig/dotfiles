@@ -410,6 +410,7 @@
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-checkbox ((t (:inherit fixed-pitch :weight bold :height 0.9))))
  '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-date ((t (:inherit fixed-pitch :foreground "Purple" :underline t))))
  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
  '(org-drawer ((t (:inherit fixed-pitch :foreground "Blue1"))))
  '(org-hide ((t (:inherit fixed-pitch :foreground "white"))))
