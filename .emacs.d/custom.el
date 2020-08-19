@@ -253,7 +253,7 @@
       "* %? %a
 :PROPERTIES:
 :CREATED: %U
-:END:" :immediate-finish t)
+:END:")
      ("z" "org-protocol-quote" entry
       (file+function "~/org/notes.org" pjs/org-capture-to-heading)
       "* %:description :NOTE:
