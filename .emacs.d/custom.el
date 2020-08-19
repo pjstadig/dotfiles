@@ -214,7 +214,15 @@
               (org-agenda-max-entries 10))))
       ((org-agenda-tag-filter-preset
         (quote
-         ("-NOTE"))))))))
+         ("-NOTE")))))
+     ("#" "Stuck projects" stuck ""
+      ((org-agenda-overriding-header "Stuck projects:")
+       (org-agenda-prefix-format "  ")
+       (org-agenda-sorting-strategy
+        (quote
+         (user-defined-up alpha-up)))
+       (org-agenda-cmp-user-defined
+        (quote pjs/org-agenda-sort-created)))))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
