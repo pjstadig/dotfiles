@@ -229,6 +229,12 @@
    (quote
     ("~/org/in.org" "~/org/tasks.org" "~/org/projects.org" "~/org/someday-maybe.org" "~/org/notes.org")))
  '(org-agenda-persistent-filter t)
+ '(org-agenda-prefix-format
+   (quote
+    ((agenda . " %i %-12:c%?-12t% s")
+     (todo . " %i %-12:c %b")
+     (tags . " %i %-12:c%? b")
+     (search . " %i %-12:c"))))
  '(org-agenda-tags-column 0)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
