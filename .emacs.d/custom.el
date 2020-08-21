@@ -231,10 +231,10 @@
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
    (quote
-    ((agenda . " %i %-12:c%?-12t% s")
-     (todo . " %i %-12:c %b")
-     (tags . " %i %-12:c%? b")
-     (search . " %i %-12:c"))))
+    ((agenda . "  %?-12t% s%? b")
+     (todo . "  %? b")
+     (tags . "  %? b")
+     (search . "  %? b"))))
  '(org-agenda-tags-column 0)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
