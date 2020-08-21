@@ -172,31 +172,23 @@
       ((agenda ""
                ((org-agenda-span
                  (quote day))))
-       (todo "TODO"
+       (tags "*"
              ((org-agenda-overriding-header "Inbox:")
               (org-agenda-files
                (quote
-                ("~/org/in.org")))
-              (org-agenda-max-entries 10)))
-       (tags "PRIORITY=\"A\""
-             ((org-agenda-overriding-header "Priority tasks:")
-              (org-agenda-skip-function
-               (quote
-                (org-agenda-skip-entry-if
-                 (quote todo)
-                 (quote done))))))
-       (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE"
+                ("~/org/in.org")))))
+       (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE|+CATEGORY=\"Standalone\"+LEVEL=2-SOMEDAY-MAYBE"
                   ((org-agenda-overriding-header "Next actions:")
                    (org-agenda-skip-function
                     (quote
                      (or
                       (air/org-skip-subtree-if-habit)
-                      (air/org-skip-subtree-if-priority 65)
                       (pjs/org-skip-subtree-if-project)
                       (org-agenda-skip-if nil
                                           (quote
                                            (scheduled deadline))))))
-                   (org-agenda-max-entries 10)))
+                   (org-agenda-max-entries 10)
+                   (org-agenda-prefix-format "  [%b] ")))
        (stuck ""
               ((org-agenda-prefix-format "  ")
                (org-agenda-sorting-strategy
