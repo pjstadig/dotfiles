@@ -6,6 +6,8 @@
  '(auth-sources (quote ("~/.netrc.gpg")))
  '(auto-save-visited-file-name t)
  '(backup-directory-alist (quote (("." . "~/.emacs.d/backups"))))
+ '(calendar-latitude 38.0718912)
+ '(calendar-longitude -78.7225072)
  '(checkdoc-force-docstrings-flag nil)
  '(cider-auto-jump-to-error nil)
  '(cider-auto-select-error-buffer nil)
@@ -150,6 +152,7 @@
  '(linum-format "%d ")
  '(load-prefer-newer t)
  '(mouse-yank-at-point t)
+ '(org-agenda-breadcrumbs-separator "/")
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
    (quote
@@ -159,39 +162,32 @@
        (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<now>\"|-SOMEDAY-MAYBE+SCHEDULED<=\"<now>\"|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<now>\""
                   ((org-agenda-overriding-header "Next actions"))))
       nil)
-     ("i" "Inbox & someday/maybe"
-      ((tags "LEVEL=1"
-             ((org-agenda-files
-               (quote
-                ("~/org/in.org")))
-              (org-agenda-overriding-header "Inbox")))
-       (tags-todo "+SOMEDAY+MAYBE"
-                  ((org-agenda-overriding-header "Someday/maybe"))))
-      nil)
      ("d" "Daily agenda and all TODOs"
       ((agenda ""
                ((org-agenda-span
-                 (quote day))))
-       (tags "*"
-             ((org-agenda-overriding-header "Inbox:")
-              (org-agenda-files
-               (quote
-                ("~/org/in.org")))))
-       (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE|+CATEGORY=\"Standalone\"+LEVEL=2-SOMEDAY-MAYBE"
+                 (quote day))
+                (org-agenda-skip-function
+                 (quote
+                  (pjs/org-agenda-skip-subtree-if
+                   (quote tag)
+                   "NOTE")))))
+       (tags "+FLAGGED|CATEGORY=\"IN\""
+             ((org-agenda-overriding-header "Inbox:")))
+       (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE"
                   ((org-agenda-overriding-header "Next actions:")
                    (org-agenda-skip-function
                     (quote
                      (or
-                      (air/org-skip-subtree-if-habit)
-                      (pjs/org-skip-subtree-if-project)
-                      (org-agenda-skip-if nil
-                                          (quote
-                                           (scheduled deadline))))))
-                   (org-agenda-max-entries 10)
-                   (org-agenda-prefix-format "  [%b] ")))
+                      (pjs/org-agenda-skip-subtree-if
+                       (quote habit))
+                      (pjs/org-agenda-skip-subtree-if
+                       (quote project))
+                      (pjs/org-agenda-skip-entry-if
+                       (quote scheduled)
+                       (quote deadline)))))
+                   (org-agenda-max-entries 10)))
        (stuck ""
-              ((org-agenda-prefix-format "  ")
-               (org-agenda-sorting-strategy
+              ((org-agenda-sorting-strategy
                 (quote
                  (user-defined-up alpha-up)))
                (org-agenda-cmp-user-defined
@@ -203,10 +199,10 @@
                (quote
                 ("~/org/read.org")))
               (org-agenda-prefix-format "  ")
-              (org-agenda-max-entries 10))))
-      ((org-agenda-tag-filter-preset
-        (quote
-         ("-NOTE")))))
+              (org-agenda-max-entries 10)))
+       (tags "CLOSED<\"<-30d>\""
+             ((org-agenda-overriding-header "Entries to be archived"))))
+      nil)
      ("#" "Stuck projects" stuck ""
       ((org-agenda-overriding-header "Stuck projects:")
        (org-agenda-prefix-format "  ")
@@ -219,14 +215,15 @@
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/in.org" "~/org/tasks.org" "~/org/projects.org" "~/org/someday-maybe.org" "~/org/notes.org")))
+    ("~/org/in.org" "~/org/tasks.org" "~/org/projects.org" "~/org/someday-maybe.org" "~/org/notes.org" "~/org/not-orgzly/habits.org" "~/org/journal.org")))
+ '(org-agenda-insert-diary-strategy (quote date-tree-last))
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
    (quote
-    ((agenda . "  %?-12t% s%? b")
-     (todo . "  %? b")
-     (tags . "  %? b")
-     (search . "  %? b"))))
+    ((agenda . "  %?-12t% s%?b")
+     (todo . "  %?b")
+     (tags . "  %?b")
+     (search . "  %?b"))))
  '(org-agenda-tags-column 0)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-archive-file-header-format "")
