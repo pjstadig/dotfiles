@@ -1,5 +1,5 @@
 (require 'org)
-(require 'org-drill)
+(require 'pjs-org-drill)
 (require 'pjs-org-cosmetics)
 
 (defun pjs/org-agenda-skip-entry-if (&rest conditions)
