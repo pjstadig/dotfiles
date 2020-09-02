@@ -151,6 +151,7 @@
  '(inhibit-startup-screen t)
  '(linum-format "%d ")
  '(load-prefer-newer t)
+ '(menu-bar-mode nil)
  '(mouse-yank-at-point t)
  '(org-agenda-breadcrumbs-separator "/")
  '(org-agenda-compact-blocks t)
@@ -419,12 +420,14 @@
      (clojure-test-ns-segment-position . 1))))
  '(save-interprogram-paste-before-kill t)
  '(save-place-file "~/.emacs.d/places")
+ '(scroll-bar-mode nil)
  '(sh-basic-offset 2)
  '(show-paren-delay 0.25)
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
    (quote
     (pjs/configure-text-mode-fill-column writegood-mode flyspell-mode text-mode-hook-identify)))
+ '(tool-bar-mode nil)
  '(visible-bell t)
  '(whitespace-line-column nil)
  '(whitespace-style

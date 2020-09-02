@@ -1,6 +1,3 @@
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
