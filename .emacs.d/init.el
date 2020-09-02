@@ -1,17 +1,6 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
 (load custom-file)
 
-(defun pjs/add-eval-buffer-binding ()
-  (local-set-key (kbd "C-c C-k") 'eval-buffer))
-
-(add-hook 'clojure-mode-hook 'paredit-mode)
-(add-hook 'clojure-mode-hook 'eldoc-mode)
-
-(add-hook 'visual-fill-column-mode-hook 'visual-line-mode)
-(add-hook 'markdown-mode-hook 'visual-fill-column-mode)
-(add-hook 'markdown-mode-hook 'variable-pitch-mode)
-(add-hook 'markdown-mode-hook 'typo-mode)
-
 ;; Setup package
 (require 'package)
 (add-to-list 'package-archives
@@ -83,13 +72,6 @@ story id to generate and insert a url to the story."
 (use-package org-autolist
   :ensure t)
 (use-package org-drill
-  :ensure t)
-(use-package flycheck-clj-kondo
-  :ensure t)
-(use-package clojure-mode
-  :ensure t
-  :config (require 'flycheck-clj-kondo))
-(use-package cider
   :ensure t)
 (use-package company
   :ensure t)
