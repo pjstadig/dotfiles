@@ -125,8 +125,6 @@ story id to generate and insert a url to the story."
 (use-package typo
   :ensure t)
 (require 'org-agenda)
-;; (use-package org-bullets
-;;   :ensure t)
 (use-package pdf-tools
   :ensure t
   :config
