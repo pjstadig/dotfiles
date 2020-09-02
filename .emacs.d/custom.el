@@ -186,13 +186,13 @@
                        (quote scheduled)
                        (quote deadline)))))
                    (org-agenda-max-entries 10)))
-       (stuck ""
-              ((org-agenda-sorting-strategy
-                (quote
-                 (user-defined-up alpha-up)))
-               (org-agenda-cmp-user-defined
-                (quote pjs/org-agenda-sort-created))
-               (org-agenda-max-entries 10)))
+       (tags-todo "-CANCELLED/!"
+                  ((org-agenda-overriding-header "Stuck projects")
+                   (org-agenda-skip-function
+                    (quote bh/skip-non-stuck-projects))
+                   (org-agenda-sorting-strategy
+                    (quote
+                     (category-keep)))))
        (tags "*"
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-files
@@ -215,7 +215,7 @@
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/in.org" "~/org/tasks.org" "~/org/projects.org" "~/org/someday-maybe.org" "~/org/notes.org" "~/org/not-orgzly/habits.org" "~/org/journal.org")))
+    ("~/org/in.org" "~/org/tasks.org" "~/org/projects.org" "~/org/someday-maybe.org" "~/org/not-orgzly/notes.org" "~/org/not-orgzly/habits.org" "~/org/journal.org")))
  '(org-agenda-insert-diary-strategy (quote date-tree-last))
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
@@ -238,13 +238,13 @@
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
-:END:" :prepend t)
+:END:")
      ("p" "project" entry
       (file "~/org/projects.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
-:END:" :prepend t :jump-to-captured t)
+:END:")
      ("n" "note" entry
       (file "~/org/notes.org")
       "* %? :NOTE:
@@ -256,7 +256,7 @@
       "* %? %a
 :PROPERTIES:
 :CREATED: %U
-:END:")
+:END:" :immediate-finish t)
      ("z" "org-protocol-quote" entry
       (file+function "~/org/notes.org" pjs/org-capture-to-heading)
       "* %:description :NOTE:
@@ -266,7 +266,7 @@
 #+BEGIN_QUOTE
 %i
 #+END_QUOTE
-%?")
+%?" :immediate-finish t)
      ("j" "journal entries")
      ("jj" "plain journal entry" entry
       (file+olp+datetree "~/org/journal.org")
@@ -284,7 +284,9 @@
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
+ '(org-drill-left-cloze-delimiter "{")
  '(org-drill-question-tag "NOTE")
+ '(org-drill-right-cloze-delimiter "}")
  '(org-drill-save-buffers-after-drill-sessions-p t)
  '(org-drill-scope (quote ("~/org/notes.org")))
  '(org-edit-src-content-indentation 0)
@@ -328,7 +330,12 @@
      "")))
  '(org-tag-alist
    (quote
-    (("NOTE" . 110)
+    (("WAITING" . 119)
+     ("HOLD" . 104)
+     ("PERSONAL" . 80)
+     ("WORK" . 87)
+     ("NOTE" . 110)
+     ("CANCELLED" . 99)
      ("SOMEDAY" . 115)
      ("MAYBE" . 109)
      ("FLAGGED" . 63))))
@@ -342,12 +349,35 @@
      ("WAITING" :foreground "orange" :weight bold)
      ("HOLD" :foreground "magenta" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
-     ("MEETING" :foreground "forest green" :weight bold)
-     ("PHONE" :foreground "forest green" :weight bold))))
+     ("MEETING" :foreground "forest green" :weight bold))))
  '(org-todo-keywords
    (quote
     ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAITING(w@/!)" "|" "CANCELLED(c@/!)"))))
+     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "MEETING"))))
+ '(org-todo-state-tags-triggers
+   (quote
+    (("CANCELLED"
+      ("CANCELLED" . t))
+     ("WAITING"
+      ("WAITING" . t))
+     ("HOLD"
+      ("WAITING")
+      ("HOLD" . t))
+     (done
+      ("WAITING")
+      ("HOLD"))
+     ("TODO"
+      ("WAITING")
+      ("CANCELLED")
+      ("HOLD"))
+     ("NEXT"
+      ("WAITING")
+      ("CANCELLED")
+      ("HOLD"))
+     ("DONE"
+      ("WAITING")
+      ("CANCELLED")
+      ("HOLD")))))
  '(org-treat-S-cursor-todo-selection-as-state-change nil)
  '(org-use-speed-commands t)
  '(org-use-sub-superscripts (quote {}))

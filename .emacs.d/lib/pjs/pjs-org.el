@@ -85,11 +85,6 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
 (defun pjs/org-is-habit-p ()
   (string= (org-entry-get nil "STYLE") "habit"))
 
-(defun pjs/org-is-project-p ()
-  "Skip an agenda entry if it is a project."
-  (and (string= (org-entry-get nil "CATEGORY") "Projects")
-       (= (org-outline-level) 1)))
-
 (defun pjs/org-has-priority-p (priority)
   ;; Source: https://blog.aaronbieber.com/2016/09/24/an-agenda-for-life-with-org-mode.html
   (let ((pri-value (* 1000 (- org-lowest-priority priority)))
@@ -142,5 +137,40 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
                (org-drill-hide-region (match-beginning 0) (match-end 0)))))
 
          (advice-add 'org-drill-hide-comments :override 'pjs/org-drill-hide-comments)))
+
+(defun bh/is-project-p ()
+  "Any task with a todo keyword subtask"
+  (save-restriction
+    (widen)
+    (let ((has-subtask)
+          (subtree-end (save-excursion (org-end-of-subtree t)))
+          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+      (save-excursion
+        (forward-line 1)
+        (while (and (not has-subtask)
+                    (< (point) subtree-end)
+                    (re-search-forward "^\*+ " subtree-end t))
+          (when (member (org-get-todo-state) org-todo-keywords-1)
+            (setq has-subtask t))))
+      (and is-a-task has-subtask))))
+
+(defun bh/skip-non-stuck-projects ()
+  "Skip trees that are not stuck projects"
+  ;; (bh/list-sublevels-for-projects-indented)
+  (save-restriction
+    (widen)
+    (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+      (if (bh/is-project-p)
+          (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+                 (has-next ))
+            (save-excursion
+              (forward-line 1)
+              (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
+                (unless (member "WAITING" (org-get-tags-at))
+                  (setq has-next t))))
+            (if has-next
+                next-headline
+              nil)) ; a stuck project, has subtasks but no next task
+        next-headline))))
 
 (provide 'pjs-org)

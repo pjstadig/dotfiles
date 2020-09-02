@@ -81,6 +81,8 @@ story id to generate and insert a url to the story."
   (pinentry-start))
 (use-package exwm
   :ensure t)
+(use-package org
+  :ensure t)
 (use-package org-autolist
   :ensure t)
 (use-package org-drill
@@ -123,19 +125,21 @@ story id to generate and insert a url to the story."
 (use-package typo
   :ensure t)
 (require 'org-agenda)
-(use-package org-bullets
-  :ensure t)
-(use-package zk
-  :load-path "lib/zk-0.1")
-(use-package pjs
-  :load-path "lib/pjs")
+;; (use-package org-bullets
+;;   :ensure t)
 (use-package pdf-tools
   :ensure t
   :config
   (pdf-tools-install))
+
+;; Local packages
 (use-package cljstyle-mode
   :load-path "lib/cljstyle-mode-0.1"
   :bind (("C-c C-n" . cljstyle)))
+(use-package pjs
+  :load-path "lib/pjs")
+(use-package zk
+  :load-path "lib/zk-0.1")
 
 ;; Configuration
 (defgroup pjs nil
@@ -318,6 +322,7 @@ story id to generate and insert a url to the story."
           (kill-buffer))))))
 
 (global-set-key (kbd "C-c a") 'pjs/org-agenda)
+(global-set-key (kbd "C-c l") 'org-switchb)
 (global-set-key (kbd "C-c b") 'org-switchb)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c D") 'er-delete-file-and-buffer)
