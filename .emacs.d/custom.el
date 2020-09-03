@@ -31,7 +31,7 @@
  '(emacs-lisp-docstring-fill-column t)
  '(emacs-lisp-mode-hook
    (quote
-    (pjs/add-eval-buffer-binding eldoc-mode checkdoc-minor-mode paredit-mode)))
+    (eldoc-mode checkdoc-minor-mode pjs/add-eval-buffer-binding paredit-mode)))
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "JAVA_HOME" "ASPELL_CONF")))
  '(exwm-init-hook (quote (exwm-randr--init pjs/start-initial-programs)))
  '(exwm-input-prefix-keys
@@ -289,7 +289,7 @@
  '(org-drill-question-tag "NOTE")
  '(org-drill-right-cloze-delimiter "}")
  '(org-drill-save-buffers-after-drill-sessions-p t)
- '(org-drill-scope (quote ("~/org/notes.org")))
+ '(org-drill-scope (quote ("~/org/not-orgzly/notes.org")))
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)

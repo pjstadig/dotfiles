@@ -69,7 +69,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
          (and (memq 'nothabit conditions)
               (not (pjs/org-is-habit-p)))
          (and (memq 'project conditions)
-              (pjs/org-is-project-p))
+              (bh/is-project-p))
          (and (memq 'notproject conditions)
               (not (pjs/org-is-project-p)))
          (and (setq m (memq 'priority conditions))

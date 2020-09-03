@@ -1,5 +1,6 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file)
+(when (file-exists-p custom-file)
+  (load custom-file))
 
 ;; Setup package
 (require 'package)
@@ -8,7 +9,7 @@
              :append)
 (package-initialize)
 
-(when (not (package-installed-p 'use-package))
+(unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
@@ -174,12 +175,13 @@ story id to generate and insert a url to the story."
 (defun pjs/reset ()
   (interactive)
   (byte-recompile-file (concat user-emacs-directory "init.el") nil 0)
-  (load (concat user-emacs-directory "init.el"))
   (when (file-exists-p pjs/system-file)
-    (byte-recompile-file pjs/system-file nil 0)
-    (load pjs/system-file))
+    (byte-recompile-file pjs/system-file nil 0))
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
   (byte-recompile-directory (concat user-emacs-directory "lib") 0)
+  (load (concat user-emacs-directory "init.el"))
+  (when (file-exists-p pjs/system-file)
+    (load pjs/system-file))
   (when pjs/exwm-configured-p
     (exwm-reset)))
 
