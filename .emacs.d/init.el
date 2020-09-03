@@ -110,12 +110,12 @@ story id to generate and insert a url to the story."
 
 ;; Local packages
 (use-package cljstyle-mode
-  :load-path "lib/cljstyle-mode-0.1"
+  :load-path "lisp/cljstyle-mode-0.1"
   :bind (("C-c C-n" . cljstyle)))
 (use-package pjs
-  :load-path "lib/pjs")
+  :load-path "lisp/pjs")
 (use-package zk
-  :load-path "lib/zk-0.1")
+  :load-path "lisp/zk-0.1")
 
 ;; Configuration
 (defgroup pjs nil
@@ -178,7 +178,7 @@ story id to generate and insert a url to the story."
   (when (file-exists-p pjs/system-file)
     (byte-recompile-file pjs/system-file nil 0))
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
-  (byte-recompile-directory (concat user-emacs-directory "lib") 0)
+  (byte-recompile-directory (concat user-emacs-directory "lisp") 0)
   (load (concat user-emacs-directory "init.el"))
   (when (file-exists-p pjs/system-file)
     (load pjs/system-file))
