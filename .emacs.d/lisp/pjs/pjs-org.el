@@ -1,5 +1,4 @@
 (require 'org)
-(require 'pjs-org-drill)
 (require 'pjs-org-cosmetics)
 
 (defun pjs/org-agenda-skip-entry-if (&rest conditions)
@@ -71,7 +70,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
          (and (memq 'project conditions)
               (bh/is-project-p))
          (and (memq 'notproject conditions)
-              (not (pjs/org-is-project-p)))
+              (not (bh/is-project-p)))
          (and (setq m (memq 'priority conditions))
               (pjs/org-has-priority-p (nth 1 m)))
          (and (setq m (memq 'notpriority conditions))

@@ -1,5 +1,3 @@
-(require 'org)
-
 ;; heading bullets
 (defface org-level-1-bullet '((t :inherit (org-level-1 fixed-pitch)))
   "Face used for level 1 headline bullets."
