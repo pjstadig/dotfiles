@@ -383,7 +383,7 @@
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
+    (markdown cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
     (flyspell-prog-mode linum-mode pjs/prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
@@ -424,7 +424,7 @@
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
    (quote
-    (pjs/configure-text-mode-fill-column writegood-mode flyspell-mode text-mode-hook-identify)))
+    (pjs/configure-text-mode-fill-column flyspell-mode text-mode-hook-identify)))
  '(tool-bar-mode nil)
  '(visible-bell t)
  '(whitespace-line-column nil)

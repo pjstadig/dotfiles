@@ -1,5 +1,7 @@
 (require 'org)
-(require 'pjs-org-cosmetics)
+(require 'org-agenda)
+(require 'org-capture)
+(require 'org-drill)
 
 (defun pjs/org-agenda-skip-entry-if (&rest conditions)
   (pjs/org-agenda-skip-if nil conditions))
@@ -165,7 +167,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
             (save-excursion
               (forward-line 1)
               (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
-                (unless (member "WAITING" (org-get-tags-at))
+                (unless (member "WAITING" (org-get-tags))
                   (setq has-next t))))
             (if has-next
                 next-headline

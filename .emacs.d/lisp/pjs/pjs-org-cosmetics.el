@@ -1,4 +1,6 @@
-;; heading bullets
+;;; Heading bullets
+;; Use fancy bullets for headings, and make the whole prefix fixed-pitch so headings
+;; indent consistently.
 (defface org-level-1-bullet '((t :inherit (org-level-1 fixed-pitch)))
   "Face used for level 1 headline bullets."
   :group 'org-faces)
@@ -79,7 +81,9 @@
     (1 'org-level-8-bullet)
     (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "◉"))))))
 
-;; plain list bullets
+;;; Plain list bullets
+;; Use a fancy bullet for '*', and make the whole prefix fixed-pitch so plain lists indent
+;; consistently
 (font-lock-add-keywords
  'org-mode
  '(("^ *\\(?1:-\\) "
@@ -108,7 +112,9 @@
     (0 'fixed-pitch)
     (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-;; space after checkbox
+;;; Checkbox
+;; Make the space after a checkbox fixed-pitch, so plain lists with checkboxes indent
+;; consistently.
 (font-lock-add-keywords
  'org-mode
  '(("[-+*.)] \\[[ X-]\\]\\( \\)"
