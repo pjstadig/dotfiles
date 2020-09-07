@@ -238,12 +238,6 @@
 :PROPERTIES:
 :CREATED: %U
 :END:")
-     ("p" "project" entry
-      (file "~/org/projects.org")
-      "* TODO %?
-:PROPERTIES:
-:CREATED: %U
-:END:")
      ("n" "note" entry
       (file "~/org/not-orgzly/notes.org")
       "* %? :NOTE:
