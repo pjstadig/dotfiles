@@ -288,6 +288,7 @@
  '(org-fast-tag-selection-single-key t)
  '(org-footnote-auto-adjust t)
  '(org-footnote-section nil)
+ '(org-goto-interface (quote outline-path-completion))
  '(org-habit-following-days 1)
  '(org-habit-graph-column 75)
  '(org-habit-preceding-days 14)
