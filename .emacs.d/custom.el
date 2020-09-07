@@ -209,7 +209,19 @@
         (quote
          (user-defined-up alpha-up)))
        (org-agenda-cmp-user-defined
-        (quote pjs/org-agenda-sort-created)))))))
+        (quote pjs/org-agenda-sort-created))))
+     ("t" "Tasks" tags-todo "-someday-toread-towatch-SOMEDAY-MAYBE-TODO=\"NEXT\"-Category=\"Standalone\""
+      ((org-agenda-skip-function
+        (quote
+         (or
+          (pjs/org-agenda-skip-entry-if
+           (quote habit))
+          (pjs/org-agenda-skip-entry-if
+           (quote project))
+          (pjs/org-agenda-skip-entry-if
+           (quote scheduled)
+           (quote deadline)))))
+       (org-agenda-overriding-header "Tasks"))))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
