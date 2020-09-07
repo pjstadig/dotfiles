@@ -245,7 +245,7 @@
 :CREATED: %U
 :END:")
      ("n" "note" entry
-      (file "~/org/notes.org")
+      (file "~/org/not-orgzly/notes.org")
       "* %? :NOTE:
 :PROPERTIES:
 :CREATED: %U
@@ -257,7 +257,7 @@
 :CREATED: %U
 :END:" :immediate-finish t)
      ("z" "org-protocol-quote" entry
-      (file+function "~/org/notes.org" pjs/org-capture-to-heading)
+      (file+function "~/org/not-orgzly/notes.org" pjs/org-capture-to-heading)
       "* %:description :NOTE:
 :PROPERTIES:
 :CREATED: %U
