@@ -144,7 +144,6 @@
   :hook (emacs-lisp-mode . pjs-add-eval-buffer-binding))
 (use-package pjs-org
   :load-path "lisp/pjs"
-  :after (org)
   :bind (("C-c a" . pjs-org-agenda)))
 (use-package pjs-org-cosmetics
   :load-path "lisp/pjs"
