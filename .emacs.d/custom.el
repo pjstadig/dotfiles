@@ -31,7 +31,7 @@
  '(emacs-lisp-docstring-fill-column t)
  '(emacs-lisp-mode-hook (quote (eldoc-mode checkdoc-minor-mode paredit-mode)))
  '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "JAVA_HOME" "ASPELL_CONF")))
- '(exwm-init-hook (quote (exwm-randr--init pjs/start-initial-programs)))
+ '(exwm-init-hook (quote (exwm-randr--init pjs-start-initial-programs)))
  '(exwm-input-prefix-keys
    (quote
     ("" "" ""
@@ -136,7 +136,7 @@
       workspace 1))))
  '(exwm-randr-workspace-monitor-plist (quote (9 "HDMI1")))
  '(exwm-replace t)
- '(exwm-update-class-hook (quote (pjs/set-exwm-buffer-name-to-class)))
+ '(exwm-update-class-hook (quote (pjs-set-exwm-buffer-name-to-class)))
  '(exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
  '(exwm-workspace-number 10)
  '(exwm-workspace-show-all-buffers nil)
@@ -167,7 +167,7 @@
                  (quote day))
                 (org-agenda-skip-function
                  (quote
-                  (pjs/org-agenda-skip-subtree-if
+                  (pjs-org-agenda-skip-subtree-if
                    (quote tag)
                    "NOTE")))))
        (tags "+FLAGGED|CATEGORY=\"IN\""
@@ -177,11 +177,11 @@
                    (org-agenda-skip-function
                     (quote
                      (or
-                      (pjs/org-agenda-skip-subtree-if
+                      (pjs-org-agenda-skip-subtree-if
                        (quote habit))
-                      (pjs/org-agenda-skip-subtree-if
+                      (pjs-org-agenda-skip-subtree-if
                        (quote project))
-                      (pjs/org-agenda-skip-entry-if
+                      (pjs-org-agenda-skip-entry-if
                        (quote scheduled)
                        (quote deadline)))))
                    (org-agenda-max-entries 10)))
@@ -196,7 +196,7 @@
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-files
                (quote
-                ("~/org/read.org")))
+                ("~/org/orgzly/read.org")))
               (org-agenda-prefix-format "  ")
               (org-agenda-max-entries 10)))
        (tags "CLOSED<\"<-30d>\""
@@ -209,16 +209,16 @@
         (quote
          (user-defined-up alpha-up)))
        (org-agenda-cmp-user-defined
-        (quote pjs/org-agenda-sort-created))))
+        (quote pjs-org-agenda-sort-created))))
      ("t" "Tasks" tags-todo "-someday-toread-towatch-SOMEDAY-MAYBE-TODO=\"NEXT\"-Category=\"Standalone\""
       ((org-agenda-skip-function
         (quote
          (or
-          (pjs/org-agenda-skip-entry-if
+          (pjs-org-agenda-skip-entry-if
            (quote habit))
-          (pjs/org-agenda-skip-entry-if
+          (pjs-org-agenda-skip-entry-if
            (quote project))
-          (pjs/org-agenda-skip-entry-if
+          (pjs-org-agenda-skip-entry-if
            (quote scheduled)
            (quote deadline)))))
        (org-agenda-overriding-header "Tasks"))))))
@@ -226,7 +226,7 @@
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/in.org" "~/org/tasks.org" "~/org/projects.org" "~/org/someday-maybe.org" "~/org/not-orgzly/notes.org" "~/org/not-orgzly/habits.org" "~/org/journal.org")))
+    ("~/org/in.org" "~/org/orgzly/orgzly.org" "~/org/orgzly/tasks.org" "~/org/orgzly/projects.org" "~/org/someday-maybe.org" "~/org/notes.org" "~/org/habits.org" "~/org/journal.org" "~/org/orgzly/schedule.org")))
  '(org-agenda-insert-diary-strategy (quote date-tree-last))
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
@@ -237,11 +237,12 @@
      (search . "  %?b"))))
  '(org-agenda-tags-column 0)
  '(org-agenda-tags-todo-honor-ignore-options t)
+ '(org-agenda-window-setup (quote only-window))
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
  '(org-attach-directory "attachments/")
  '(org-attach-id-dir "attachments/")
- '(org-capture-prepare-finalize-hook (quote (pjs/ensure-ending-newline)))
+ '(org-capture-prepare-finalize-hook (quote (pjs-ensure-ending-newline)))
  '(org-capture-templates
    (quote
     (("t" "todo" entry
@@ -251,19 +252,19 @@
 :CREATED: %U
 :END:")
      ("n" "note" entry
-      (file "~/org/not-orgzly/notes.org")
+      (file "~/org/notes.org")
       "* %? :NOTE:
 :PROPERTIES:
 :CREATED: %U
 :END:")
      ("y" "org-protocol-link" entry
-      (file "~/org/read.org")
+      (file "~/org/orgzly/read.org")
       "* %? %a
 :PROPERTIES:
 :CREATED: %U
 :END:" :immediate-finish t)
      ("z" "org-protocol-quote" entry
-      (file+function "~/org/not-orgzly/notes.org" pjs/org-capture-to-heading)
+      (file+function "~/org/notes.org" pjs-org-capture-to-heading)
       "* %:description :NOTE:
 :PROPERTIES:
 :CREATED: %U
@@ -273,19 +274,25 @@
 #+END_QUOTE
 %?" :immediate-finish t)
      ("j" "journal entries")
-     ("jj" "plain journal entry" entry
+     ("jj" "Journal to file" entry
       (file+olp+datetree "~/org/journal.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
 :END:")
-     ("jc" "Clubhouse journal" entry
-      (file+olp+datetree "~/org/journal.org")
-      "**** Reviews
-**** Stories
-**** PRs
-**** Meetings
-**** Other" :immediate-finish t :jump-to-captured t))))
+     ("jc" "Journal to clocked entry" entry
+      (function pjs-org-capture-journal)
+      "* %?
+:PROPERTIES:
+:CREATED: %T
+:END:")
+     ("v" "Event" entry
+      (file "~/org/orgzly/schedule.org")
+      "* %^{Description}
+%^T
+:PROPERTIES:
+:CREATED: %U
+:END:" :immediate-finish t))))
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
@@ -293,7 +300,7 @@
  '(org-drill-question-tag "NOTE")
  '(org-drill-right-cloze-delimiter "}")
  '(org-drill-save-buffers-after-drill-sessions-p t)
- '(org-drill-scope (quote ("~/org/not-orgzly/notes.org")))
+ '(org-drill-scope (quote ("~/org/notes.org")))
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
@@ -393,7 +400,7 @@
     (markdown cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
  '(prog-mode-hook
    (quote
-    (flyspell-prog-mode linum-mode pjs/prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
+    (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
  '(require-final-newline t)
  '(safe-local-variable-values
    (quote
@@ -431,7 +438,7 @@
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
    (quote
-    (pjs/configure-text-mode-fill-column flyspell-mode text-mode-hook-identify)))
+    (pjs-configure-text-mode-fill-column flyspell-mode text-mode-hook-identify)))
  '(tool-bar-mode nil)
  '(visible-bell t)
  '(whitespace-line-column nil)

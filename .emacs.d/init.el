@@ -1,6 +1,4 @@
 (setq custom-file (concat user-emacs-directory "custom.el"))
-(when (file-exists-p custom-file)
-  (load custom-file))
 
 ;;; Setup package
 (require 'package)
@@ -139,24 +137,24 @@
   :hook (org-mode . zk-navigate-keys))
 
 ;; Configuration
-(global-set-key (kbd "C-c a") 'pjs/org-agenda)
+(global-set-key (kbd "C-c a") 'pjs-org-agenda)
 (global-set-key (kbd "C-c l") 'org-switchb)
 (global-set-key (kbd "C-c b") 'org-switchb)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c D") 'er-delete-file-and-buffer)
-(global-set-key (kbd "C-c e n") 'pjs/restart-network-manager)
-(global-set-key (kbd "C-c e s") 'pjs/suspend)
-(global-set-key (kbd "C-c e l") 'pjs/lock-screen)
+(global-set-key (kbd "C-c e n") 'pjs-restart-network-manager)
+(global-set-key (kbd "C-c e s") 'pjs-suspend)
+(global-set-key (kbd "C-c e l") 'pjs-lock-screen)
 (global-set-key (kbd "C-c i") 'imenu)
 (global-set-key (kbd "C-c C-i") 'imenu)
 (global-set-key (kbd "C-c o o") 'org-cycle-agenda-files)
 ;; (global-set-key (kbd "C-c o a") 'bh/show-org-agenda)
-(global-set-key (kbd "C-c r") 'pjs/revert)
-(global-set-key (kbd "C-c u") 'pjs/pop-read-queue)
+(global-set-key (kbd "C-c r") 'pjs-revert)
+(global-set-key (kbd "C-c u") 'pjs-pop-read-queue)
 ;; (global-set-key (kbd "C-c t") 'bh/org-todo)
 ;; (global-set-key (kbd "C-c w") 'bh/widen)
 (global-set-key (kbd "C-c z z") 'zk)
-(global-set-key (kbd "<XF86Tools>") 'pjs/show-xfce-settings)
+(global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
 
 ;;; Copied from better-defaults package.
@@ -184,7 +182,10 @@
   (server-start))
 
 (with-eval-after-load 'pjs
-  (when (file-exists-p pjs/system-file)
-    (load pjs/system-file)))
+  (when (file-exists-p pjs-system-file)
+    (load pjs-system-file)))
 
 (put 'narrow-to-region 'disabled nil)
+
+(when (file-exists-p custom-file)
+  (load custom-file))

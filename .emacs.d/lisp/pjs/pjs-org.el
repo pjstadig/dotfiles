@@ -1,15 +1,16 @@
 (require 'org)
 (require 'org-agenda)
 (require 'org-capture)
+(require 'org-clock)
 (require 'org-drill)
 
-(defun pjs/org-agenda-skip-entry-if (&rest conditions)
-  (pjs/org-agenda-skip-if nil conditions))
+(defun pjs-org-agenda-skip-entry-if (&rest conditions)
+  (pjs-org-agenda-skip-if nil conditions))
 
-(defun pjs/org-agenda-skip-subtree-if (&rest conditions)
-  (pjs/org-agenda-skip-if 't conditions))
+(defun pjs-org-agenda-skip-subtree-if (&rest conditions)
+  (pjs-org-agenda-skip-if 't conditions))
 
-(defun pjs/org-agenda-skip-if (subtree conditions)
+(defun pjs-org-agenda-skip-if (subtree conditions)
   "Checks current entity for CONDITIONS.
 If SUBTREE is non-nil, the entire subtree is checked.  Otherwise, only
 the entry (i.e. the text before the next heading) is checked.
@@ -62,37 +63,37 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
          m)
     (and
      (or (and (setq m (memq 'tag conditions))
-              (pjs/org-has-tag-p (nth 1 m)))
+              (pjs-org-has-tag-p (nth 1 m)))
          (and (setq m (memq 'nottag conditions))
-              (not (pjs/org-has-tag-p (nth 1 m))))
+              (not (pjs-org-has-tag-p (nth 1 m))))
          (and (memq 'habit conditions)
-              (pjs/org-is-habit-p))
+              (pjs-org-is-habit-p))
          (and (memq 'nothabit conditions)
-              (not (pjs/org-is-habit-p)))
+              (not (pjs-org-is-habit-p)))
          (and (memq 'project conditions)
               (bh/is-project-p))
          (and (memq 'notproject conditions)
               (not (bh/is-project-p)))
          (and (setq m (memq 'priority conditions))
-              (pjs/org-has-priority-p (nth 1 m)))
+              (pjs-org-has-priority-p (nth 1 m)))
          (and (setq m (memq 'notpriority conditions))
-              (not (pjs/org-has-priority-p (nth 1 m))))
+              (not (pjs-org-has-priority-p (nth 1 m))))
          (org-agenda-skip-if subtree conditions))
      end)))
 
-(defun pjs/org-has-tag-p (tag)
+(defun pjs-org-has-tag-p (tag)
   (member tag (org-get-tags)))
 
-(defun pjs/org-is-habit-p ()
+(defun pjs-org-is-habit-p ()
   (string= (org-entry-get nil "STYLE") "habit"))
 
-(defun pjs/org-has-priority-p (priority)
+(defun pjs-org-has-priority-p (priority)
   ;; Source: https://blog.aaronbieber.com/2016/09/24/an-agenda-for-life-with-org-mode.html
   (let ((pri-value (* 1000 (- org-lowest-priority priority)))
         (pri-current (org-get-priority (thing-at-point 'line t))))
     (= pri-value pri-current)))
 
-(defun pjs/org-capture-to-heading ()
+(defun pjs-org-capture-to-heading ()
   ;; :annotation is the link
   (let* ((link (plist-get org-capture-plist :annotation))
          (heading (org-find-exact-headline-in-buffer link (current-buffer) t)))
@@ -103,7 +104,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
         (org-insert-heading nil nil t)
         (insert link)))))
 
-(defun pjs/ensure-ending-newline ()
+(defun pjs-ensure-ending-newline ()
   "Add a newline at the end of the buffer if there isn't any."
   ;; from https://emacs.stackexchange.com/questions/38754/capture-template-like-org-journal
   (save-excursion
@@ -114,7 +115,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
             (goto-char (point-max))
             (insert "\n"))))))
 
-(defun pjs/org-agenda-sort-created (a b)
+(defun pjs-org-agenda-sort-created (a b)
   (let* ((a-marker (get-text-property 0 'org-marker a))
          (b-marker (get-text-property 0 'org-marker b))
          (created-a (org-entry-get a-marker "CREATED"))
@@ -131,13 +132,13 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
      (t 0))))
 
 (eval-after-load 'org-drill
-  (progn (defun pjs/org-drill-hide-comments ()
+  (progn (defun pjs-org-drill-hide-comments ()
            "Hide comments."
            (save-excursion
              (while (re-search-forward "^#[^+].*$" nil t)
                (org-drill-hide-region (match-beginning 0) (match-end 0)))))
 
-         (advice-add 'org-drill-hide-comments :override 'pjs/org-drill-hide-comments)))
+         (advice-add 'org-drill-hide-comments :override 'pjs-org-drill-hide-comments)))
 
 (defun bh/is-project-p ()
   "Any task with a todo keyword subtask"
@@ -173,5 +174,33 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
                 next-headline
               nil)) ; a stuck project, has subtasks but no next task
         next-headline))))
+
+(defun pjs-org-find-child-heading (child)
+  (save-restriction
+    (widen)
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (found))
+      (while (and (not found)
+                  (< (point) subtree-end)
+                  (outline-next-heading))
+        (setq found (equal (nth 4 (org-heading-components)) child)))
+      found)))
+
+(defun pjs-org-ensure-journal-heading ()
+  (interactive)
+  (when (not (pjs-org-find-child-heading "Journal"))
+    (left-char)
+    (org-insert-subheading '(4))
+    (insert "Journal")
+    (org-set-tags ":JOURNAL:")))
+
+(defun pjs-org-capture-journal ()
+  (if (org-clocking-p)
+      (org-clock-goto)
+    ;; this should be maybe a helm-org function?
+    (org-goto))
+  (pjs-org-ensure-journal-heading)
+  ;;(org-datetree-find-iso-week-create (calendar-current-date) 'subtree-at-point)
+  (org-datetree-find-date-create (calendar-current-date) 'subtree-at-point))
 
 (provide 'pjs-org)
