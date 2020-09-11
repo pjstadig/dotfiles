@@ -193,4 +193,10 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
   ;;(org-datetree-find-iso-week-create (calendar-current-date) 'subtree-at-point)
   (org-datetree-find-date-create (calendar-current-date) 'subtree-at-point))
 
+(defun pjs-org-agenda ()
+  (interactive)
+  (if (get-buffer "*Org Agenda*")
+      (switch-to-buffer "*Org Agenda*")
+    (org-agenda)))
+
 (provide 'pjs-org)

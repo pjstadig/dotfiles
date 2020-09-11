@@ -160,12 +160,6 @@
 ;; C-c [letter] is reserved for users
 ;; <f5> through <f9> are reserved for users
 
-(defun pjs-org-agenda ()
-  (interactive)
-  (if (get-buffer "*Org Agenda*")
-      (switch-to-buffer "*Org Agenda*")
-    (org-agenda)))
-
 (defun er-delete-file-and-buffer ()
   "Kill the current buffer and deletes the file it is visiting."
   (interactive)

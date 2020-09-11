@@ -88,13 +88,20 @@
   :after (org))
 (use-package org
   :ensure t
-  :hook ((org-mode . org-indent-mode)
-         (org-mode . variable-pitch-mode)))
+  :hook ((org-mode . variable-pitch-mode))
+  :bind (("C-c b" . org-switchb)
+         ("C-c c" . org-capture)
+         ("C-c o o" . org-cycle-agenda-files))
+  :custom
+  (org-startup-indented t))
 (use-package org-autolist
   :ensure t
+  :after (org)
   :hook (org-mode . org-autolist-mode))
 (use-package org-drill
   :ensure t
+  :commands org-drill-hide-region
+  :after (org)
   :custom
   (org-drill-left-cloze-delimiter "{")
   (org-drill-question-tag "NOTE")
@@ -126,13 +133,19 @@
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 (use-package pjs
-  :load-path "lisp/pjs")
+  :load-path "lisp/pjs"
+  :bind (("<XF86Tools>" . pjs-show-xfce-settings)
+         ("C-c e s" . pjs-suspend)
+         ("C-c e l" . pjs-lock-screen)
+         ("C-c r" . pjs-revert)
+         ("C-c u" . pjs-pop-read-queue)))
 (use-package pjs-emacs-lisp
   :load-path "lisp/pjs"
   :hook (emacs-lisp-mode . pjs-add-eval-buffer-binding))
 (use-package pjs-org
   :load-path "lisp/pjs"
-  :after (org))
+  :after (org)
+  :bind (("C-c a" . pjs-org-agenda)))
 (use-package pjs-org-cosmetics
   :load-path "lisp/pjs"
   :after (org))
@@ -174,27 +187,15 @@
   (zk-strip-summary-regexp "\\([
         ]\\|^#\\+[[:upper:]_]+:.*$\\|^:[^:]+:.*$\\)")
   :hook (org-mode . zk-navigate-keys)
+  :bind (("C-c z z" . zk))
   :after (org))
 
 ;; Configuration
-(global-set-key (kbd "C-c a") 'pjs-org-agenda)
-(global-set-key (kbd "C-c l") 'org-switchb)
-(global-set-key (kbd "C-c b") 'org-switchb)
-(global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c D") 'er-delete-file-and-buffer)
-(global-set-key (kbd "C-c e n") 'pjs-restart-network-manager)
-(global-set-key (kbd "C-c e s") 'pjs-suspend)
-(global-set-key (kbd "C-c e l") 'pjs-lock-screen)
 (global-set-key (kbd "C-c i") 'imenu)
 (global-set-key (kbd "C-c C-i") 'imenu)
-(global-set-key (kbd "C-c o o") 'org-cycle-agenda-files)
-;; (global-set-key (kbd "C-c o a") 'bh/show-org-agenda)
-(global-set-key (kbd "C-c r") 'pjs-revert)
-(global-set-key (kbd "C-c u") 'pjs-pop-read-queue)
 ;; (global-set-key (kbd "C-c t") 'bh/org-todo)
 ;; (global-set-key (kbd "C-c w") 'bh/widen)
-(global-set-key (kbd "C-c z z") 'zk)
-(global-set-key (kbd "<XF86Tools>") 'pjs-show-xfce-settings)
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
 
 ;;; Copied from better-defaults package.
@@ -229,3 +230,6 @@
 
 (when (file-exists-p custom-file)
   (load custom-file))
+
+(provide 'init)
+;;; init.el ends here
