@@ -133,6 +133,7 @@
   (pinentry-start))
 (use-package pjs
   :load-path "lisp/pjs"
+  :commands (pjs-prog-mode-local-bindings pjs-reset)
   :bind (("<XF86Tools>" . pjs-show-xfce-settings)
          ("C-c e s" . pjs-suspend)
          ("C-c e l" . pjs-lock-screen)
