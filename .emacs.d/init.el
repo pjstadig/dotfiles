@@ -46,7 +46,6 @@
   :ensure t)
 (use-package exec-path-from-shell
   :ensure t
-  :commands exec-path-from-shell-initialize
   :custom
   (exec-path-from-shell-variables '("PATH" "MANPATH" "JAVA_HOME" "ASPELL_CONF"))
   :config
