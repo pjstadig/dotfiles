@@ -2,7 +2,6 @@
 (require 'org-agenda)
 (require 'org-capture)
 (require 'org-clock)
-(require 'org-drill)
 
 (defun pjs-org-agenda-skip-entry-if (&rest conditions)
   (pjs-org-agenda-skip-if nil conditions))
@@ -130,15 +129,6 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
            created-b)
       -1)
      (t 0))))
-
-(eval-after-load 'org-drill
-  (progn (defun pjs-org-drill-hide-comments ()
-           "Hide comments."
-           (save-excursion
-             (while (re-search-forward "^#[^+].*$" nil t)
-               (org-drill-hide-region (match-beginning 0) (match-end 0)))))
-
-         (advice-add 'org-drill-hide-comments :override 'pjs-org-drill-hide-comments)))
 
 (defun bh/is-project-p ()
   "Any task with a todo keyword subtask"

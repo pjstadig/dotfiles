@@ -9,28 +9,10 @@
  '(calendar-latitude 38.0718912)
  '(calendar-longitude -78.7225072)
  '(checkdoc-force-docstrings-flag nil)
- '(cider-auto-jump-to-error nil)
- '(cider-auto-select-error-buffer nil)
- '(cider-auto-select-test-report-buffer nil)
- '(cider-debug-prompt (quote minibuffer))
- '(cider-docview-fill-column 80)
- '(cider-eldoc-display-context-dependent-info t)
- '(cider-jdk-src-paths (quote ("~/.cache/openjdk-8u192b26/")))
- '(cider-preferred-build-tool (quote lein))
- '(cider-prompt-for-symbol nil)
- '(cider-repl-display-help-banner nil)
- '(cider-repl-history-file ".cider-history")
- '(cider-repl-history-size 1000)
- '(cider-repl-pop-to-buffer-on-connect (quote display-only))
- '(cider-repl-print-level 10)
- '(cider-repl-use-pretty-printing t)
- '(cider-save-file-on-load t)
- '(clojure-docstring-fill-column 80)
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(doc-view-continuous t)
  '(emacs-lisp-docstring-fill-column t)
  '(emacs-lisp-mode-hook (quote (eldoc-mode checkdoc-minor-mode paredit-mode)))
- '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "JAVA_HOME" "ASPELL_CONF")))
  '(exwm-init-hook (quote (exwm-randr--init pjs-start-initial-programs)))
  '(exwm-input-prefix-keys
    (quote
@@ -142,9 +124,6 @@
  '(exwm-workspace-show-all-buffers nil)
  '(exwm-workspace-switch-create-limit 10)
  '(fill-column 90)
- '(flycheck-checkers
-   (quote
-    (clj-kondo-edn clj-kondo-cljc clj-kondo-cljs clj-kondo-clj ada-gnat asciidoctor asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint d-dmd dockerfile-hadolint elixir-dogma emacs-lisp erlang-rebar3 erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-megacheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-jscs javascript-standard json-jsonlint json-python-json less less-stylelint llvm-llc lua-luacheck lua perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint markdown-mdl nix rst-sphinx rst ruby-rubocop ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(linum-format "%d ")
@@ -296,11 +275,6 @@
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
- '(org-drill-left-cloze-delimiter "{")
- '(org-drill-question-tag "NOTE")
- '(org-drill-right-cloze-delimiter "}")
- '(org-drill-save-buffers-after-drill-sessions-p t)
- '(org-drill-scope (quote ("~/org/notes.org")))
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
@@ -444,11 +418,7 @@
  '(whitespace-line-column nil)
  '(whitespace-style
    (quote
-    (face trailing tabs lines-tail newline empty indentation::space)))
- '(zk-directory "~/org/zk/")
- '(zk-extensions (quote ("org" "txt" "text" "md" "markdown")))
- '(zk-strip-summary-regexp "\\([
-        ]\\|^#\\+[[:upper:]_]+:.*$\\|^:[^:]+:.*$\\)"))
+    (face trailing tabs lines-tail newline empty indentation::space))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
