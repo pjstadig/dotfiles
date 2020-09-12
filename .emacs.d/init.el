@@ -20,6 +20,8 @@
     (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
 
 ;;; Configure packages
+(use-package checkdoc
+  :hook (emacs-lisp-mode . checkdoc-minor-mode))
 (use-package cider
   :ensure t
   :custom
@@ -48,6 +50,8 @@
   (clojure-docstring-fill-column 80))
 (use-package company
   :ensure t)
+(use-package eldoc
+  :hook (emacs-lisp-mode . eldoc-mode))
 (use-package exec-path-from-shell
   :ensure t
   :custom
@@ -136,7 +140,8 @@
   :after (org))
 (use-package paredit
   :ensure t
-  :hook (clojure-mode . paredit-mode))
+  :hook ((emacs-lisp-mode . paredit-mode)
+         (clojure-mode . paredit-mode)))
 (use-package paren
   :config
   (show-paren-mode 1))
