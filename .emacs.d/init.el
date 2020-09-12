@@ -14,6 +14,11 @@
 
 (require 'use-package)
 
+;;; Add load paths for lisp directories
+(dolist (dir (directory-files (concat user-emacs-directory "lisp")))
+  (when (not (member dir '("." "..")))
+    (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
+
 ;;; Configure packages
 (use-package cider
   :ensure t
@@ -35,7 +40,6 @@
   (cider-repl-use-pretty-printing t)
   (cider-save-file-on-load t))
 (use-package cljstyle-mode
-  :load-path "lisp/cljstyle-mode-0.1"
   :bind (("C-c C-n" . cljstyle)))
 (use-package clojure-mode
   :ensure t
@@ -77,6 +81,16 @@
   :config
   (setq projectile-completion-system 'helm)
   (helm-projectile-on))
+(use-package ibuffer
+  :bind (("C-x C-b" . ibuffer)))
+(use-package imenu
+  :bind (("C-c i" . imenu)
+         ("C-c C-i" . imenu)))
+(use-package isearch
+  :bind (("C-s" . isearch-forward-regexp)
+         ("C-r" . isearch-backward-regexp)
+         ("C-M-s" . isearch-forward)
+         ("C-M-r" . isearch-backward)))
 (use-package magit
   :ensure t
   :bind (("C-c g" . magit-status)))
@@ -120,6 +134,9 @@
 (use-package paredit
   :ensure t
   :hook (clojure-mode . paredit-mode))
+(use-package paren
+  :config
+  (show-paren-mode 1))
 (use-package pdf-tools
   :ensure t
   :commands pdf-tools-install
@@ -132,21 +149,20 @@
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 (use-package pjs
-  :load-path "lisp/pjs"
-  :commands (pjs-prog-mode-local-bindings pjs-reset)
+  :commands pjs-prog-mode-local-bindings
   :bind (("<XF86Tools>" . pjs-show-xfce-settings)
          ("C-c e s" . pjs-suspend)
          ("C-c e l" . pjs-lock-screen)
          ("C-c r" . pjs-revert)
-         ("C-c u" . pjs-pop-read-queue)))
+         ("s-r" . pjs-reset)
+         ("C-c u" . pjs-pop-read-queue)
+         ("s-z" . pjs-banish-cursor)
+         ("C-c D" . er-delete-file-and-buffer)))
 (use-package pjs-emacs-lisp
-  :load-path "lisp/pjs"
   :hook (emacs-lisp-mode . pjs-add-eval-buffer-binding))
 (use-package pjs-org
-  :load-path "lisp/pjs"
   :bind (("C-c a" . pjs-org-agenda)))
 (use-package pjs-org-cosmetics
-  :load-path "lisp/pjs"
   :after (org))
 (use-package projectile
   :ensure t
@@ -156,8 +172,10 @@
   :bind
   (("s-p" . projectile-command-map)
    ("C-c p" . projectile-command-map)))
+(use-package saveplace
+  :config
+  (setq-default save-place t))
 (use-package tc
-  :load-path "lisp/tc"
   :after (magit)
   :bind (:map git-commit-mode-map
               ("C-c l" . tc/insert-clubhouse-story-url)
@@ -175,11 +193,13 @@
   :config
   (setq split-window-preferred-function 'visual-fill-column-split-window-sensibly)
   (advice-add 'text-scale-adjust :after 'visual-fill-column-adjust))
+(use-package uniquify
+  :custom
+  (uniquify-buffer-name-style 'forward))
 (use-package writegood-mode
   :ensure t
   :hook text-mode)
 (use-package zk
-  :load-path "lisp/zk-0.1"
   :custom
   (zk-directory "~/org/zk/")
   (zk-extensions (quote ("org" "txt" "text" "md" "markdown")))
@@ -190,33 +210,7 @@
   :after (org))
 
 ;; Configuration
-(global-set-key (kbd "C-c D") 'er-delete-file-and-buffer)
-(global-set-key (kbd "C-c i") 'imenu)
-(global-set-key (kbd "C-c C-i") 'imenu)
-;; (global-set-key (kbd "C-c t") 'bh/org-todo)
-;; (global-set-key (kbd "C-c w") 'bh/widen)
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
-
-;;; Copied from better-defaults package.
-(autoload 'zap-up-to-char "misc"
-  "Kill up to, but not including ARGth occurrence of CHAR." t)
-
-(require 'uniquify)
-(setq uniquify-buffer-name-style 'forward)
-
-(require 'saveplace)
-(setq-default save-place t)
-
-(global-set-key (kbd "M-/") 'hippie-expand)
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(global-set-key (kbd "M-z") 'zap-up-to-char)
-
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward)
-(global-set-key (kbd "C-M-r") 'isearch-backward)
-
-(show-paren-mode 1)
 
 (when (not (eq (server-running-p) 't))
   (server-start))
