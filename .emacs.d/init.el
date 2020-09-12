@@ -162,16 +162,20 @@
          ("C-c e s" . pjs-suspend)
          ("C-c e l" . pjs-lock-screen)
          ("C-c r" . pjs-revert)
-         ("s-r" . pjs-reset)
          ("C-c u" . pjs-pop-read-queue)
-         ("s-z" . pjs-banish-cursor)
          ("C-c D" . er-delete-file-and-buffer)))
 (use-package pjs-emacs-lisp
   :hook (emacs-lisp-mode . pjs-add-eval-buffer-binding))
+(use-package pjs-exwm
+  :commands pjs-configure-exwm)
 (use-package pjs-org
   :bind (("C-c a" . pjs-org-agenda)))
 (use-package pjs-org-cosmetics
   :after (org))
+(use-package pjs-reset
+  :bind (("s-r" . pjs-reset)))
+(use-package pjs-system
+  :commands pjs-load-system-file)
 (use-package projectile
   :ensure t
   :commands projectile-mode
