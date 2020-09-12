@@ -49,7 +49,8 @@
   :custom
   (clojure-docstring-fill-column 80))
 (use-package company
-  :ensure t)
+  :ensure t
+  :hook (prog-mode . company-mode))
 (use-package eldoc
   :hook (emacs-lisp-mode . eldoc-mode))
 (use-package exec-path-from-shell
@@ -128,11 +129,14 @@
   (exwm-workspace-show-all-buffers nil)
   (exwm-workspace-switch-create-limit 10))
 (use-package flycheck
+  :hook (prog-mode . flycheck-mode)
   :config
   (setq-default flycheck-emacs-lisp-load-path 'inherit))
 (use-package flycheck-clj-kondo
   :ensure t
   :after (clojure-mode))
+(use-package flyspell
+  :hook (prog-mode . flyspell-prog-mode))
 (use-package gnu-elpa-keyring-update
   :ensure t
   :commands gnu-elpa-keyring-update
@@ -164,6 +168,8 @@
          ("C-r" . isearch-backward-regexp)
          ("C-M-s" . isearch-forward)
          ("C-M-r" . isearch-backward)))
+(use-package linum
+  :hook (prog-mode . linum-mode))
 (use-package magit
   :ensure t
   :bind (("C-c g" . magit-status)))
@@ -223,7 +229,7 @@
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 (use-package pjs
-  :commands pjs-prog-mode-local-bindings
+  :hook (prog-mode . pjs-prog-mode-local-bindings)
   :bind (("<XF86Tools>" . pjs-show-xfce-settings)
          ("C-c e s" . pjs-suspend)
          ("C-c e l" . pjs-lock-screen)
@@ -254,6 +260,8 @@
 (use-package saveplace
   :config
   (setq-default save-place t))
+(use-package simple
+  :hook (prog-mode . column-number-mode))
 (use-package tc
   :after (magit)
   :bind (:map git-commit-mode-map
@@ -275,6 +283,8 @@
 (use-package uniquify
   :custom
   (uniquify-buffer-name-style 'forward))
+(use-package whitespace
+  :hook (prog-mode . whitespace-mode))
 (use-package writegood-mode
   :ensure t
   :hook text-mode)

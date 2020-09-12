@@ -261,9 +261,6 @@
  '(package-selected-packages
    (quote
     (markdown cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
- '(prog-mode-hook
-   (quote
-    (flyspell-prog-mode linum-mode pjs-prog-mode-local-bindings whitespace-mode company-mode column-number-mode flycheck-mode)))
  '(require-final-newline t)
  '(safe-local-variable-values
    (quote
