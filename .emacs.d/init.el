@@ -57,6 +57,9 @@
     (exec-path-from-shell-initialize)))
 (use-package exwm
   :ensure t)
+(use-package flycheck
+  :config
+  (setq-default flycheck-emacs-lisp-load-path 'inherit))
 (use-package flycheck-clj-kondo
   :ensure t
   :after (clojure-mode))
