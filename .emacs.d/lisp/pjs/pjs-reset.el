@@ -14,7 +14,7 @@
     (byte-recompile-file pjs-system-file nil 0))
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
   (byte-recompile-directory (concat user-emacs-directory "lisp") 0)
-  (load (concat user-emacs-directory "init.el"))
+  (load (concat user-emacs-directory "init"))
   (pjs-load-system-file)
   (when pjs-exwm-configured-p
     (pjs-configure-exwm)
