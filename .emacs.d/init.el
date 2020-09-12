@@ -274,7 +274,7 @@
   :commands projectile-mode
   :config
   (projectile-mode +1)
-  :bind
+  :bind-keymap
   (("s-p" . projectile-command-map)
    ("C-c p" . projectile-command-map)))
 (use-package saveplace
