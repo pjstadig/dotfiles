@@ -21,7 +21,9 @@
 
 ;;; Configure packages
 (use-package checkdoc
-  :hook (emacs-lisp-mode . checkdoc-minor-mode))
+  :hook (emacs-lisp-mode . checkdoc-minor-mode)
+  :custom
+  (checkdoc-force-docstrings-flag nil))
 (use-package cider
   :ensure t
   :custom
@@ -51,6 +53,9 @@
 (use-package company
   :ensure t
   :hook (prog-mode . company-mode))
+(use-package doc-view
+  :custom
+  (doc-view-continuous t))
 (use-package eldoc
   :hook (emacs-lisp-mode . eldoc-mode))
 (use-package exec-path-from-shell
@@ -169,7 +174,9 @@
          ("C-M-s" . isearch-forward)
          ("C-M-r" . isearch-backward)))
 (use-package linum
-  :hook (prog-mode . linum-mode))
+  :hook (prog-mode . linum-mode)
+  :custom
+  (linum-format "%d "))
 (use-package magit
   :ensure t
   :bind (("C-c g" . magit-status)))
