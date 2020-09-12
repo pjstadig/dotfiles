@@ -41,7 +41,8 @@
           ([?\s-0] . (lambda ()
                        (interactive)
                        (exwm-workspace-switch-create 9)))
-          ([?\s-r] . pjs-reset)))
+          ([?\s-r] . pjs-reset)
+          ([?\s-z] . pjs-banish-cursor)))
   (exwm-enable)
   (fringe-mode 1)
 
@@ -149,6 +150,10 @@
 (defun pjs-show-xfce-settings ()
   (interactive)
   (start-process-shell-command "show-xfce-settings" nil "xfce4-settings-manager"))
+
+(defun pjs-banish-cursor ()
+  (interactive)
+  (start-process-shell-command "banish-cursor" nil "xdotool mousemove 0 10000"))
 
 (defun pjs-revert ()
   (interactive)
