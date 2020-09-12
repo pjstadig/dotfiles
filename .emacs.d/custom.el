@@ -11,8 +11,6 @@
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(emacs-lisp-docstring-fill-column t)
  '(fill-column 90)
- '(indent-tabs-mode nil)
- '(inhibit-startup-screen t)
  '(load-prefer-newer t)
  '(menu-bar-mode nil)
  '(mouse-yank-at-point t)

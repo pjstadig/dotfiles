@@ -172,6 +172,11 @@
 (use-package imenu
   :bind (("C-c i" . imenu)
          ("C-c C-i" . imenu)))
+(use-package indent
+  ;; otherwise throws error: indent.elc failed to provide feature ‘indent’
+  :no-require t
+  :custom
+  (indent-tabs-mode nil))
 (use-package isearch
   :bind (("C-s" . isearch-forward-regexp)
          ("C-r" . isearch-backward-regexp)
@@ -277,6 +282,11 @@
   (setq-default save-place t))
 (use-package simple
   :hook (prog-mode . column-number-mode))
+(use-package startup
+  ;; otherwise throws error: startup.elc failed to provide feature ‘startup’
+  :no-require t
+  :custom
+  (inhibit-startup-screen t))
 (use-package tc
   :after (magit)
   :bind (:map git-commit-mode-map
