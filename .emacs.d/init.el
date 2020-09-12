@@ -223,14 +223,12 @@
 (when (not (eq (server-running-p) 't))
   (server-start))
 
-(with-eval-after-load 'pjs
-  (when (file-exists-p pjs-system-file)
-    (load pjs-system-file)))
-
 (put 'narrow-to-region 'disabled nil)
 
 (when (file-exists-p custom-file)
   (load custom-file))
+
+(pjs-load-system-file)
 
 (provide 'init)
 ;;; init.el ends here
