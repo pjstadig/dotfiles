@@ -1,4 +1,5 @@
 #!/usr/bin/env -S zsh -li
 
+banish-cursor
 emacs -f pjs-configure-exwm
 xfce4-session-logout -l -f
