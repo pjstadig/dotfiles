@@ -60,6 +60,10 @@
   :hook (emacs-lisp-mode . eldoc-mode))
 (use-package exec-path-from-shell
   :ensure t
+  ;; This is not working.  Why?
+  ;; :functions exec-path-from-shell-initialize
+  :init
+  (declare-function exec-path-from-shell-initialize "exec-path-from-shell.el")
   :custom
   (exec-path-from-shell-variables '("PATH" "MANPATH" "JAVA_HOME" "ASPELL_CONF"))
   :config
@@ -222,6 +226,10 @@
   :hook ((emacs-lisp-mode . paredit-mode)
          (clojure-mode . paredit-mode)))
 (use-package paren
+  ;; This is not working.  Why?
+  ;; :functions show-paren-mode
+  :init
+  (declare-function show-paren-mode "paren.el")
   :config
   (show-paren-mode 1))
 (use-package pdf-tools
