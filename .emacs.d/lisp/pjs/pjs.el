@@ -5,10 +5,6 @@
 (defun pjs-set-exwm-buffer-name-to-class ()
   (exwm-workspace-rename-buffer exwm-class-name))
 
-(defun pjs-start-initial-programs ()
-  (start-process-shell-command "firefox" nil "firefox")
-  (start-process-shell-command "xfce4-terminal" nil "xfce4-terminal"))
-
 (defun pjs-erc-connect (server)
   (interactive "Mserver: ")
   (let ((znc-password-file "~/.private/pjs-znc-password.el"))

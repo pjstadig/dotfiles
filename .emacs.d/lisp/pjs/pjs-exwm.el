@@ -5,6 +5,10 @@
 ;;; Code:
 (require 'pjs)
 
+(defun pjs-start-initial-programs ()
+  (start-process-shell-command "firefox" nil "firefox")
+  (start-process-shell-command "xfce4-terminal" nil "xfce4-terminal"))
+
 (defun pjs-banish-cursor ()
   "Move the X mouse cursor out of the way."
   (interactive)

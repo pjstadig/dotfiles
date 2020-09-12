@@ -60,7 +60,73 @@
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
 (use-package exwm
-  :ensure t)
+  :ensure t
+  :custom
+  (exwm-input-prefix-keys '(24          ; ""
+                            21          ; ""
+                            8           ; ""
+                            [134217848]
+                            [134217824]
+                            [134217766]
+                            [134217786]))
+  (exwm-layout-show-all-buffers nil)
+  (exwm-manage-configurations '(((string-equal exwm-class-name "Xfce4-terminal")
+                                 workspace 0)
+                                ((string-equal exwm-class-name "Firefox")
+                                 simulation-keys (("" . [left])
+                                                  ("" . [right])
+                                                  ("" . [up])
+                                                  ("" . [down])
+                                                  ("" . [home])
+                                                  ("" . [end])
+                                                  ([134217846] . [prior])
+                                                  ("" . [next])
+                                                  ("" . [delete])
+                                                  ("" . [S-end delete])
+                                                  ([134217847] . "")
+                                                  ("" . "")
+                                                  ("" . "")
+                                                  ([134217751] . ""))
+                                 workspace 1)
+                                ((string-equal exwm-class-name "Google-chrome")
+                                 simulation-keys (("" . [left])
+                                                  ("" . [right])
+                                                  ("" . [up])
+                                                  ("" . [down])
+                                                  ("" . [home])
+                                                  ("" . [end])
+                                                  ([134217846] . [prior])
+                                                  ("" . [next])
+                                                  ("" . [delete])
+                                                  ("" . [S-end delete])
+                                                  ([134217847] . "")
+                                                  ("" . "")
+                                                  ("" . "")
+                                                  ([134217751] . ""))
+                                 workspace 1)
+                                ((string-equal exwm-class-name "Anki")
+                                 simulation-keys (("" . [left])
+                                                  ("" . [right])
+                                                  ("" . [up])
+                                                  ("" . [down])
+                                                  ("" . [home])
+                                                  ("" . [end])
+                                                  ([134217846] . [prior])
+                                                  ("" . [next])
+                                                  ("" . [delete])
+                                                  ("" . [S-end delete])
+                                                  ([134217847] . "")
+                                                  ("" . "")
+                                                  ("" . "")
+                                                  ([134217751] . ""))
+                                 workspace 1)))
+  (exwm-randr-workspace-monitor-plist '(9 "HDMI1"))
+  (exwm-replace t)
+  (exwm-update-class-hook '(pjs-set-exwm-buffer-name-to-class))
+  (exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
+  (exwm-workspace-number 10)
+  (exwm-workspace-show-all-buffers nil)
+  (exwm-workspace-switch-create-limit 10))
 (use-package flycheck
   :config
   (setq-default flycheck-emacs-lisp-load-path 'inherit))
@@ -167,7 +233,8 @@
 (use-package pjs-emacs-lisp
   :hook (emacs-lisp-mode . pjs-add-eval-buffer-binding))
 (use-package pjs-exwm
-  :commands pjs-configure-exwm)
+  :commands pjs-configure-exwm
+  :hook (exwm-init . pjs-start-initial-programs))
 (use-package pjs-org
   :bind (("C-c a" . pjs-org-agenda)))
 (use-package pjs-org-cosmetics
