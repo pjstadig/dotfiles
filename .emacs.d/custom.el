@@ -4,16 +4,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(auth-sources (quote ("~/.netrc.gpg")))
- '(auto-save-visited-file-name t)
- '(backup-directory-alist (quote (("." . "~/.emacs.d/backups"))))
  '(calendar-latitude 38.0718912)
  '(calendar-longitude -78.7225072)
  '(dired-clean-confirm-killing-deleted-buffers nil)
- '(emacs-lisp-docstring-fill-column t)
- '(fill-column 90)
- '(load-prefer-newer t)
- '(menu-bar-mode nil)
- '(mouse-yank-at-point t)
  '(org-agenda-breadcrumbs-separator "/")
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
@@ -256,7 +249,6 @@
  '(package-selected-packages
    (quote
     (markdown cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company dash deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
- '(require-final-newline t)
  '(safe-local-variable-values
    (quote
     ((elisp-lint-indent-specs
@@ -285,16 +277,11 @@
            (whitespace-mode 0)
            (whitespace-mode 1))
      (clojure-test-ns-segment-position . 1))))
- '(save-interprogram-paste-before-kill t)
- '(save-place-file "~/.emacs.d/places")
- '(scroll-bar-mode nil)
  '(sh-basic-offset 2)
- '(show-paren-delay 0.25)
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
    (quote
     (pjs-configure-text-mode-fill-column flyspell-mode text-mode-hook-identify)))
- '(tool-bar-mode nil)
  '(visible-bell t)
  '(whitespace-line-column nil)
  '(whitespace-style

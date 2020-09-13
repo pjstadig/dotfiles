@@ -1,4 +1,9 @@
-(setq custom-file (concat user-emacs-directory "custom.el"))
+;;; Configure Emacs
+(setq custom-file (concat user-emacs-directory "custom.el")
+      fill-column 90
+      load-prefer-newer t)
+
+(auto-save-visited-mode)
 
 ;;; Setup package
 (require 'package)
@@ -137,6 +142,10 @@
   (exwm-workspace-number 10)
   (exwm-workspace-show-all-buffers nil)
   (exwm-workspace-switch-create-limit 10))
+(use-package files
+  :custom
+  (backup-directory-alist '(("." . "~/.emacs.d/backups")))
+  (require-final-newline t))
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
   :config
@@ -186,12 +195,21 @@
   :hook (prog-mode . linum-mode)
   :custom
   (linum-format "%d "))
+(use-package lisp-mode
+  :custom
+  (emacs-lisp-docstring-fill-column t))
 (use-package magit
   :ensure t
   :bind (("C-c g" . magit-status)))
 (use-package markdown-mode
   :ensure t
   :hook (markdown-mode . variable-pitch-mode))
+(use-package menu-bar
+  :custom
+  (menu-bar-mode nil))
+(use-package mouse
+  :custom
+  (mouse-yank-at-point t))
 (use-package ob-shell
   :after (org))
 (use-package org
@@ -235,6 +253,8 @@
   ;; :functions show-paren-mode
   :init
   (declare-function show-paren-mode "paren.el")
+  :custom
+  (show-paren-delay 0.25)
   :config
   (show-paren-mode 1))
 (use-package pdf-tools
@@ -278,10 +298,21 @@
   (("s-p" . projectile-command-map)
    ("C-c p" . projectile-command-map)))
 (use-package saveplace
+  :custom
+  (save-place-file "~/.emacs.d/places")
   :config
   (setq-default save-place t))
+(use-package scroll-bar
+  ;; This is not working.  Why?
+  ;;:functions (scroll-bar-mode)
+  :init
+  (declare-function scroll-bar-mode "scroll-bar.el")
+  :config
+  (scroll-bar-mode -1))
 (use-package simple
-  :hook (prog-mode . column-number-mode))
+  :hook (prog-mode . column-number-mode)
+  :custom
+  (save-interprogram-paste-before-kill t))
 (use-package startup
   ;; otherwise throws error: startup.elc failed to provide feature ‘startup’
   :no-require t
@@ -294,6 +325,9 @@
               ("C-c C-l" . tc/insert-clubhouse-story-url)
               ("C-c a" . tc/insert-co-authored-by)
               ("C-c C-a" . tc/insert-co-authored-by)))
+(use-package tool-bar
+  :custom
+  (tool-bar-mode nil))
 (use-package typo
   :ensure t
   :hook ((markdown-mode org-mode) . typo-mode))
