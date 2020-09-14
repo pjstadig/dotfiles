@@ -3,9 +3,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(auth-sources (quote ("~/.netrc.gpg")))
- '(calendar-latitude 38.0718912)
- '(calendar-longitude -78.7225072)
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(org-agenda-breadcrumbs-separator "/")
  '(org-agenda-compact-blocks t)
@@ -96,7 +93,6 @@
  '(org-agenda-window-setup (quote only-window))
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
- '(org-attach-directory "attachments/")
  '(org-attach-id-dir "attachments/")
  '(org-capture-prepare-finalize-hook (quote (pjs-ensure-ending-newline)))
  '(org-capture-templates
@@ -170,9 +166,6 @@
  '(org-log-done (quote time))
  '(org-log-into-drawer t)
  '(org-log-reschedule (quote note))
- '(org-modules
-   (quote
-    (org-bbdb org-bibtex org-docview org-gnus org-habit org-id org-info org-irc org-mhe org-rmail org-w3m org-drill)))
  '(org-outline-path-complete-in-steps nil)
  '(org-pretty-entities t)
  '(org-refile-allow-creating-parent-nodes (quote confirm))

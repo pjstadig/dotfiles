@@ -1,9 +1,9 @@
 ;;; Configure Emacs
 (setq custom-file (concat user-emacs-directory "custom.el")
-      fill-column 90
       load-prefer-newer t)
 
-(auto-save-visited-mode)
+(setq-default fill-column 90
+              indent-tabs-mode nil)
 
 ;;; Setup package
 (require 'package)
@@ -24,13 +24,18 @@
   (when (not (member dir '("." "..")))
     (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
 
-;;; Configure packages
+;; ;;; Configure packages
+(use-package auth-source
+  :defer t
+  :custom
+  (auth-sources '("~/.netrc.gpg")))
 (use-package checkdoc
   :hook (emacs-lisp-mode . checkdoc-minor-mode)
   :custom
   (checkdoc-force-docstrings-flag nil))
 (use-package cider
   :ensure t
+  :after (clojure-mode)
   :custom
   (cider-auto-jump-to-error nil)
   (cider-auto-select-error-buffer nil)
@@ -49,33 +54,39 @@
   (cider-repl-use-pretty-printing t)
   (cider-save-file-on-load t))
 (use-package cljstyle-mode
-  :bind (("C-c C-n" . cljstyle)))
+  :after (clojure-mode)
+  :bind (:map clojure-mode-map
+              ("C-c C-n" . cljstyle)))
 (use-package clojure-mode
   :ensure t
-  :hook (clojure-mode . eldoc-mode)
+  :defer t
   :custom
   (clojure-docstring-fill-column 80))
 (use-package company
   :ensure t
   :hook (prog-mode . company-mode))
 (use-package doc-view
+  :demand t
   :custom
   (doc-view-continuous t))
 (use-package eldoc
-  :hook (emacs-lisp-mode . eldoc-mode))
+  :hook ((clojure-mode . eldoc-mode)
+         (emacs-lisp-mode . eldoc-mode)))
 (use-package exec-path-from-shell
   :ensure t
-  ;; This is not working.  Why?
-  ;; :functions exec-path-from-shell-initialize
+  :demand t
+  :if (memq window-system '(mac ns))
   :init
-  (declare-function exec-path-from-shell-initialize "exec-path-from-shell.el")
+  (eval-when-compile
+    (message "AGAIN CURRENT FILE: %s" byte-compile-current-file))
   :custom
   (exec-path-from-shell-variables '("PATH" "MANPATH" "JAVA_HOME" "ASPELL_CONF"))
   :config
-  (when (memq window-system '(mac ns))
-    (exec-path-from-shell-initialize)))
+  (declare-function exec-path-from-shell-initialize "exec-path-from-shell.el")
+  (exec-path-from-shell-initialize))
 (use-package exwm
   :ensure t
+  :defer t
   :custom
   (exwm-input-prefix-keys '(24          ; ""
                             21          ; ""
@@ -143,22 +154,27 @@
   (exwm-workspace-show-all-buffers nil)
   (exwm-workspace-switch-create-limit 10))
 (use-package files
+  :defer t
   :custom
   (backup-directory-alist '(("." . "~/.emacs.d/backups")))
-  (require-final-newline t))
+  (require-final-newline t)
+  :config
+  (declare-function auto-save-visited-mode "files.el")
+  (auto-save-visited-mode))
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
   :config
   (setq-default flycheck-emacs-lisp-load-path 'inherit))
 (use-package flycheck-clj-kondo
   :ensure t
-  :after (clojure-mode))
+  :after (clojure-mode flycheck))
 (use-package flyspell
   :hook (prog-mode . flyspell-prog-mode))
 (use-package gnu-elpa-keyring-update
+  :demand t
   :ensure t
-  :commands gnu-elpa-keyring-update
   :config
+  (declare-function gnu-elpa-keyring-update "gnu-elpa-keyring-update.el")
   (gnu-elpa-keyring-update))
 (use-package helm
   :ensure t
@@ -181,11 +197,6 @@
 (use-package imenu
   :bind (("C-c i" . imenu)
          ("C-c C-i" . imenu)))
-(use-package indent
-  ;; otherwise throws error: indent.elc failed to provide feature ‘indent’
-  :no-require t
-  :custom
-  (indent-tabs-mode nil))
 (use-package isearch
   :bind (("C-s" . isearch-forward-regexp)
          ("C-r" . isearch-backward-regexp)
@@ -196,6 +207,7 @@
   :custom
   (linum-format "%d "))
 (use-package lisp-mode
+  :defer t
   :custom
   (emacs-lisp-docstring-fill-column t))
 (use-package magit
@@ -205,18 +217,20 @@
   :ensure t
   :hook (markdown-mode . variable-pitch-mode))
 (use-package menu-bar
+  :defer t
   :custom
   (menu-bar-mode nil))
 (use-package mouse
+  :defer t
   :custom
   (mouse-yank-at-point t))
 (use-package ob-shell
   :after (org))
 (use-package org
   :ensure t
+  :demand t
   :hook ((org-mode . variable-pitch-mode))
   :bind (("C-c b" . org-switchb)
-         ("C-c c" . org-capture)
          ("C-c o o" . org-cycle-agenda-files))
   :custom
   (org-startup-indented t))
@@ -224,10 +238,12 @@
   :ensure t
   :after (org)
   :hook (org-mode . org-autolist-mode))
+(use-package org-capture
+  :bind (("C-c c" . org-capture)))
 (use-package org-drill
   :ensure t
-  :commands org-drill-hide-region
-  :after (org)
+  :defer t
+  :commands (org-drill)
   :custom
   (org-drill-left-cloze-delimiter "{")
   (org-drill-question-tag "NOTE")
@@ -236,37 +252,42 @@
   ;; TODO: can this just be "notes.org"?
   (org-drill-scope '("~/org/notes.org"))
   :config
+  (declare-function org-drill-hide-region "org-drill.el")
   (defun pjs-org-drill-hide-comments ()
     "Hide comments."
     (save-excursion
       (while (re-search-forward "^#[^+].*$" nil t)
         (org-drill-hide-region (match-beginning 0) (match-end 0)))))
   (advice-add 'org-drill-hide-comments :override 'pjs-org-drill-hide-comments))
+(use-package org-habit
+  :after (org))
+(use-package org-id
+  :after (org))
 (use-package org-protocol
   :after (org))
 (use-package paredit
   :ensure t
-  :hook ((emacs-lisp-mode . paredit-mode)
-         (clojure-mode . paredit-mode)))
+  :hook ((clojure-mode emacs-lisp-mode) . paredit-mode))
 (use-package paren
-  ;; This is not working.  Why?
-  ;; :functions show-paren-mode
-  :init
-  (declare-function show-paren-mode "paren.el")
+  :demand t
   :custom
   (show-paren-delay 0.25)
   :config
+  (declare-function show-paren-mode "paren.el")
   (show-paren-mode 1))
 (use-package pdf-tools
   :ensure t
-  :commands pdf-tools-install
+  :demand t
   :config
+  (declare-function pdf-tools-install "pdf-tools.el")
   (pdf-tools-install))
 (use-package pinentry
   :ensure t
-  :commands pinentry-start
+  :demand t
+  :custom
+  (epa-pinentry-mode 'loopback)
   :config
-  (setq epa-pinentry-mode 'loopback)
+  (declare-function pinentry-start "pinentry.el")
   (pinentry-start))
 (use-package pjs
   :hook (prog-mode . pjs-prog-mode-local-bindings)
@@ -282,6 +303,7 @@
   :commands pjs-configure-exwm
   :hook (exwm-init . pjs-start-initial-programs))
 (use-package pjs-org
+  :commands (pjs-ensure-ending-newline)
   :bind (("C-c a" . pjs-org-agenda)))
 (use-package pjs-org-cosmetics
   :after (org))
@@ -291,33 +313,36 @@
   :commands pjs-load-system-file)
 (use-package projectile
   :ensure t
-  :commands projectile-mode
-  :config
-  (projectile-mode +1)
   :bind-keymap
   (("s-p" . projectile-command-map)
-   ("C-c p" . projectile-command-map)))
+   ("C-c p" . projectile-command-map))
+  :config
+  (declare-function projectile-mode "projectile.el")
+  (projectile-mode +1))
 (use-package saveplace
+  :demand t
   :custom
   (save-place-file "~/.emacs.d/places")
   :config
   (setq-default save-place t))
 (use-package scroll-bar
-  ;; This is not working.  Why?
-  ;;:functions (scroll-bar-mode)
-  :init
-  (declare-function scroll-bar-mode "scroll-bar.el")
+  :demand t
   :config
+  (declare-function scroll-bar-mode "scroll-bar.el")
   (scroll-bar-mode -1))
 (use-package simple
   :hook (prog-mode . column-number-mode)
   :custom
   (save-interprogram-paste-before-kill t))
 (use-package startup
-  ;; otherwise throws error: startup.elc failed to provide feature ‘startup’
-  :no-require t
+  :defer t
   :custom
   (inhibit-startup-screen t))
+(use-package solar
+  :defer t
+  :custom
+  (calendar-latitude 38.0718912)
+  (calendar-longitude -78.7225072))
 (use-package tc
   :after (magit)
   :bind (:map git-commit-mode-map
@@ -326,6 +351,7 @@
               ("C-c a" . tc/insert-co-authored-by)
               ("C-c C-a" . tc/insert-co-authored-by)))
 (use-package tool-bar
+  :demand t
   :custom
   (tool-bar-mode nil))
 (use-package typo
@@ -333,13 +359,14 @@
   :hook ((markdown-mode org-mode) . typo-mode))
 (use-package visual-fill-column
   :ensure t
-  :hook ((markdown-mode . visual-fill-column-mode)
-         (org-mode . visual-fill-column-mode)
+  :hook (((markdown-mode org-mode) . visual-fill-column-mode)
          (visual-fill-column-mode . visual-line-mode))
+  :custom
+  (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
   :config
-  (setq split-window-preferred-function 'visual-fill-column-split-window-sensibly)
   (advice-add 'text-scale-adjust :after 'visual-fill-column-adjust))
 (use-package uniquify
+  :demand t
   :custom
   (uniquify-buffer-name-style 'forward))
 (use-package whitespace
@@ -354,16 +381,15 @@
   (zk-strip-summary-regexp "\\([
         ]\\|^#\\+[[:upper:]_]+:.*$\\|^:[^:]+:.*$\\)")
   :hook (org-mode . zk-navigate-keys)
-  :bind (("C-c z z" . zk))
-  :after (org))
+  :bind (("C-c z z" . zk)))
 
 ;; Configuration
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
+(put 'narrow-to-region 'disabled nil)
 
+(require 'server)
 (when (not (eq (server-running-p) 't))
   (server-start))
-
-(put 'narrow-to-region 'disabled nil)
 
 (when (file-exists-p custom-file)
   (load custom-file))
