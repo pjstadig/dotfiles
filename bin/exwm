@@ -2,4 +2,7 @@
 
 banish-cursor
 emacs -f pjs-configure-exwm
+if [[ -v SSH_AGENT_PID ]]; then
+  kill ${SSH_AGENT_PID}
+fi
 xfce4-session-logout -l -f
