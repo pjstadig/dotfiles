@@ -167,6 +167,11 @@
   (auto-save-visited-mode))
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
+  :commands (flycheck-next-error flycheck-previous-error)
+  :after (prog-mode)
+  :bind (:map prog-mode-map
+              ("C-c e n" . flycheck-next-error)
+              ("C-c e p" . flycheck-previous-error))
   :config
   (setq-default flycheck-emacs-lisp-load-path 'inherit))
 (use-package flycheck-clj-kondo
@@ -206,6 +211,16 @@
          ("C-r" . isearch-backward-regexp)
          ("C-M-s" . isearch-forward)
          ("C-M-r" . isearch-backward)))
+(use-package jwiegley-flycheck
+  :after (flycheck)
+  :hook (flycheck-after-syntax-check-hook
+         jwiegley+magnars/adjust-flycheck-automatic-syntax-eagerness)
+  :config
+  ;; Remove newline checks, since they would trigger an immediate check
+  ;; when we want the idle-change-delay to be in effect while editing.
+  (setq-default flycheck-check-syntax-automatically '(save
+                                                      idle-change
+                                                      mode-enabled)))
 (use-package linum
   :hook (prog-mode . linum-mode)
   :custom
