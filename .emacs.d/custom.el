@@ -45,14 +45,11 @@
                    (org-agenda-sorting-strategy
                     (quote
                      (category-keep)))))
-       (tags "*"
+       (tags "+CATEGORY=\"TOREAD\""
              ((org-agenda-overriding-header "Reading queue:")
-              (org-agenda-files
-               (quote
-                ("~/org/orgzly/read.org")))
               (org-agenda-prefix-format "  ")
               (org-agenda-max-entries 10)))
-       (tags "CLOSED<\"<-30d>\""
+       (tags "CLOSED<\"<-30d>\"|TODO=\"DONE\"+CLOSED=\"\""
              ((org-agenda-overriding-header "Entries to be archived"))))
       nil)
      ("#" "Stuck projects" stuck ""
@@ -79,7 +76,7 @@
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/in.org" "~/org/orgzly/orgzly.org" "~/org/orgzly/tasks.org" "~/org/orgzly/projects.org" "~/org/someday-maybe.org" "~/org/notes.org" "~/org/habits.org" "~/org/journal.org" "~/org/orgzly/schedule.org")))
+    ("~/org/in.org" "~/org/orgzly/orgzly.org" "~/org/orgzly/tasks.org" "~/org/orgzly/projects.org" "~/org/someday-maybe.org" "~/org/notes.org" "~/org/habits.org" "~/org/journal.org" "~/org/orgzly/schedule.org" "~/org/orgzly/read.org")))
  '(org-agenda-insert-diary-strategy (quote date-tree-last))
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
@@ -149,6 +146,15 @@
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
  '(org-edit-src-content-indentation 0)
+ '(org-emphasis-alist
+   (quote
+    (("*" bold)
+     ("/" italic)
+     ("_" underline)
+     ("=" org-verbatim verbatim)
+     ("~" org-code verbatim)
+     ("+"
+      (:foreground "gray" :strike-through t)))))
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
  '(org-fast-tag-selection-single-key t)

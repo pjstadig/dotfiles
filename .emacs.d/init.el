@@ -323,7 +323,8 @@
   :hook (exwm-init . pjs-start-initial-programs))
 (use-package pjs-org
   :commands (pjs-ensure-ending-newline)
-  :bind (("C-c a" . pjs-org-agenda)))
+  :bind (("C-c a" . pjs-org-agenda))
+  :hook (org-insert-heading . pjs-org-insert-created-property))
 (use-package pjs-org-cosmetics
   :after (org))
 (use-package pjs-reset

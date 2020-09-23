@@ -199,4 +199,8 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
       (switch-to-buffer "*Org Agenda*")
     (org-agenda)))
 
+(defun pjs-org-insert-created-property ()
+  (org-set-property "CREATED" (format-time-string (org-time-stamp-format t t) (current-time))))
+
 (provide 'pjs-org)
+;;; pjs-org.el ends here
