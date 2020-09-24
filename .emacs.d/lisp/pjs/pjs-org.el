@@ -189,9 +189,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
       (org-clock-goto)
     ;; this should be maybe a helm-org function?
     (org-goto))
-  (pjs-org-ensure-journal-heading)
-  ;;(org-datetree-find-iso-week-create (calendar-current-date) 'subtree-at-point)
-  (org-datetree-find-date-create (calendar-current-date) 'subtree-at-point))
+  (pjs-org-ensure-journal-heading))
 
 (defun pjs-org-agenda ()
   (interactive)
