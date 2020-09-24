@@ -8,9 +8,6 @@
 ;;; Setup package
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa-stable" . "https://stable.melpa.org/packages/")
-             :append)
-(add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/")
              :append)
 (package-initialize)
@@ -21,7 +18,6 @@
   (package-install 'use-package))
 
 (require 'use-package)
-(setq use-package-always-pin 'melpa-stable)
 
 ;;; Add load paths for lisp directories
 (dolist (dir (directory-files (concat user-emacs-directory "lisp")))
@@ -414,6 +410,7 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(require 'pjs-system)
 (pjs-load-system-file)
 
 (provide 'init)
