@@ -190,6 +190,10 @@
 (use-package helm-ag
   :ensure t
   :after (helm))
+(use-package helm-org
+  :ensure t
+  :custom
+  (helm-org-format-outline-path t))
 (use-package helm-projectile
   :ensure t
   :after (helm projectile)

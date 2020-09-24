@@ -188,7 +188,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
   (if (org-clocking-p)
       (org-clock-goto)
     ;; this should be maybe a helm-org function?
-    (org-goto))
+    (helm-org-agenda-files-headings))
   (pjs-org-ensure-journal-heading))
 
 (defun pjs-org-agenda ()
