@@ -31,8 +31,14 @@ tag           Check if tag matches
 nottag        Check if tag does not match
 habit         Check if there is a STYLE property with value \"habit\"
 nothabit      Check if there is not a STYLE property with value \"habit\"
+task          Check if task
+nottask       Check if not task
 project       Check if project
 notproject    Check if not project
+stuck         Check if stuck project
+notstuck      Check if not stuck project
+priority      Check if priority matches
+notpriority   Check if priority does not mach
 
 The regexp is taken from the conditions list, it must come right after
 the `regexp' or `notregexp' element.
@@ -66,13 +72,21 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
          (and (setq m (memq 'nottag conditions))
               (not (pjs-org-has-tag-p (nth 1 m))))
          (and (memq 'habit conditions)
-              (pjs-org-is-habit-p))
+              (pjs-org-habit-p))
          (and (memq 'nothabit conditions)
-              (not (pjs-org-is-habit-p)))
+              (not (pjs-org-habit-p)))
+         (and (memq 'task conditions)
+              (pjs-org-task-p))
+         (and (memq 'nottask conditions)
+              (not (pjs-org-task-p)))
          (and (memq 'project conditions)
-              (bh/is-project-p))
+              (pjs-org-project-p))
          (and (memq 'notproject conditions)
-              (not (bh/is-project-p)))
+              (not (pjs-org-project-p)))
+         (and (memq 'stuck conditions)
+              (pjs-org-stuck-project-p))
+         (and (memq 'notstuck conditions)
+              (not (pjs-org-stuck-project-p)))
          (and (setq m (memq 'priority conditions))
               (pjs-org-has-priority-p (nth 1 m)))
          (and (setq m (memq 'notpriority conditions))
@@ -81,10 +95,52 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
      end)))
 
 (defun pjs-org-has-tag-p (tag)
-  (member tag (org-get-tags)))
+  (if (listp tag)
+      (if (member (first tag) (org-get-tags))
+          t
+        (when (cdr tag)
+          (pjs-org-has-tag-p (cdr tag))))
+    (member tag (org-get-tags))))
 
-(defun pjs-org-is-habit-p ()
+(defun pjs-org-habit-p ()
   (string= (org-entry-get nil "STYLE") "habit"))
+
+(defun pjs-org-task-p ()
+  (member (nth 2 (org-heading-components)) org-todo-keywords-1))
+
+(defun pjs-org-project-p ()
+  ;; it has a DEADLINE?
+  (save-restriction
+    (widen)
+    (when (pjs-org-task-p)
+      (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+            (project-p))
+        (save-excursion
+          (while (and (not project-p)
+                      (outline-next-heading)
+                      (< (point) subtree-end))
+            (setq project-p (pjs-org-task-p))))
+        project-p))))
+
+(defun pjs-org-stuck-project-p ()
+  (save-restriction
+    (widen)
+    (when (pjs-org-project-p)
+      (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+            (stuck-p t))
+        (save-excursion
+          (while (and stuck-p
+                      (< (point) subtree-end))
+            (when (and (pjs-org-task-p)
+                       (or (org-entry-get nil "SCHEDULED")
+                           (org-entry-get nil "DEADLINE")
+                           (let ((closed-dt (org-entry-get nil "CLOSED")))
+                             (and closed-dt
+                                  (time-less-p (org-read-date t t "-7d")
+                                               (org-read-date t t closed-dt))))))
+              (setq stuck-p nil))
+            (outline-next-heading))
+          stuck-p)))))
 
 (defun pjs-org-has-priority-p (priority)
   ;; Source: https://blog.aaronbieber.com/2016/09/24/an-agenda-for-life-with-org-mode.html
@@ -93,7 +149,6 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
     (= pri-value pri-current)))
 
 (defun pjs-org-capture-to-heading ()
-  ;; :annotation is the link
   (let* ((link (plist-get org-capture-plist :annotation))
          (heading (org-find-exact-headline-in-buffer link (current-buffer) t)))
     (if heading
@@ -117,53 +172,20 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
 (defun pjs-org-agenda-sort-created (a b)
   (let* ((a-marker (get-text-property 0 'org-marker a))
          (b-marker (get-text-property 0 'org-marker b))
-         (created-a (org-entry-get a-marker "CREATED"))
-         (created-b (org-entry-get b-marker "CREATED")))
+         (created-a (when-let (created-a (org-entry-get a-marker "CREATED"))
+                      (org-read-date t t created-a)))
+         (created-b (when-let (created-b (org-entry-get b-marker "CREATED"))
+                      (org-read-date t t created-b))))
     (cond
-     ((and created-a
-           (or (null created-b)
-               (string-greaterp created-a created-b)))
-      1)
-     ((and (or (null created-a)
-               (string-lessp created-a created-b))
-           created-b)
+     ((and created-a created-b)
+      (if (time-less-p created-a created-b)
+          -1
+        1))
+     (created-a
       -1)
+     (created-b
+      1)
      (t 0))))
-
-(defun bh/is-project-p ()
-  "Any task with a todo keyword subtask"
-  (save-restriction
-    (widen)
-    (let ((has-subtask)
-          (subtree-end (save-excursion (org-end-of-subtree t)))
-          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-      (save-excursion
-        (forward-line 1)
-        (while (and (not has-subtask)
-                    (< (point) subtree-end)
-                    (re-search-forward "^\*+ " subtree-end t))
-          (when (member (org-get-todo-state) org-todo-keywords-1)
-            (setq has-subtask t))))
-      (and is-a-task has-subtask))))
-
-(defun bh/skip-non-stuck-projects ()
-  "Skip trees that are not stuck projects"
-  ;; (bh/list-sublevels-for-projects-indented)
-  (save-restriction
-    (widen)
-    (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-      (if (bh/is-project-p)
-          (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
-                 (has-next ))
-            (save-excursion
-              (forward-line 1)
-              (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
-                (unless (member "WAITING" (org-get-tags))
-                  (setq has-next t))))
-            (if has-next
-                next-headline
-              nil)) ; a stuck project, has subtasks but no next task
-        next-headline))))
 
 (defun pjs-org-find-child-heading (child)
   (save-restriction
@@ -177,7 +199,6 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
       found)))
 
 (defun pjs-org-ensure-journal-heading ()
-  (interactive)
   (when (not (pjs-org-find-child-heading "Journal"))
     (left-char)
     (org-insert-subheading '(4))
@@ -187,18 +208,27 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
 (defun pjs-org-capture-journal ()
   (if (org-clocking-p)
       (org-clock-goto)
-    ;; this should be maybe a helm-org function?
     (helm-org-agenda-files-headings))
   (pjs-org-ensure-journal-heading))
 
 (defun pjs-org-agenda ()
+  "Dispatch agenda commands, or switch to existing agenda buffer."
   (interactive)
   (if (get-buffer "*Org Agenda*")
       (switch-to-buffer "*Org Agenda*")
     (org-agenda)))
 
 (defun pjs-org-insert-created-property ()
-  (org-set-property "CREATED" (format-time-string (org-time-stamp-format t t) (current-time))))
+  (org-set-property "CREATED"
+                    (format-time-string (org-time-stamp-format t t)
+                                        (current-time))))
+
+(defun pjs-org-agenda-restrict-to-heading ()
+  (interactive)
+  (save-window-excursion
+    (helm-org-agenda-files-headings)
+    (org-agenda-set-restriction-lock))
+  (org-agenda-redo-all))
 
 (provide 'pjs-org)
 ;;; pjs-org.el ends here

@@ -323,7 +323,9 @@
   :hook (exwm-init . pjs-start-initial-programs))
 (use-package pjs-org
   :commands (pjs-ensure-ending-newline)
-  :bind (("C-c a" . pjs-org-agenda))
+  :bind (("C-c a" . pjs-org-agenda)
+         :map org-agenda-mode-map
+         ("C-c C-x ^" . pjs-org-agenda-restrict-to-heading))
   :hook (org-insert-heading . pjs-org-insert-created-property))
 (use-package pjs-org-cosmetics
   :after (org))
@@ -407,12 +409,12 @@
 (global-set-key (kbd "C-x n r") 'narrow-to-region)
 (put 'narrow-to-region 'disabled nil)
 
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 (require 'server)
 (when (not (eq (server-running-p) 't))
   (server-start))
-
-(when (file-exists-p custom-file)
-  (load custom-file))
 
 (require 'pjs-system)
 (pjs-load-system-file)

@@ -23,55 +23,59 @@
                   (pjs-org-agenda-skip-subtree-if
                    (quote tag)
                    "NOTE")))))
-       (tags "+FLAGGED|CATEGORY=\"IN\""
-             ((org-agenda-overriding-header "Inbox:")))
-       (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE"
+       (tags "FLAGGED|CATEGORY=\"IN\""
+             ((org-agenda-overriding-header "Inbox")))
+       (tags-todo "TODO=\"TODO\""
                   ((org-agenda-overriding-header "Next actions:")
                    (org-agenda-skip-function
                     (quote
-                     (or
-                      (pjs-org-agenda-skip-subtree-if
-                       (quote habit))
-                      (pjs-org-agenda-skip-subtree-if
-                       (quote project))
-                      (pjs-org-agenda-skip-entry-if
-                       (quote scheduled)
-                       (quote deadline)))))
-                   (org-agenda-max-entries 10)))
-       (tags-todo "-CANCELLED/!"
-                  ((org-agenda-overriding-header "Stuck projects")
-                   (org-agenda-skip-function
-                    (quote bh/skip-non-stuck-projects))
+                     (pjs-org-agenda-skip-entry-if
+                      (quote habit)
+                      (quote scheduled)
+                      (quote deadline)
+                      (quote tag)
+                      (quote
+                       ("SOMEDAY" "MAYBE" "TOREAD" "TOWATCH"))
+                      (quote project))))
                    (org-agenda-sorting-strategy
                     (quote
-                     (category-keep)))))
+                     (priority-down user-defined-up)))
+                   (org-agenda-cmp-user-defined
+                    (quote pjs-org-agenda-sort-created))))
+       (tags-todo "TODO=\"TODO\""
+                  ((org-agenda-overriding-header "Stuck projects")
+                   (org-agenda-skip-function
+                    (quote
+                     (pjs-org-agenda-skip-entry-if
+                      (quote tag)
+                      (quote
+                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "TOREAD" "TOWATCH"))
+                      (quote notstuck))))
+                   (org-agenda-sorting-strategy
+                    (quote
+                     (priority-down user-defined-up)))
+                   (org-agenda-cmp-user-defined
+                    (quote pjs-org-agenda-sort-created))))
        (tags "+CATEGORY=\"TOREAD\""
              ((org-agenda-overriding-header "Reading queue:")
-              (org-agenda-prefix-format "  ")
               (org-agenda-max-entries 10)))
        (tags "CLOSED<\"<-30d>\"|TODO=\"DONE\"+CLOSED=\"\""
              ((org-agenda-overriding-header "Entries to be archived"))))
       nil)
-     ("#" "Stuck projects" stuck ""
+     ("#" "Stuck projects" tags-todo "TODO=\"TODO\""
       ((org-agenda-overriding-header "Stuck projects:")
-       (org-agenda-prefix-format "  ")
        (org-agenda-sorting-strategy
         (quote
-         (user-defined-up alpha-up)))
-       (org-agenda-cmp-user-defined
-        (quote pjs-org-agenda-sort-created))))
-     ("t" "Tasks" tags-todo "-someday-toread-towatch-SOMEDAY-MAYBE-TODO=\"NEXT\"-Category=\"Standalone\""
-      ((org-agenda-skip-function
+         (priority-down user-defined-up)))
+       (org-agenda-skip-function
         (quote
-         (or
-          (pjs-org-agenda-skip-entry-if
-           (quote habit))
-          (pjs-org-agenda-skip-entry-if
-           (quote project))
-          (pjs-org-agenda-skip-entry-if
-           (quote scheduled)
-           (quote deadline)))))
-       (org-agenda-overriding-header "Tasks"))))))
+         (pjs-org-agenda-skip-entry-if
+          (quote tag)
+          (quote
+           ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "TOREAD" "TOWATCH"))
+          (quote notstuck))))
+       (org-agenda-cmp-user-defined
+        (quote pjs-org-agenda-sort-created)))))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
@@ -145,6 +149,7 @@
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
+ '(org-drill-save-buffers-after-drill-sessions-p nil t)
  '(org-edit-src-content-indentation 0)
  '(org-emphasis-alist
    (quote
@@ -153,8 +158,7 @@
      ("_" underline)
      ("=" org-verbatim verbatim)
      ("~" org-code verbatim)
-     ("+"
-      (:foreground "gray" :strike-through t)))))
+     ("+" org-strike-through))))
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
  '(org-fast-tag-selection-single-key t)
@@ -197,6 +201,7 @@
      ("HOLD" . 104)
      ("PERSONAL" . 80)
      ("WORK" . 87)
+     ("MOBILE" . 77)
      ("NOTE" . 110)
      ("CANCELLED" . 99)
      ("SOMEDAY" . 115)
@@ -207,7 +212,6 @@
  '(org-todo-keyword-faces
    (quote
     (("TODO" :foreground "red" :weight bold)
-     ("NEXT" :foreground "blue" :weight bold)
      ("DONE" :foreground "forest green" :weight bold)
      ("WAITING" :foreground "orange" :weight bold)
      ("HOLD" :foreground "magenta" :weight bold)
@@ -215,8 +219,8 @@
      ("MEETING" :foreground "forest green" :weight bold))))
  '(org-todo-keywords
    (quote
-    ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)" "MEETING"))))
+    ((sequence "TODO(t)" "|" "DONE(d)")
+     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
  '(org-todo-state-tags-triggers
    (quote
     (("CANCELLED"
@@ -233,15 +237,12 @@
       ("WAITING")
       ("CANCELLED")
       ("HOLD"))
-     ("NEXT"
-      ("WAITING")
-      ("CANCELLED")
-      ("HOLD"))
      ("DONE"
       ("WAITING")
       ("CANCELLED")
       ("HOLD")))))
  '(org-treat-S-cursor-todo-selection-as-state-change nil)
+ '(org-use-fast-todo-selection (quote expert))
  '(org-use-speed-commands t)
  '(org-use-sub-superscripts (quote {}))
  '(org-yank-adjusted-subtrees t)

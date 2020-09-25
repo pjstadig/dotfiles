@@ -120,4 +120,20 @@
  '(("[-+*.)] \\[[ X-]\\]\\( \\)"
     (1 'fixed-pitch))))
 
+(defface org-strike-through '((t :foreground "gray" :strike-through t))
+  "Face used for strike through text."
+  :group 'org-faces)
+
+(defface org-highlight '((t :background "yellow"))
+  "Face used for highlighted text."
+  :group 'org-faces)
+
+;; This is font-lock, because the emphasis parsing in org-mode is more
+;; complicated than just customizing org-emphasis-alist. The parsing is
+;; integrated pretty deeply.
+(font-lock-add-keywords
+ 'org-mode
+ '(("\\(\\^[^\\^|]+\\^\\)"
+    (1 'org-highlight))))
+
 (provide 'pjs-org-cosmetics)
