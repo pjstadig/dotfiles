@@ -106,9 +106,11 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
   (string= (org-entry-get nil "STYLE") "habit"))
 
 (defun pjs-org-task-p ()
+  "A task is an entry with a TODO cookie."
   (member (nth 2 (org-heading-components)) org-todo-keywords-1))
 
 (defun pjs-org-project-p ()
+  "A project is a task with at least one sub-task."
   ;; it has a DEADLINE?
   (save-restriction
     (widen)
@@ -123,22 +125,25 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
         project-p))))
 
 (defun pjs-org-stuck-project-p ()
+  "A stuck project is a project with no activity in the past 7 days."
   (save-restriction
     (widen)
     (when (pjs-org-project-p)
       (let ((subtree-end (save-excursion (org-end-of-subtree t)))
             (stuck-p t))
         (save-excursion
-          (while (and stuck-p
-                      (< (point) subtree-end))
-            (when (and (pjs-org-task-p)
-                       (or (org-entry-get nil "SCHEDULED")
-                           (org-entry-get nil "DEADLINE")
-                           (let ((closed-dt (org-entry-get nil "CLOSED")))
-                             (and closed-dt
-                                  (time-less-p (org-read-date t t "-7d")
-                                               (org-read-date t t closed-dt))))))
-              (setq stuck-p nil))
+          (while (and stuck-p (< (point) subtree-end))
+            (when (pjs-org-task-p)
+              (save-excursion
+                (let ((meta-data-end (save-excursion (org-end-of-meta-data 'u) (point))))
+                  (while (and stuck-p (< (point) meta-data-end))
+                    (if (re-search-forward (org-re-timestamp 'all) meta-data-end t)
+                        (let ((dt (match-string 1)))
+                          (when dt
+                            (when (time-less-p (org-read-date t t "-7d")
+                                               (org-read-date t t dt))
+                              (setq stuck-p nil))))
+                      (goto-char meta-data-end))))))
             (outline-next-heading))
           stuck-p)))))
 
@@ -172,10 +177,12 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
 (defun pjs-org-agenda-sort-created (a b)
   (let* ((a-marker (get-text-property 0 'org-marker a))
          (b-marker (get-text-property 0 'org-marker b))
-         (created-a (when-let (created-a (org-entry-get a-marker "CREATED"))
-                      (org-read-date t t created-a)))
-         (created-b (when-let (created-b (org-entry-get b-marker "CREATED"))
-                      (org-read-date t t created-b))))
+         (created-a (let ((created-a (org-entry-get a-marker "CREATED")))
+                      (when created-a
+                        (org-read-date t t created-a))))
+         (created-b (let ((created-b (org-entry-get b-marker "CREATED")))
+                      (when created-b
+                        (org-read-date t t created-b)))))
     (cond
      ((and created-a created-b)
       (if (time-less-p created-a created-b)
