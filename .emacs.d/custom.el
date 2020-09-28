@@ -11,7 +11,7 @@
     (("n" "Next actions"
       ((tags-todo "+TODO=\"WAITING\""
                   ((org-agenda-overriding-header "Waiting")))
-       (tags-todo "+TODO=\"NEXT\"-SOMEDAY-MAYBE-SCHEDULED>\"<now>\"|-SOMEDAY-MAYBE+SCHEDULED<=\"<now>\"|+CATEGORY=\"Standalone\"+LEVEL=1-SOMEDAY-MAYBE-SCHEDULED>\"<now>\""
+       (tags-todo "-SOMEDAY-MAYBE-HOLD-SCHEDULED>\"<now>\""
                   ((org-agenda-overriding-header "Next actions"))))
       nil)
      ("d" "Daily agenda and all TODOs"
@@ -33,9 +33,11 @@
                       (quote habit)
                       (quote scheduled)
                       (quote deadline)
+                      (quote category)
+                      "IN"
                       (quote tag)
                       (quote
-                       ("SOMEDAY" "MAYBE" "TOREAD" "TOWATCH"))
+                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH"))
                       (quote project))))
                    (org-agenda-sorting-strategy
                     (quote
@@ -49,7 +51,7 @@
                      (pjs-org-agenda-skip-entry-if
                       (quote tag)
                       (quote
-                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "TOREAD" "TOWATCH"))
+                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH"))
                       (quote notstuck))))
                    (org-agenda-sorting-strategy
                     (quote
@@ -72,7 +74,7 @@
          (pjs-org-agenda-skip-entry-if
           (quote tag)
           (quote
-           ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "TOREAD" "TOWATCH"))
+           ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH"))
           (quote notstuck))))
        (org-agenda-cmp-user-defined
         (quote pjs-org-agenda-sort-created)))))))
@@ -80,7 +82,7 @@
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/in.org" "~/org/orgzly/orgzly.org" "~/org/orgzly/tasks.org" "~/org/orgzly/projects.org" "~/org/someday-maybe.org" "~/org/notes.org" "~/org/habits.org" "~/org/journal.org" "~/org/orgzly/schedule.org" "~/org/orgzly/read.org")))
+    ("~/org/in.org" "~/org/mobile/in.org" "~/org/mobile/todo.org" "~/org/mobile/toread.org" "~/org/mobile/tolisten.org" "~/org/mobile/towatch.org" "~/org/someday-maybe.org" "~/org/notes.org" "~/org/habits.org" "~/org/journal.org")))
  '(org-agenda-insert-diary-strategy (quote date-tree-last))
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
@@ -89,7 +91,7 @@
      (todo . "  %?b")
      (tags . "  %?b")
      (search . "  %?b"))))
- '(org-agenda-tags-column 0)
+ '(org-agenda-tags-column -96)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-agenda-window-setup (quote only-window))
  '(org-archive-file-header-format "")
@@ -106,12 +108,12 @@
 :END:")
      ("n" "note" entry
       (file "~/org/notes.org")
-      "* %? :NOTE:
+      "* %?
 :PROPERTIES:
 :CREATED: %U
 :END:")
      ("y" "org-protocol-link" entry
-      (file "~/org/orgzly/read.org")
+      (file "~/org/mobile/toread.org")
       "* %? %a
 :PROPERTIES:
 :CREATED: %U
@@ -140,7 +142,7 @@
 :CREATED: %T
 :END:")
      ("v" "Event" entry
-      (file "~/org/orgzly/schedule.org")
+      (file "~/org/mobile/todo.org")
       "* %^{Description}
 %^T
 :PROPERTIES:
@@ -149,7 +151,7 @@
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
- '(org-drill-save-buffers-after-drill-sessions-p nil t)
+ '(org-drill-save-buffers-after-drill-sessions-p nil)
  '(org-edit-src-content-indentation 0)
  '(org-emphasis-alist
    (quote
@@ -166,7 +168,7 @@
  '(org-footnote-section nil)
  '(org-goto-interface (quote outline-path-completion))
  '(org-habit-following-days 1)
- '(org-habit-graph-column 75)
+ '(org-habit-graph-column 97)
  '(org-habit-preceding-days 14)
  '(org-hide-leading-stars t)
  '(org-id-link-to-org-use-id (quote create-if-interactive-and-no-custom-id))
@@ -199,14 +201,11 @@
    (quote
     (("WAITING" . 119)
      ("HOLD" . 104)
-     ("PERSONAL" . 80)
-     ("WORK" . 87)
-     ("MOBILE" . 77)
+     ("MOBILE" . 109)
      ("NOTE" . 110)
      ("CANCELLED" . 99)
-     ("SOMEDAY" . 115)
-     ("MAYBE" . 109)
-     ("FLAGGED" . 63))))
+     ("FLAGGED" . 63)
+     ("SHOPPING" . 115))))
  '(org-tags-column 0)
  '(org-tags-exclude-from-inheritance (quote ("ROUTINE")))
  '(org-todo-keyword-faces
@@ -248,7 +247,7 @@
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    (quote
-    (helm-org cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
+    (exwm-edit helm-org cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
  '(safe-local-variable-values
    (quote
     ((elisp-lint-indent-specs
@@ -307,6 +306,6 @@
  '(org-property-value ((t (:inherit fixed-pitch))) t)
  '(org-special-keyword ((t (:inherit (font-lock-keyword-face fixed-pitch)))))
  '(org-table ((t (:inherit fixed-pitch :foreground "Blue1"))))
- '(org-tag ((t (:inherit fixed-pitch :weight bold :height 0.8))))
+ '(org-tag ((t (:inherit fixed-pitch :weight bold))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
  '(variable-pitch ((t (:height 130 :family "Fira Sans")))))

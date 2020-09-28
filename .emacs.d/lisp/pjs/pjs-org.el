@@ -29,6 +29,8 @@ todo          Check if TODO keyword matches
 nottodo       Check if TODO keyword does not match
 tag           Check if tag matches
 nottag        Check if tag does not match
+category      Check if category matches
+notcategory   Check if category does not match
 habit         Check if there is a STYLE property with value \"habit\"
 nothabit      Check if there is not a STYLE property with value \"habit\"
 task          Check if task
@@ -71,6 +73,10 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
               (pjs-org-has-tag-p (nth 1 m)))
          (and (setq m (memq 'nottag conditions))
               (not (pjs-org-has-tag-p (nth 1 m))))
+         (and (setq m (memq 'category conditions))
+              (pjs-org-has-category-p (nth 1 m)))
+         (and (setq m (memq 'notcategory conditions))
+              (not (pjs-org-has-category-p (nth 1 m))))
          (and (memq 'habit conditions)
               (pjs-org-habit-p))
          (and (memq 'nothabit conditions)
@@ -101,6 +107,14 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
         (when (cdr tag)
           (pjs-org-has-tag-p (cdr tag))))
     (member tag (org-get-tags))))
+
+(defun pjs-org-has-category-p (categories)
+  (if (listp categories)
+      (if (string-equal (first categories) (org-get-category))
+          t
+        (when (cdr categories)
+          (pjs-org-has-category-p (cdr categories))))
+    (string-equal categories (org-get-category))))
 
 (defun pjs-org-habit-p ()
   (string= (org-entry-get nil "STYLE") "habit"))
