@@ -195,6 +195,7 @@
   :after (helm))
 (use-package helm-org
   :ensure t
+  :bind (("C-c C-j" . helm-org-agenda-files-headings))
   :custom
   (helm-org-format-outline-path t))
 (use-package helm-projectile
