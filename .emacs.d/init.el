@@ -153,6 +153,9 @@
   (exwm-workspace-number 10)
   (exwm-workspace-show-all-buffers nil)
   (exwm-workspace-switch-create-limit 10))
+(use-package exwm-edit
+  :ensure t
+  :after (exwm))
 (use-package files
   :defer t
   :custom
