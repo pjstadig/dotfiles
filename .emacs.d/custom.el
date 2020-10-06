@@ -153,6 +153,7 @@
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
  '(org-drill-save-buffers-after-drill-sessions-p nil)
+ '(org-drill-scope (quote agenda))
  '(org-edit-src-content-indentation 0)
  '(org-emphasis-alist
    (quote
@@ -206,7 +207,8 @@
      ("NOTE" . 110)
      ("CANCELLED" . 99)
      ("FLAGGED" . 63)
-     ("SHOPPING" . 115))))
+     ("SHOPPING" . 115)
+     ("REVIEW" . 114))))
  '(org-tags-column 0)
  '(org-tags-exclude-from-inheritance (quote ("FLAGGED")))
  '(org-todo-keyword-faces
