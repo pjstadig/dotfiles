@@ -196,7 +196,7 @@
   :after (helm))
 (use-package helm-org
   :ensure t
-  :bind (("C-c C-j" . helm-org-agenda-files-headings))
+  :bind (("C-c j j" . helm-org-agenda-files-headings))
   :custom
   (helm-org-format-outline-path t))
 (use-package helm-projectile
@@ -255,7 +255,9 @@
   :demand t
   :hook ((org-mode . variable-pitch-mode))
   :bind (("C-c b" . org-switchb)
-         ("C-c o o" . org-cycle-agenda-files))
+         ("C-c o o" . org-cycle-agenda-files)
+         ("C-c j r". org-refile-goto-last-stored)
+         ("C-c j c". org-capture-goto-last-stored))
   :custom
   (org-startup-indented t))
 (use-package org-autolist
@@ -270,11 +272,10 @@
   :commands (org-drill)
   :custom
   (org-drill-left-cloze-delimiter "{")
-  (org-drill-question-tag "NOTE")
+  (org-drill-question-tag "REVIEW")
   (org-drill-right-cloze-delimiter "}")
   (org-drill-save-buffers-after-drill-sessions-p t)
-  ;; TODO: can this just be "notes.org"?
-  (org-drill-scope '("~/org/notes.org"))
+  (org-drill-scope '("~/org/review.org"))
   :config
   (declare-function org-drill-hide-region "org-drill.el")
   (defun pjs-org-drill-hide-comments ()

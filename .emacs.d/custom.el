@@ -11,7 +11,7 @@
     (("n" "Next actions"
       ((tags-todo "+TODO=\"WAITING\""
                   ((org-agenda-overriding-header "Waiting")))
-       (tags-todo "-SOMEDAY-MAYBE-HOLD-SCHEDULED>\"<now>\""
+       (tags-todo "-FLAGGED-REVIEW-SOMEDAY-MAYBE-HOLD-SCHEDULED>\"<now>\""
                   ((org-agenda-overriding-header "Next actions"))))
       nil)
      ("d" "Daily agenda and all TODOs"
@@ -22,7 +22,8 @@
                  (quote
                   (pjs-org-agenda-skip-subtree-if
                    (quote tag)
-                   "NOTE")))))
+                   (quote
+                    ("NOTE" "REVIEW")))))))
        (tags "FLAGGED|CATEGORY=\"IN\""
              ((org-agenda-overriding-header "Inbox")))
        (tags-todo "TODO=\"TODO\""
@@ -37,7 +38,7 @@
                       "IN"
                       (quote tag)
                       (quote
-                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH"))
+                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW"))
                       (quote project))))
                    (org-agenda-sorting-strategy
                     (quote
@@ -82,7 +83,7 @@
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
    (quote
-    ("~/org/in.org" "~/org/mobile/in.org" "~/org/mobile/todo.org" "~/org/mobile/toread.org" "~/org/mobile/tolisten.org" "~/org/mobile/towatch.org" "~/org/someday-maybe.org" "~/org/notes.org" "~/org/habits.org" "~/org/journal.org")))
+    ("~/org/in.org" "~/org/mobile/in.org" "~/org/mobile/todo.org" "~/org/mobile/toread.org" "~/org/mobile/tolisten.org" "~/org/mobile/towatch.org" "~/org/someday-maybe.org" "~/org/review.org" "~/org/habits.org" "~/org/journal.org" "~/org/reference.org")))
  '(org-agenda-insert-diary-strategy (quote date-tree-last))
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
@@ -207,7 +208,7 @@
      ("FLAGGED" . 63)
      ("SHOPPING" . 115))))
  '(org-tags-column 0)
- '(org-tags-exclude-from-inheritance (quote ("ROUTINE")))
+ '(org-tags-exclude-from-inheritance (quote ("FLAGGED")))
  '(org-todo-keyword-faces
    (quote
     (("TODO" :foreground "red" :weight bold)
