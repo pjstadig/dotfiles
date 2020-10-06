@@ -108,7 +108,7 @@
 :CREATED: %U
 :END:")
      ("n" "note" entry
-      (file "~/org/notes.org")
+      (file "~/org/reference.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
@@ -120,8 +120,8 @@
 :CREATED: %U
 :END:" :immediate-finish t)
      ("z" "org-protocol-quote" entry
-      (file+function "~/org/notes.org" pjs-org-capture-to-heading)
-      "* %:description :NOTE:
+      (file+function "~/org/review.org" pjs-org-capture-to-heading)
+      "* %:description :REVIEW:
 :PROPERTIES:
 :CREATED: %U
 :END:
