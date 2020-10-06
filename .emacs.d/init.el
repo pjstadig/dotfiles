@@ -186,6 +186,7 @@
   (gnu-elpa-keyring-update))
 (use-package helm
   :ensure t
+  :demand t
   :bind (("C-x C-f" . helm-find-files)
          ("M-x" . helm-M-x))
   :config
@@ -335,6 +336,7 @@
   :after (org))
 (use-package pjs-reset
   :bind (("s-r" . pjs-reset)))
+(use-package pjs-secrets)
 (use-package pjs-system
   :commands pjs-load-system-file)
 (use-package projectile
