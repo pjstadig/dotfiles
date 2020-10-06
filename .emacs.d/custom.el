@@ -38,7 +38,7 @@
                       "IN"
                       (quote tag)
                       (quote
-                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW"))
+                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE"))
                       (quote project))))
                    (org-agenda-sorting-strategy
                     (quote
