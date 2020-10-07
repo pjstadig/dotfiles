@@ -276,6 +276,7 @@
   (org-drill-right-cloze-delimiter "}")
   (org-drill-save-buffers-after-drill-sessions-p t)
   (org-drill-scope '("~/org/review.org"))
+  :bind (("C-c d" . pjs-org-drill-or-resume))
   :config
   (declare-function org-drill-hide-region "org-drill.el")
   (defun pjs-org-drill-hide-comments ()
@@ -283,7 +284,12 @@
     (save-excursion
       (while (re-search-forward "^#[^+].*$" nil t)
         (org-drill-hide-region (match-beginning 0) (match-end 0)))))
-  (advice-add 'org-drill-hide-comments :override 'pjs-org-drill-hide-comments))
+  (advice-add 'org-drill-hide-comments :override 'pjs-org-drill-hide-comments)
+  (defun pjs-org-drill-or-resume ()
+    (interactive)
+    (if (org-drill-entries-pending-p org-drill-last-session)
+        (org-drill-resume)
+      (org-drill))))
 (use-package org-habit
   :after (org))
 (use-package org-id
