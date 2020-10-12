@@ -7,8 +7,7 @@
  '(org-agenda-breadcrumbs-separator "/")
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
-   (quote
-    (("n" "Next actions"
+   '(("n" "Next actions"
       ((tags-todo "+TODO=\"WAITING\""
                   ((org-agenda-overriding-header "Waiting")))
        (tags-todo "-FLAGGED-REVIEW-SOMEDAY-MAYBE-HOLD-SCHEDULED>\"<now>\""
@@ -16,49 +15,33 @@
       nil)
      ("d" "Daily agenda and all TODOs"
       ((agenda ""
-               ((org-agenda-span
-                 (quote day))
+               ((org-agenda-span 'day)
                 (org-agenda-skip-function
-                 (quote
-                  (pjs-org-agenda-skip-subtree-if
-                   (quote tag)
-                   (quote
-                    ("NOTE" "REVIEW")))))))
-       (tags "FLAGGED|CATEGORY=\"IN\""
-             ((org-agenda-overriding-header "Inbox")))
+                 '(pjs-org-agenda-skip-subtree-if 'tag
+                                                  '("NOTE" "REVIEW")))))
+       (tags "FLAGGED+SCHEDULED=\"\"+DEADLINE=\"\"|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
+             ((org-agenda-overriding-header "Inbox")
+              (org-agenda-sorting-strategy
+               '(priority-down user-defined-up))
+              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
        (tags-todo "TODO=\"TODO\""
                   ((org-agenda-overriding-header "Next actions:")
                    (org-agenda-skip-function
-                    (quote
-                     (pjs-org-agenda-skip-entry-if
-                      (quote habit)
-                      (quote scheduled)
-                      (quote deadline)
-                      (quote category)
-                      "IN"
-                      (quote tag)
-                      (quote
-                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE"))
-                      (quote project))))
+                    '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
+                                                   '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
+                                                   'project))
                    (org-agenda-sorting-strategy
-                    (quote
-                     (priority-down user-defined-up)))
-                   (org-agenda-cmp-user-defined
-                    (quote pjs-org-agenda-sort-created))))
+                    '(priority-down user-defined-up))
+                   (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
        (tags-todo "TODO=\"TODO\""
                   ((org-agenda-overriding-header "Stuck projects")
                    (org-agenda-skip-function
-                    (quote
-                     (pjs-org-agenda-skip-entry-if
-                      (quote tag)
-                      (quote
-                       ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH"))
-                      (quote notstuck))))
+                    '(pjs-org-agenda-skip-entry-if 'tag
+                                                   '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
+                                                   'notstuck))
                    (org-agenda-sorting-strategy
-                    (quote
-                     (priority-down user-defined-up)))
-                   (org-agenda-cmp-user-defined
-                    (quote pjs-org-agenda-sort-created))))
+                    '(priority-down user-defined-up))
+                   (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
        (tags "+CATEGORY=\"TOREAD\""
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-max-entries 10)))
@@ -68,42 +51,48 @@
      ("#" "Stuck projects" tags-todo "TODO=\"TODO\""
       ((org-agenda-overriding-header "Stuck projects:")
        (org-agenda-sorting-strategy
-        (quote
-         (priority-down user-defined-up)))
+        '(priority-down user-defined-up))
        (org-agenda-skip-function
-        (quote
-         (pjs-org-agenda-skip-entry-if
-          (quote tag)
-          (quote
-           ("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH"))
-          (quote notstuck))))
-       (org-agenda-cmp-user-defined
-        (quote pjs-org-agenda-sort-created)))))))
+        '(pjs-org-agenda-skip-entry-if 'tag
+                                       '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
+                                       'notstuck))
+       (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
-   (quote
-    ("~/org/in.org" "~/org/mobile/in.org" "~/org/mobile/todo.org" "~/org/mobile/toread.org" "~/org/mobile/tolisten.org" "~/org/mobile/towatch.org" "~/org/someday-maybe.org" "~/org/review.org" "~/org/habits.org" "~/org/journal.org" "~/org/reference.org")))
- '(org-agenda-insert-diary-strategy (quote date-tree-last))
+   '("~/org/in.org" "~/org/mobile/in.org" "~/org/mobile/todo.org" "~/org/mobile/toread.org" "~/org/mobile/tolisten.org" "~/org/mobile/towatch.org" "~/org/someday-maybe.org" "~/org/review.org" "~/org/habits.org" "~/org/journal.org" "~/org/reference.org"))
+ '(org-agenda-insert-diary-strategy 'date-tree-last)
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
-   (quote
-    ((agenda . "  %?-12t% s%?b")
+   '((agenda . "  %?-12t% s%?b")
      (todo . "  %?b")
      (tags . "  %?b")
-     (search . "  %?b"))))
+     (search . "  %?b")))
  '(org-agenda-tags-column -96)
  '(org-agenda-tags-todo-honor-ignore-options t)
- '(org-agenda-window-setup (quote only-window))
+ '(org-agenda-window-setup 'only-window)
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
  '(org-attach-id-dir "attachments/")
- '(org-capture-prepare-finalize-hook (quote (pjs-ensure-ending-newline)))
+ '(org-capture-prepare-finalize-hook '(pjs-ensure-ending-newline))
  '(org-capture-templates
-   (quote
-    (("t" "todo" entry
+   '(("t" "todo" entry
       (file "~/org/in.org")
       "* TODO %?
+:PROPERTIES:
+:CREATED: %U
+:END:")
+     ("l" "link to current" entry
+      (file "~/org/in.org")
+      "* %?
+:PROPERTIES:
+:CREATED: %U
+:END:
+
+From: %a")
+     ("r" "review" entry
+      (file "~/org/review.org")
+      "* %? :REVIEW:
 :PROPERTIES:
 :CREATED: %U
 :END:")
@@ -136,9 +125,7 @@
 :PROPERTIES:
 :CREATED: %U
 :END:")
-     ("jc" "Journal to clocked entry" entry
-      (function pjs-org-capture-journal)
-      "* %?
+     ("jc" "Journal to clocked entry" entry #'pjs-org-capture-journal "* %?
 :PROPERTIES:
 :CREATED: %T
 :END:")
@@ -148,84 +135,77 @@
 %^T
 :PROPERTIES:
 :CREATED: %U
-:END:" :immediate-finish t))))
+:END:" :immediate-finish t)))
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
  '(org-drill-save-buffers-after-drill-sessions-p nil)
- '(org-drill-scope (quote agenda))
+ '(org-drill-scope 'agenda)
  '(org-edit-src-content-indentation 0)
  '(org-emphasis-alist
-   (quote
-    (("*" bold)
+   '(("*" bold)
      ("/" italic)
      ("_" underline)
      ("=" org-verbatim verbatim)
      ("~" org-code verbatim)
-     ("+" org-strike-through))))
+     ("+" org-strike-through)))
  '(org-enforce-todo-checkbox-dependencies t)
  '(org-enforce-todo-dependencies t)
  '(org-fast-tag-selection-single-key t)
  '(org-footnote-auto-adjust t)
  '(org-footnote-section nil)
- '(org-goto-interface (quote outline-path-completion))
+ '(org-goto-interface 'outline-path-completion)
  '(org-habit-following-days 1)
  '(org-habit-graph-column 97)
  '(org-habit-preceding-days 14)
  '(org-hide-leading-stars t)
- '(org-id-link-to-org-use-id (quote create-if-interactive-and-no-custom-id))
- '(org-indirect-buffer-display (quote current-window))
+ '(org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+ '(org-indirect-buffer-display 'current-window)
  '(org-list-allow-alphabetical t)
- '(org-list-demote-modify-bullet (quote (("-" . "+") ("+" . "*") ("*" . "-"))))
- '(org-log-done (quote time))
+ '(org-list-demote-modify-bullet '(("-" . "+") ("+" . "*") ("*" . "-")))
+ '(org-log-done 'time)
  '(org-log-into-drawer t)
- '(org-log-reschedule (quote note))
+ '(org-log-reschedule 'note)
  '(org-outline-path-complete-in-steps nil)
  '(org-pretty-entities t)
- '(org-refile-allow-creating-parent-nodes (quote confirm))
+ '(org-refile-allow-creating-parent-nodes 'confirm)
  '(org-refile-targets
-   (quote
-    ((nil :maxlevel . 9)
+   '((nil :maxlevel . 9)
      (org-agenda-files :maxlevel . 9)
      ("~/org/read.org" :level . 0)
-     ("~/org/reference.org" :level . 0))))
- '(org-refile-use-outline-path (quote file))
- '(org-special-ctrl-a/e (quote reversed))
+     ("~/org/reference.org" :level . 0)))
+ '(org-refile-use-outline-path 'file)
+ '(org-special-ctrl-a/e 'reversed)
  '(org-special-ctrl-k t)
- '(org-startup-folded (quote content))
+ '(org-startup-folded 'content)
  '(org-stuck-projects
-   (quote
-    ("+LEVEL=1+TODO=\"TODO\"+CATEGORY=\"Projects\"-SOMEDAY-MAYBE"
+   '("+LEVEL=1+TODO=\"TODO\"+CATEGORY=\"Projects\"-SOMEDAY-MAYBE"
      ("NEXT")
      ("ROUTINE")
-     "")))
+     ""))
  '(org-tag-alist
-   (quote
-    (("WAITING" . 119)
+   '(("WAITING" . 119)
      ("HOLD" . 104)
      ("MOBILE" . 109)
      ("NOTE" . 110)
      ("CANCELLED" . 99)
      ("FLAGGED" . 63)
      ("SHOPPING" . 115)
-     ("REVIEW" . 114))))
+     ("REVIEW" . 114)))
  '(org-tags-column 0)
- '(org-tags-exclude-from-inheritance (quote ("FLAGGED")))
+ '(org-tags-exclude-from-inheritance '("FLAGGED"))
  '(org-todo-keyword-faces
-   (quote
-    (("TODO" :foreground "red" :weight bold)
+   '(("TODO" :foreground "red" :weight bold)
      ("DONE" :foreground "forest green" :weight bold)
      ("WAITING" :foreground "orange" :weight bold)
      ("HOLD" :foreground "magenta" :weight bold)
      ("CANCELLED" :foreground "forest green" :weight bold)
-     ("MEETING" :foreground "forest green" :weight bold))))
+     ("MEETING" :foreground "forest green" :weight bold)))
  '(org-todo-keywords
-   (quote
-    ((sequence "TODO(t)" "|" "DONE(d)")
-     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
+   '((sequence "TODO(t)" "|" "DONE(d)")
+     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
  '(org-todo-state-tags-triggers
-   (quote
-    (("CANCELLED"
+   '(("CANCELLED"
       ("CANCELLED" . t))
      ("WAITING"
       ("WAITING" . t))
@@ -242,18 +222,16 @@
      ("DONE"
       ("WAITING")
       ("CANCELLED")
-      ("HOLD")))))
+      ("HOLD"))))
  '(org-treat-S-cursor-todo-selection-as-state-change nil)
- '(org-use-fast-todo-selection (quote expert))
+ '(org-use-fast-todo-selection 'expert)
  '(org-use-speed-commands t)
- '(org-use-sub-superscripts (quote {}))
+ '(org-use-sub-superscripts '{})
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
-   (quote
-    (exwm-edit helm-org cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-projectile magit markdown markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode)))
+   '(cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm exwm-edit flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-org helm-projectile magit markdown markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode))
  '(safe-local-variable-values
-   (quote
-    ((elisp-lint-indent-specs
+   '((elisp-lint-indent-specs
       (if-let* . 2)
       (when-let* . 1)
       (let* . defun)
@@ -274,21 +252,18 @@
      (checkdoc-package-keywords-flag)
      (whitespace-line-column)
      (eval ignore-errors
-           (require
-            (quote whitespace))
+           (require 'whitespace)
            (whitespace-mode 0)
            (whitespace-mode 1))
-     (clojure-test-ns-segment-position . 1))))
+     (clojure-test-ns-segment-position . 1)))
  '(sh-basic-offset 2)
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
-   (quote
-    (pjs-configure-text-mode-fill-column flyspell-mode text-mode-hook-identify)))
+   '(pjs-configure-text-mode-fill-column flyspell-mode text-mode-hook-identify))
  '(visible-bell t)
  '(whitespace-line-column nil)
  '(whitespace-style
-   (quote
-    (face trailing tabs lines-tail newline empty indentation::space))))
+   '(face trailing tabs lines-tail newline empty indentation::space)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

@@ -287,7 +287,8 @@
   (advice-add 'org-drill-hide-comments :override 'pjs-org-drill-hide-comments)
   (defun pjs-org-drill-or-resume ()
     (interactive)
-    (if (org-drill-entries-pending-p org-drill-last-session)
+    (if (and org-drill-last-session
+             (org-drill-entries-pending-p org-drill-last-session))
         (org-drill-resume)
       (org-drill))))
 (use-package org-habit
