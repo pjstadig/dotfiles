@@ -139,7 +139,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
         project-p))))
 
 (defun pjs-org-stuck-project-p ()
-  "A stuck project is a project with no activity in the past 7 days."
+  "A stuck project is a project with no activity in the past 14 days."
   (save-restriction
     (widen)
     (when (pjs-org-project-p)
@@ -154,7 +154,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
                     (if (re-search-forward (org-re-timestamp 'all) meta-data-end t)
                         (let ((dt (match-string 1)))
                           (when dt
-                            (when (time-less-p (org-read-date t t "-7d")
+                            (when (time-less-p (org-read-date t t "-14d")
                                                (org-read-date t t dt))
                               (setq stuck-p nil))))
                       (goto-char meta-data-end))))))

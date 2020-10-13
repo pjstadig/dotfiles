@@ -45,7 +45,7 @@
        (tags "+CATEGORY=\"TOREAD\""
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-max-entries 10)))
-       (tags "CLOSED<\"<-30d>\"|TODO=\"DONE\"+CLOSED=\"\""
+       (tags "CLOSED<\"<-14d>\"|TODO=\"DONE\"+CLOSED=\"\""
              ((org-agenda-overriding-header "Entries to be archived"))))
       nil)
      ("#" "Stuck projects" tags-todo "TODO=\"TODO\""
