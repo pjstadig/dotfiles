@@ -7,23 +7,17 @@
  '(org-agenda-breadcrumbs-separator "➤")
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
-   '(("n" "Next actions"
-      ((tags-todo "+TODO=\"WAITING\""
-                  ((org-agenda-overriding-header "Waiting")))
-       (tags-todo "-FLAGGED-REVIEW-SOMEDAY-MAYBE-HOLD-SCHEDULED>\"<now>\""
-                  ((org-agenda-overriding-header "Next actions"))))
-      nil)
+   '(("i" "Inbox" tags "FLAGGED|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
+      ((org-agenda-overriding-header "Inbox")
+       (org-agenda-sorting-strategy
+        '(priority-down user-defined-up))
+       (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
      ("d" "Daily agenda and all TODOs"
       ((agenda ""
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
                  '(pjs-org-agenda-skip-subtree-if 'tag
                                                   '("NOTE" "REVIEW")))))
-       (tags "FLAGGED+SCHEDULED=\"\"+DEADLINE=\"\"|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
-             ((org-agenda-overriding-header "Inbox")
-              (org-agenda-sorting-strategy
-               '(priority-down user-defined-up))
-              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
        (tags-todo "TODO=\"TODO\""
                   ((org-agenda-overriding-header "Next actions:")
                    (org-agenda-skip-function
@@ -33,22 +27,13 @@
                    (org-agenda-sorting-strategy
                     '(priority-down user-defined-up))
                    (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
-       (tags-todo "TODO=\"TODO\""
-                  ((org-agenda-overriding-header "Stuck projects")
-                   (org-agenda-skip-function
-                    '(pjs-org-agenda-skip-entry-if 'tag
-                                                   '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
-                                                   'notstuck))
-                   (org-agenda-sorting-strategy
-                    '(priority-down user-defined-up))
-                   (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
        (tags "+CATEGORY=\"TOREAD\""
              ((org-agenda-overriding-header "Reading queue:")
-              (org-agenda-max-entries 10)))
-       (tags "CLOSED<\"<-14d>\"|TODO=\"DONE\"+CLOSED=\"\""
-             ((org-agenda-overriding-header "Entries to be archived"))))
+              (org-agenda-max-entries 10))))
       nil)
-     ("#" "Stuck projects" tags-todo "TODO=\"TODO\""
+     ("e" "Entries to be archived" tags "CLOSED<\"<-14d>\"|TODO=\"DONE\"+CLOSED=\"\""
+      ((org-agenda-overriding-header "Entries to be archived")))
+     ("#" "Stuck projects" tags "*"
       ((org-agenda-overriding-header "Stuck projects:")
        (org-agenda-sorting-strategy
         '(priority-down user-defined-up))
