@@ -271,6 +271,7 @@ From: %a")
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "CTDB" :family "Fira Mono"))))
  '(fixed-pitch ((t (:height 120 :family "Fira Mono"))))
+ '(italic ((t (:slant italic))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-checkbox ((t (:inherit fixed-pitch :weight bold :height 0.9))))
  '(org-code ((t (:inherit (shadow fixed-pitch)))))
