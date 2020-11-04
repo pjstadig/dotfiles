@@ -123,20 +123,26 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
   "A task is an entry with a TODO cookie."
   (member (nth 2 (org-heading-components)) org-todo-keywords-1))
 
+(defun pjs-org-task-regex ()
+  (concat "[*]+ \\(?:"
+          (string-join org-todo-keywords-1 "\\|")
+          "\\) .*"))
+
+(defun pjs-org-sub-task-p ()
+  (when (pjs-org-task-p)
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (save-excursion
+        (end-of-line)
+        (when (< (point) subtree-end)
+          (re-search-forward (pjs-org-task-regex) subtree-end t))))))
+
 (defun pjs-org-project-p ()
-  "A project is a task with at least one sub-task."
-  ;; it has a DEADLINE?
   (save-restriction
     (widen)
-    (when (pjs-org-task-p)
-      (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-            (project-p))
-        (save-excursion
-          (while (and (not project-p)
-                      (outline-next-heading)
-                      (< (point) subtree-end))
-            (setq project-p (pjs-org-task-p))))
-        project-p))))
+    (or (and (string-equal "TODO" (org-get-category))
+             (not (pjs-org-task-p)))
+        (and (pjs-org-task-p)
+             (pjs-org-sub-task-p)))))
 
 (defun pjs-org-stuck-project-p ()
   "A stuck project is a project with no activity in the past 14 days."
@@ -147,18 +153,13 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
             (stuck-p t))
         (save-excursion
           (while (and stuck-p (< (point) subtree-end))
-            (when (pjs-org-task-p)
-              (save-excursion
-                (let ((meta-data-end (save-excursion (org-end-of-meta-data 'u) (point))))
-                  (while (and stuck-p (< (point) meta-data-end))
-                    (if (re-search-forward (org-re-timestamp 'all) meta-data-end t)
-                        (let ((dt (match-string 1)))
-                          (when dt
-                            (when (time-less-p (org-read-date t t "-14d")
-                                               (org-read-date t t dt))
-                              (setq stuck-p nil))))
-                      (goto-char meta-data-end))))))
-            (outline-next-heading))
+            (if (re-search-forward (org-re-timestamp 'all) subtree-end t)
+                (let ((dt (match-string 1)))
+                  (when dt
+                    (when (time-less-p (org-read-date t t "-14d")
+                                       (org-read-date t t dt))
+                      (setq stuck-p nil))))
+              (goto-char subtree-end)))
           stuck-p)))))
 
 (defun pjs-org-has-priority-p (priority)
