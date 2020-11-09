@@ -329,6 +329,8 @@
          ("C-c r" . pjs-revert)
          ("C-c u" . pjs-pop-read-queue)
          ("C-c D" . er-delete-file-and-buffer)))
+(use-package pjs-clubhouse
+  :hook (clojure-mode . pjs-given-when-then-font-lock))
 (use-package pjs-emacs-lisp
   :hook (emacs-lisp-mode . pjs-add-eval-buffer-binding))
 (use-package pjs-exwm
