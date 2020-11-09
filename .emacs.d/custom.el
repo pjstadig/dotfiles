@@ -7,11 +7,17 @@
  '(org-agenda-breadcrumbs-separator "—▶")
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
-   '(("i" "Inbox" tags "FLAGGED|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
-      ((org-agenda-overriding-header "Inbox")
-       (org-agenda-sorting-strategy
-        '(priority-down user-defined-up))
-       (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
+   '(("i" "Inbox"
+      ((agenda ""
+               ((org-agenda-span 'day)
+                (org-agenda-skip-function
+                 '(pjs-org-agenda-skip-subtree-if 'tag
+                                                  '("NOTE" "REVIEW")))))
+       (tags "FLAGGED|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
+             ((org-agenda-sorting-strategy
+               '(priority-down user-defined-up))
+              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created))))
+      nil nil)
      ("d" "Daily agenda and all TODOs"
       ((agenda ""
                ((org-agenda-span 'day)
@@ -124,8 +130,6 @@ From: %a")
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
- '(org-drill-save-buffers-after-drill-sessions-p nil)
- '(org-drill-scope 'agenda)
  '(org-edit-src-content-indentation 0)
  '(org-emphasis-alist
    '(("*" bold)
@@ -154,11 +158,7 @@ From: %a")
  '(org-outline-path-complete-in-steps nil)
  '(org-pretty-entities t)
  '(org-refile-allow-creating-parent-nodes 'confirm)
- '(org-refile-targets
-   '((nil :maxlevel . 9)
-     (org-agenda-files :maxlevel . 9)
-     ("~/org/read.org" :level . 0)
-     ("~/org/reference.org" :level . 0)))
+ '(org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
  '(org-refile-use-outline-path 'file)
  '(org-special-ctrl-a/e 'reversed)
  '(org-special-ctrl-k t)
