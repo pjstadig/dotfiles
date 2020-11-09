@@ -274,8 +274,8 @@
   (org-drill-left-cloze-delimiter "{")
   (org-drill-question-tag "REVIEW")
   (org-drill-right-cloze-delimiter "}")
-  (org-drill-save-buffers-after-drill-sessions-p t)
-  (org-drill-scope '("~/org/review.org"))
+  (org-drill-save-buffers-after-drill-sessions-p nil)
+  (org-drill-scope 'agenda)
   :bind (("C-c d" . pjs-org-drill-or-resume))
   :config
   (declare-function org-drill-hide-region "org-drill.el")

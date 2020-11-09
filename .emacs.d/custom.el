@@ -130,8 +130,6 @@ From: %a")
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
- '(org-drill-save-buffers-after-drill-sessions-p nil)
- '(org-drill-scope 'agenda)
  '(org-edit-src-content-indentation 0)
  '(org-emphasis-alist
    '(("*" bold)
