@@ -7,11 +7,17 @@
  '(org-agenda-breadcrumbs-separator "—▶")
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
-   '(("i" "Inbox" tags "FLAGGED|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
-      ((org-agenda-overriding-header "Inbox")
-       (org-agenda-sorting-strategy
-        '(priority-down user-defined-up))
-       (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
+   '(("i" "Inbox"
+      ((agenda ""
+               ((org-agenda-span 'day)
+                (org-agenda-skip-function
+                 '(pjs-org-agenda-skip-subtree-if 'tag
+                                                  '("NOTE" "REVIEW")))))
+       (tags "FLAGGED|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
+             ((org-agenda-sorting-strategy
+               '(priority-down user-defined-up))
+              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created))))
+      nil nil)
      ("d" "Daily agenda and all TODOs"
       ((agenda ""
                ((org-agenda-span 'day)
