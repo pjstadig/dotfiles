@@ -1,3 +1,9 @@
+;;; pjs-org-cosmetics.el --- Org-mode cosmetics -*- lexical-binding: t; -*-
+;;
+;;; Commentary:
+;;
+;;; Code:
+
 ;;; Heading bullets
 ;; Use fancy bullets for headings, and make the whole prefix fixed-pitch so headings
 ;; indent consistently.
@@ -137,3 +143,4 @@
     (1 'org-highlight))))
 
 (provide 'pjs-org-cosmetics)
+;;; pjs-org-cosmetics.el ends here

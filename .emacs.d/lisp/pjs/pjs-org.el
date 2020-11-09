@@ -1,3 +1,8 @@
+;;; pjs-org.el --- Org-mode configuration and utilities -*- lexical-binding: t; -*-
+;;
+;;; Commentary:
+;;
+;;; Code:
 (require 'org)
 (require 'org-agenda)
 (require 'org-capture)

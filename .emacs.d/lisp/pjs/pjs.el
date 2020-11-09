@@ -1,3 +1,8 @@
+;;; pjs.el --- General configuration and utilities -*- lexical-binding: t; -*-
+;;
+;;; Commentary:
+;;
+;;; Code:
 (defgroup pjs nil
   "My config variables."
   :group 'default)
@@ -129,3 +134,4 @@
   (exwm-workspace-switch-to-buffer "Firefox"))
 
 (provide 'pjs)
+;;; pjs.el ends here
