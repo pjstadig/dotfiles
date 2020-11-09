@@ -344,6 +344,8 @@
   :hook (org-insert-heading . pjs-org-insert-created-property))
 (use-package pjs-org-cosmetics
   :after (org))
+(use-package pjs-prog-mode
+  :hook (prog-mode . pjs-todo-font-lock))
 (use-package pjs-reset
   :bind (("s-r" . pjs-reset)))
 (use-package pjs-secrets)
