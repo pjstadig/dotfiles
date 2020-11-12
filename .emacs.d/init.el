@@ -340,7 +340,9 @@
   :commands (pjs-ensure-ending-newline)
   :bind (("C-c a" . pjs-org-agenda)
          :map org-agenda-mode-map
-         ("C-c C-x ^" . pjs-org-agenda-restrict-to-heading))
+         ("C-c C-x ^" . pjs-org-agenda-restrict-to-heading)
+         :map org-mode-map
+         ("C-x n u" . pjs-org-narrow-to-parent))
   :hook (org-insert-heading . pjs-org-insert-created-property))
 (use-package pjs-org-cosmetics
   :after (org))

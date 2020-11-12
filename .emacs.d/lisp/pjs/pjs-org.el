@@ -68,10 +68,8 @@ If any of these conditions is met, this function returns the end point of
 the entity, causing the search to continue from there.  This is a function
 that can be put into `org-agenda-skip-function' for the duration of a command."
   (org-back-to-heading t)
-  (let* ((beg (point))
-         (end (if subtree (save-excursion (org-end-of-subtree t) (point))
+  (let* ((end (if subtree (save-excursion (org-end-of-subtree t) (point))
                 (org-entry-end-position)))
-         (planning-end (if subtree end (line-end-position 2)))
          m)
     (and
      (or (and (setq m (memq 'tag conditions))
@@ -256,6 +254,14 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
     (helm-org-agenda-files-headings)
     (org-agenda-set-restriction-lock))
   (org-agenda-redo-all))
+
+(defun pjs-org-narrow-to-parent ()
+  (interactive)
+  (when (buffer-narrowed-p)
+    (widen))
+  (ignore-errors
+    (outline-up-heading 1 t)
+    (org-narrow-to-subtree)))
 
 (provide 'pjs-org)
 ;;; pjs-org.el ends here

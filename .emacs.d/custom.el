@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(completion-styles '(flex))
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(org-agenda-breadcrumbs-separator "—▶")
  '(org-agenda-compact-blocks t)
@@ -12,7 +13,8 @@
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
                  '(pjs-org-agenda-skip-subtree-if 'tag
-                                                  '("NOTE" "REVIEW")))))
+                                                  '("NOTE" "REVIEW")
+                                                  'todo 'done))))
        (tags "FLAGGED|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
              ((org-agenda-sorting-strategy
                '(priority-down user-defined-up))
@@ -23,13 +25,14 @@
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
                  '(pjs-org-agenda-skip-subtree-if 'tag
-                                                  '("NOTE" "REVIEW")))))
+                                                  '("NOTE" "REVIEW")
+                                                  'todo 'done))))
        (tags-todo "TODO=\"TODO\""
                   ((org-agenda-overriding-header "Next actions:")
                    (org-agenda-skip-function
                     '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
                                                    '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
-                                                   'project))
+                                                   'project 'notpriority 65))
                    (org-agenda-sorting-strategy
                     '(priority-down user-defined-up))
                    (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
