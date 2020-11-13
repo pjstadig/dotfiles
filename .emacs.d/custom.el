@@ -24,9 +24,10 @@
       ((agenda ""
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
-                 '(pjs-org-agenda-skip-subtree-if 'tag
-                                                  '("NOTE" "REVIEW")
-                                                  'todo 'done))))
+                 '(or
+                   (pjs-org-agenda-skip-subtree-if 'tag
+                                                   '("NOTE" "REVIEW"))
+                   (pjs-org-agenda-skip-entry-if 'todo 'done)))))
        (tags-todo "TODO=\"TODO\""
                   ((org-agenda-overriding-header "Next actions:")
                    (org-agenda-skip-function
