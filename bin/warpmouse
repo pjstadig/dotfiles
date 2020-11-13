@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+import objc
+
+def moveMouse(x, y):
+    bndl = objc.loadBundle('CoreGraphics', globals(), '/System/Library/Frameworks/ApplicationServices.framework')
+    objc.loadBundleFunctions(bndl, globals(), [('CGWarpMouseCursorPosition', 'v{CGPoint=dd}')])
+    CGWarpMouseCursorPosition((x, y))
+
+if __name__ == "__main__":
+    moveMouse(0, 10000)

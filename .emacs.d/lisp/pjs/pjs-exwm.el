@@ -59,7 +59,7 @@ pjs-exwm-configured-p to t."
                        (interactive)
                        (exwm-workspace-switch-create 9)))
           ([?\s-r] . pjs-reset)
-          ([?\s-z] . pjs-banish-cursor)))
+          ([?\M-\s-`] . pjs-banish-cursor)))
   (exwm-enable)
   (fringe-mode 1)
 
