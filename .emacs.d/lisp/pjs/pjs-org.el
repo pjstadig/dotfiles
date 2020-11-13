@@ -250,10 +250,10 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
 
 (defun pjs-org-agenda-restrict-to-heading ()
   (interactive)
-  (save-window-excursion
-    (when (helm-org-agenda-files-headings)
-      (org-agenda-set-restriction-lock)))
-  (org-agenda-redo-all))
+  (when (save-window-excursion
+          (when (helm-org-agenda-files-headings)
+            (org-agenda-set-restriction-lock)))
+    (org-agenda-redo-all)))
 
 (defun pjs-org-narrow-to-parent ()
   (interactive)
