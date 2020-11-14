@@ -92,10 +92,14 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
               (pjs-org-project-p))
          (and (memq 'notproject conditions)
               (not (pjs-org-project-p)))
-         (and (memq 'stuck conditions)
-              (pjs-org-stuck-project-p))
-         (and (memq 'notstuck conditions)
-              (not (pjs-org-stuck-project-p)))
+         (and (memq 'activeproject conditions)
+              (pjs-org-active-project-p))
+         (and (memq 'notactiveproject conditions)
+              (not (pjs-org-active-project-p)))
+         (and (setq m (memq 'stuck conditions))
+              (pjs-org-stuck-project-p (nth 1 m) (nth 2 m)))
+         (and (setq m (memq 'notstuck conditions))
+              (not (pjs-org-stuck-project-p (nth 1 m) (nth 2 m))))
          (and (setq m (memq 'priority conditions))
               (pjs-org-has-priority-p (nth 1 m)))
          (and (setq m (memq 'notpriority conditions))
@@ -127,7 +131,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
   (member (nth 2 (org-heading-components)) org-todo-keywords-1))
 
 (defun pjs-org-task-regex ()
-  (concat "[*]+ \\(?:"
+  (concat "^[*]+ \\(?:"
           (string-join org-todo-keywords-1 "\\|")
           "\\) .*"))
 
@@ -147,21 +151,31 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
         (and (pjs-org-task-p)
              (pjs-org-sub-task-p)))))
 
-(defun pjs-org-stuck-project-p ()
-  "A stuck project is a project with no activity in the past 14 days."
+(defun pjs-org-active-project-p ()
+  (and (pjs-org-project-p)
+       (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+         (save-excursion
+           (end-of-line)
+           (when (< (point) subtree-end)
+             (re-search-forward "^[*]+ \\(?:TODO\\) .*" subtree-end t))))))
+
+(defun pjs-org-stuck-project-p (start end)
+  "A stuck project is a project with no activity between START and END days ago."
   (save-restriction
     (widen)
     (when (pjs-org-project-p)
       (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-            (stuck-p t))
+            (stuck-p t)
+            (start-d (org-read-date t t (concat "-" (number-to-string start) "d")))
+            (end-d (when end (org-read-date t t (concat "-" (number-to-string end) "d")))))
         (save-excursion
           (while (and stuck-p (< (point) subtree-end))
             (if (re-search-forward (org-re-timestamp 'all) subtree-end t)
-                (let ((dt (match-string 1)))
-                  (when dt
-                    (when (time-less-p (org-read-date t t "-14d")
-                                       (org-read-date t t dt))
-                      (setq stuck-p nil))))
+                (let ((dt (org-read-date t t (match-string 1))))
+                  (when (or (time-less-p start-d dt)
+                            (and end-d
+                                 (time-less-p dt end-d)))
+                    (setq stuck-p nil)))
               (goto-char subtree-end)))
           stuck-p)))))
 

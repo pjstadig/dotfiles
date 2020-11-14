@@ -41,17 +41,46 @@
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-max-entries 10))))
       nil)
-     ("e" "Entries to be archived" tags "CLOSED<\"<-14d>\"|TODO=\"DONE\"+CLOSED=\"\""
-      ((org-agenda-overriding-header "Entries to be archived")))
-     ("#" "Stuck projects" tags "*"
-      ((org-agenda-overriding-header "Stuck projects:")
-       (org-agenda-sorting-strategy
-        '(priority-down user-defined-up))
+     ("n" "Next Actions" tags "TODO=\"TODO\""
+      ((org-agenda-overriding-header "Next Actions:")
        (org-agenda-skip-function
-        '(pjs-org-agenda-skip-entry-if 'tag
-                                       '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
-                                       'notstuck))
-       (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))))
+        '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
+                                       '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
+                                       'project 'priority 65))
+       (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
+     ("e" "Entries to be archived" tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
+      ((org-agenda-overriding-header "Entries to be archived")
+       (org-agenda-skip-function
+        '(pjs-org-agenda-skip-entry-if 'activeproject))))
+     ("#" "Stuck projects"
+      ((tags "*"
+             ((org-agenda-overriding-header "Stuck projects (>90 days)")
+              (org-agenda-skip-function
+               '(pjs-org-agenda-skip-entry-if 'tag
+                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
+                                              'notproject 'notstuck 90 nil 'stuck 30 89 'stuck 7 29))
+              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
+              (org-agenda-sorting-strategy
+               '(priority-down user-defined-up))))
+       (tags "*"
+             ((org-agenda-overriding-header "Stuck projects (30-90 days)")
+              (org-agenda-skip-function
+               '(pjs-org-agenda-skip-entry-if 'tag
+                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
+                                              'notproject 'stuck 90 nil 'notstuck 30 89 'stuck 7 29))
+              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
+              (org-agenda-sorting-strategy
+               '(priority-down user-defined-up))))
+       (tags "*"
+             ((org-agenda-overriding-header "Stuck projects (7-30 days)")
+              (org-agenda-skip-function
+               '(pjs-org-agenda-skip-entry-if 'tag
+                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
+                                              'notproject 'stuck 90 nil 'stuck 30 89 'notstuck 7 29))
+              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
+              (org-agenda-sorting-strategy
+               '(priority-down user-defined-up)))))
+      nil nil)))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
