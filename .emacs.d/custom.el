@@ -18,9 +18,10 @@
        (tags "FLAGGED|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
              ((org-agenda-sorting-strategy
                '(priority-down user-defined-up))
-              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created))))
+              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
+              (org-agenda-overriding-header "Inbox:"))))
       nil nil)
-     ("d" "Daily agenda and all TODOs"
+     ("d" "Daily agenda"
       ((agenda ""
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
@@ -29,7 +30,7 @@
                                                    '("NOTE" "REVIEW"))
                    (pjs-org-agenda-skip-entry-if 'todo 'done)))))
        (tags-todo "TODO=\"TODO\""
-                  ((org-agenda-overriding-header "Next actions:")
+                  ((org-agenda-overriding-header "Next tasks:")
                    (org-agenda-skip-function
                     '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
                                                    '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
@@ -41,20 +42,30 @@
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-max-entries 10))))
       nil)
-     ("n" "Next Actions" tags "TODO=\"TODO\""
-      ((org-agenda-overriding-header "Next Actions:")
+     ("n" "Next tasks"
+      ((agenda ""
+               ((org-agenda-span 'day)
+                (org-agenda-skip-function
+                 '(or
+                   (pjs-org-agenda-skip-subtree-if 'tag
+                                                   '("NOTE" "REVIEW"))
+                   (pjs-org-agenda-skip-entry-if 'todo 'done)))))
+       (tags "TODO=\"TODO\""
+             ((org-agenda-overriding-header "Next tasks:")
+              (org-agenda-skip-function
+               '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
+                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
+                                              'project))
+              (org-agenda-sorting-strategy
+               '(priority-down user-defined-up)))))
+      ((org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
+     ("e" "Completed entries" tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
+      ((org-agenda-overriding-header "Completed entries:")
        (org-agenda-skip-function
-        '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
-                                       '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
-                                       'project 'priority 65))
-       (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
-     ("e" "Entries to be archived" tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
-      ((org-agenda-overriding-header "Entries to be archived")
-       (org-agenda-skip-function
-        '(pjs-org-agenda-skip-entry-if 'activeproject))))
+        '(pjs-org-agenda-skip-entry-if 'active))))
      ("#" "Stuck projects"
       ((tags "*"
-             ((org-agenda-overriding-header "Stuck projects (>90 days)")
+             ((org-agenda-overriding-header "Stuck projects (>90 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
                                               '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
@@ -63,7 +74,7 @@
               (org-agenda-sorting-strategy
                '(priority-down user-defined-up))))
        (tags "*"
-             ((org-agenda-overriding-header "Stuck projects (30-90 days)")
+             ((org-agenda-overriding-header "Stuck projects (30-90 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
                                               '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
@@ -72,7 +83,7 @@
               (org-agenda-sorting-strategy
                '(priority-down user-defined-up))))
        (tags "*"
-             ((org-agenda-overriding-header "Stuck projects (7-30 days)")
+             ((org-agenda-overriding-header "Stuck projects (7-30 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
                                               '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
@@ -191,6 +202,7 @@ From: %a")
  '(org-outline-path-complete-in-steps nil)
  '(org-pretty-entities t)
  '(org-refile-allow-creating-parent-nodes 'confirm)
+ '(org-refile-target-verify-function 'pjs-org-valid-refile-target-p)
  '(org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
  '(org-refile-use-outline-path 'file)
  '(org-special-ctrl-a/e 'reversed)

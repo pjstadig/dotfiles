@@ -42,8 +42,10 @@ task          Check if task
 nottask       Check if not task
 project       Check if project
 notproject    Check if not project
-stuck         Check if stuck project
-notstuck      Check if not stuck project
+active        Check if active project
+notactive     Check if not active project
+stuck         Check if stuck project between START and END
+notstuck      Check if not stuck project between START and END
 priority      Check if priority matches
 notpriority   Check if priority does not mach
 
@@ -53,16 +55,28 @@ the `regexp' or `notregexp' element.
 `todo' and `nottodo' accept as an argument a list of todo
 keywords, which may include \"*\" to match any todo keyword.
 
-    (org-agenda-skip-entry-if \\='todo \\='(\"TODO\" \"WAITING\"))
+    (pjs-org-agenda-skip-entry-if \\='todo \\='(\"TODO\" \"WAITING\"))
 
 would skip all entries with \"TODO\" or \"WAITING\" keywords.
 
 Instead of a list, a keyword class may be given.  For example:
 
-    (org-agenda-skip-entry-if \\='nottodo \\='done)
+    (pjs-org-agenda-skip-entry-if \\='nottodo \\='done)
 
 would skip entries that haven't been marked with any of \"DONE\"
 keywords.  Possible classes are: `todo', `done', `any'.
+
+`tag' and `nottag' accept as an argument tag(s) as a single string or list of
+strings.
+
+`category' and `notcategory' accept as an argument categor(ies) as a single
+string or list of strings.
+
+`stuck' and `notstuck' accept as arguments the START and END (as days) defining
+the date range during which an entry must have no activity.
+
+`priority' and `notpriority' accept as an argument a priority as a single
+character integer value.
 
 If any of these conditions is met, this function returns the end point of
 the entity, causing the search to continue from there.  This is a function
@@ -92,9 +106,9 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
               (pjs-org-project-p))
          (and (memq 'notproject conditions)
               (not (pjs-org-project-p)))
-         (and (memq 'activeproject conditions)
+         (and (memq 'active conditions)
               (pjs-org-active-project-p))
-         (and (memq 'notactiveproject conditions)
+         (and (memq 'notactive conditions)
               (not (pjs-org-active-project-p)))
          (and (setq m (memq 'stuck conditions))
               (pjs-org-stuck-project-p (nth 1 m) (nth 2 m)))
@@ -126,38 +140,61 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
 (defun pjs-org-habit-p ()
   (string= (org-entry-get nil "STYLE") "habit"))
 
-(defun pjs-org-task-p ()
-  "A task is an entry with a TODO cookie."
-  (member (nth 2 (org-heading-components)) org-todo-keywords-1))
+(defun pjs-org-todo-p (&optional todo-keywords)
+  "A TODO is an entry with a TODO cookie matching TODO-KEYWORDS."
+  (let ((todo-keywords (or todo-keywords org-todo-keywords-1)))
+    (member (nth 2 (org-heading-components)) todo-keywords)))
 
-(defun pjs-org-task-regex ()
+(defun pjs-org-task-p ()
+  "A task is an entry with a TODO cookie and no sub-tasks."
+  (and (pjs-org-todo-p)
+       (not (pjs-org-sub-task-p))))
+
+(defun pjs-org-todo-regex ()
+  "A regular expression matching any entry with a TODO cookie."
   (concat "^[*]+ \\(?:"
           (string-join org-todo-keywords-1 "\\|")
           "\\) .*"))
 
-(defun pjs-org-sub-task-p ()
-  (when (pjs-org-task-p)
-    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-      (save-excursion
-        (end-of-line)
-        (when (< (point) subtree-end)
-          (re-search-forward (pjs-org-task-regex) subtree-end t))))))
+(defun pjs-org-sub-task-p (&optional regex)
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (regex (or regex (pjs-org-todo-regex))))
+    (save-excursion
+      (end-of-line)
+      (when (< (point) subtree-end)
+        (re-search-forward regex subtree-end t)))))
+
+(defun pjs-org-project-entry-p ()
+  (and (string-equal "TODO" (org-get-category))
+       (not (pjs-org-todo-p))))
 
 (defun pjs-org-project-p ()
   (save-restriction
     (widen)
-    (or (and (string-equal "TODO" (org-get-category))
-             (not (pjs-org-task-p)))
-        (and (pjs-org-task-p)
+    (or (pjs-org-project-entry-p)
+        (and (pjs-org-todo-p)
              (pjs-org-sub-task-p)))))
 
+(defun pjs-org-done-todo-regex ()
+  "A regular expression matching any entry with a done TODO cookie."
+  (concat "^[*]+ \\(?:"
+          (string-join org-done-keywords "\\|")
+          "\\) .*"))
+
+(defun pjs-org-not-done-todo-regex ()
+  "A regular expression matching any entry with a not done TODO cookie."
+  (concat "^[*]+ \\(?:"
+          (string-join org-not-done-keywords "\\|")
+          "\\) .*"))
+
 (defun pjs-org-active-project-p ()
-  (and (pjs-org-project-p)
-       (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-         (save-excursion
-           (end-of-line)
-           (when (< (point) subtree-end)
-             (re-search-forward "^[*]+ \\(?:TODO\\) .*" subtree-end t))))))
+  (save-restriction
+    (widen)
+    (or (and (pjs-org-project-entry-p)
+             (or (pjs-org-sub-task-p (pjs-org-not-done-todo-regex))
+                 (not (pjs-org-sub-task-p (pjs-org-done-todo-regex)))))
+        (or (and (pjs-org-todo-p)
+                 (pjs-org-sub-task-p (pjs-org-not-done-todo-regex)))))))
 
 (defun pjs-org-stuck-project-p (start end)
   "A stuck project is a project with no activity between START and END days ago."
@@ -167,7 +204,8 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
       (let ((subtree-end (save-excursion (org-end-of-subtree t)))
             (stuck-p t)
             (start-d (org-read-date t t (concat "-" (number-to-string start) "d")))
-            (end-d (when end (org-read-date t t (concat "-" (number-to-string end) "d")))))
+            (end-d (when end
+                     (org-read-date t t (concat "-" (number-to-string end) "d")))))
         (save-excursion
           (while (and stuck-p (< (point) subtree-end))
             (if (re-search-forward (org-re-timestamp 'all) subtree-end t)
@@ -263,6 +301,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
                                         (current-time))))
 
 (defun pjs-org-agenda-restrict-to-heading ()
+  "Restrict agenda to completed heading."
   (interactive)
   (when (save-window-excursion
           (helm-org-agenda-files-headings)
@@ -272,12 +311,20 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
     (org-agenda-redo-all)))
 
 (defun pjs-org-narrow-to-parent ()
+  "Narrow buffer to parent of current heading."
   (interactive)
   (when (buffer-narrowed-p)
     (widen))
   (ignore-errors
     (outline-up-heading 1 t)
     (org-narrow-to-subtree)))
+
+(defun pjs-org-valid-refile-target-p ()
+  (if (or (pjs-org-todo-p org-not-done-keywords)
+          (pjs-org-active-project-p))
+      t
+    (outline-next-heading)
+    nil))
 
 (provide 'pjs-org)
 ;;; pjs-org.el ends here
