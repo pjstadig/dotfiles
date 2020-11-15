@@ -27,9 +27,3 @@ double prefix prompt for all these parameters."
      (plist-get params :jack-in-cmd)
      (lambda (server-buffer)
        (cider-connect-sibling-clj params server-buffer)))))
-
-(defun pjs-warpmouse ()
-  (interactive)
-  (start-process "warpmouse" nil "warpmouse"))
-
-(bind-key "M-s-`" #'pjs-warpmouse)
