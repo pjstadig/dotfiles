@@ -197,10 +197,11 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
                  (pjs-org-sub-task-p (pjs-org-not-done-todo-regex)))))))
 
 (defun pjs-org-stuck-project-p (start end)
-  "A stuck project is a project with no activity between START and END days ago."
+  "A stuck project has no task and no activity between START and END days ago."
   (save-restriction
     (widen)
-    (when (pjs-org-project-p)
+    (when (and (pjs-org-project-p)
+               (pjs-org-sub-task-p (pjs-org-not-done-todo-regex)))
       (let ((subtree-end (save-excursion (org-end-of-subtree t)))
             (stuck-p t)
             (start-d (org-read-date t t (concat "-" (number-to-string start) "d")))
