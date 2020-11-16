@@ -1,6 +1,8 @@
 ;;; Configure Emacs
 (setq custom-file (concat user-emacs-directory "custom.el")
-      load-prefer-newer t)
+      load-prefer-newer t
+      ;; Installing emacs on OSX using nix seems to need this
+      default-directory "~/")
 
 (setq-default fill-column 90
               indent-tabs-mode nil)
