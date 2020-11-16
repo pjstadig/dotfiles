@@ -6,6 +6,7 @@
  '(completion-styles '(flex))
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(org-agenda-breadcrumbs-separator "—▶")
+ '(org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
    '(("i" "Inbox"
@@ -16,28 +17,21 @@
                                                   '("NOTE" "REVIEW")
                                                   'todo 'done))))
        (tags "FLAGGED|CATEGORY=\"IN\"+SCHEDULED=\"\"+DEADLINE=\"\""
-             ((org-agenda-sorting-strategy
-               '(priority-down user-defined-up))
-              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
-              (org-agenda-overriding-header "Inbox:"))))
+             ((org-agenda-overriding-header "Inbox:"))))
       nil nil)
      ("d" "Daily agenda"
       ((agenda ""
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
-                 '(or
-                   (pjs-org-agenda-skip-subtree-if 'tag
-                                                   '("NOTE" "REVIEW"))
-                   (pjs-org-agenda-skip-entry-if 'todo 'done)))))
+                 '(pjs-org-agenda-skip-subtree-if 'tag
+                                                  '("NOTE" "REVIEW")
+                                                  'todo 'done))))
        (tags-todo "TODO=\"TODO\""
                   ((org-agenda-overriding-header "Next tasks:")
                    (org-agenda-skip-function
                     '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
                                                    '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
-                                                   'project 'notpriority 65))
-                   (org-agenda-sorting-strategy
-                    '(priority-down user-defined-up))
-                   (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
+                                                   'project 'notpriority 65))))
        (tags "+CATEGORY=\"TOREAD\""
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-max-entries 10))))
@@ -46,19 +40,16 @@
       ((agenda ""
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
-                 '(or
-                   (pjs-org-agenda-skip-subtree-if 'tag
-                                                   '("NOTE" "REVIEW"))
-                   (pjs-org-agenda-skip-entry-if 'todo 'done)))))
+                 '(pjs-org-agenda-skip-subtree-if 'tag
+                                                  '("NOTE" "REVIEW")
+                                                  'todo 'done))))
        (tags "TODO=\"TODO\""
              ((org-agenda-overriding-header "Next tasks:")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
                                               '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
-                                              'project))
-              (org-agenda-sorting-strategy
-               '(priority-down user-defined-up)))))
-      ((org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)))
+                                              'project)))))
+      nil)
      ("e" "Completed entries" tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
       ((org-agenda-overriding-header "Completed entries:")
        (org-agenda-skip-function
@@ -69,29 +60,31 @@
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
                                               '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
-                                              'notproject 'notstuck 90 nil 'stuck 30 89 'stuck 7 29))
-              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
-              (org-agenda-sorting-strategy
-               '(priority-down user-defined-up))))
+                                              'notproject 'notstuck 90 nil 'stuck 30 89 'stuck 7 29))))
        (tags "*"
              ((org-agenda-overriding-header "Stuck projects (30-90 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
                                               '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
-                                              'notproject 'stuck 90 nil 'notstuck 30 89 'stuck 7 29))
-              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
-              (org-agenda-sorting-strategy
-               '(priority-down user-defined-up))))
+                                              'notproject 'stuck 90 nil 'notstuck 30 89 'stuck 7 29))))
        (tags "*"
              ((org-agenda-overriding-header "Stuck projects (7-30 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
                                               '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
-                                              'notproject 'stuck 90 nil 'stuck 30 89 'notstuck 7 29))
-              (org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
-              (org-agenda-sorting-strategy
-               '(priority-down user-defined-up)))))
-      nil nil)))
+                                              'notproject 'stuck 90 nil 'stuck 30 89 'notstuck 7 29)))))
+      nil nil)
+     ("w" "Weekly review"
+      ((agenda ""
+               ((org-agenda-span 'day)
+                (org-agenda-skip-function
+                 '(pjs-org-agenda-skip-subtree-if 'tag
+                                                  '("NOTE" "REVIEW")
+                                                  'todo 'done))))
+       (tags "WAITING" nil)
+       (tags "HOLD"
+             ((org-agenda-overriding-header "Hold entries:"))))
+      nil)))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
@@ -103,6 +96,11 @@
      (todo . "  %?b")
      (tags . "  %?b")
      (search . "  %?b")))
+ '(org-agenda-sorting-strategy
+   '((agenda habit-down time-up priority-down category-keep)
+     (todo priority-down category-keep user-defined-up)
+     (tags priority-down category-keep user-defined-up)
+     (search category-keep user-defined-up)))
  '(org-agenda-tags-column -96)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-agenda-window-setup 'only-window)
@@ -111,18 +109,21 @@
  '(org-attach-id-dir "attachments/")
  '(org-capture-prepare-finalize-hook '(pjs-ensure-ending-newline))
  '(org-capture-templates
-   '(("t" "todo" entry
+   '(("t" "Todo")
+     ("tt" "Todo unlinked" entry
       (file "~/org/in.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
 :END:")
-     ("l" "link to current" entry
+     ("tl" "Todo linked" entry
       (file "~/org/in.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
 :END:
+
+%i
 
 From: %a")
      ("r" "review" entry
@@ -153,7 +154,7 @@ From: %a")
 %i
 #+END_QUOTE
 %?" :immediate-finish t)
-     ("j" "journal entries")
+     ("j" "Journal")
      ("jj" "Journal to file" entry
       (file+olp+datetree "~/org/journal.org")
       "* %?
