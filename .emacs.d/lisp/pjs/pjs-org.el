@@ -201,7 +201,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
   (save-restriction
     (widen)
     (when (and (pjs-org-project-p)
-               (pjs-org-sub-task-p (pjs-org-not-done-todo-regex)))
+               (not (pjs-org-sub-task-p (pjs-org-not-done-todo-regex))))
       (let ((subtree-end (save-excursion (org-end-of-subtree t)))
             (stuck-p t)
             (start-d (org-read-date t t (concat "-" (number-to-string start) "d")))
