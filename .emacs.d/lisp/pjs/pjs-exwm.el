@@ -59,7 +59,10 @@ pjs-exwm-configured-p to t."
                        (interactive)
                        (exwm-workspace-switch-create 9)))
           ([?\s-r] . pjs-reset)
-          ([?\s-z] . pjs-banish-cursor)))
+          ([?\s-z] . pjs-banish-cursor)
+          ([print] . (lambda ()
+                       (interactive)
+                       (start-process-shell-command "xfce4-screenshooter" nil "xfce4-screenshooter")))))
   (exwm-enable)
   (fringe-mode 1)
 
