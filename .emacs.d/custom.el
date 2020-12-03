@@ -5,6 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(completion-styles '(flex))
  '(dired-clean-confirm-killing-deleted-buffers nil)
+ '(helm-org-format-outline-path t)
  '(org-agenda-breadcrumbs-separator "—▶")
  '(org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
  '(org-agenda-compact-blocks t)
@@ -26,12 +27,7 @@
                  '(pjs-org-agenda-skip-subtree-if 'tag
                                                   '("NOTE" "REVIEW")
                                                   'todo 'done))))
-       (tags-todo "TODO=\"TODO\""
-                  ((org-agenda-overriding-header "Next tasks:")
-                   (org-agenda-skip-function
-                    '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
-                                                   '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
-                                                   'project 'notpriority 65))))
+       (tags "FLAGGED|TODO=\"TODO\"+PRIORITY=\"A\"" nil)
        (tags "+CATEGORY=\"TOREAD\""
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-max-entries 10))))
@@ -109,51 +105,47 @@
  '(org-attach-id-dir "attachments/")
  '(org-capture-prepare-finalize-hook '(pjs-ensure-ending-newline))
  '(org-capture-templates
-   '(("t" "Todo")
-     ("tt" "Todo unlinked" entry
+   '(("t" "Todo" entry
       (file "~/org/in.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
 :END:")
-     ("tl" "Todo linked" entry
-      (file "~/org/in.org")
-      "* %?
-:PROPERTIES:
-:CREATED: %U
-:END:
-
-%i
-
-From: %a")
-     ("r" "review" entry
+     ("r" "Review" entry
       (file "~/org/review.org")
       "* %? :REVIEW:
 :PROPERTIES:
 :CREATED: %U
 :END:")
-     ("n" "note" entry
+     ("n" "Note" entry
       (file "~/org/reference.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
 :END:")
-     ("y" "org-protocol-link" entry
-      (file "~/org/mobile/toread.org")
-      "* %? %a
-:PROPERTIES:
-:CREATED: %U
-:END:" :immediate-finish t)
-     ("z" "org-protocol-quote" entry
-      (file+function "~/org/review.org" pjs-org-capture-to-heading)
-      "* %:description :REVIEW:
+     ("l" "Linked")
+     ("lt" "Todo" entry
+      (file "~/org/in.org")
+      "* TODO %?
 :PROPERTIES:
 :CREATED: %U
 :END:
 #+BEGIN_QUOTE
 %i
 #+END_QUOTE
-%?" :immediate-finish t)
+
+From: %a")
+     ("ln" "Note" entry
+      (file "~/org/reference.org")
+      "* %?
+:PROPERTIES:
+:CREATED: %U
+:END:
+#+BEGIN_QUOTE
+%i
+#+END_QUOTE
+
+From: %a")
      ("j" "Journal")
      ("jj" "Journal to file" entry
       (file+olp+datetree "~/org/journal.org")
@@ -171,7 +163,23 @@ From: %a")
 %^T
 :PROPERTIES:
 :CREATED: %U
-:END:" :immediate-finish t)))
+:END:" :immediate-finish t)
+     ("y" "org-protocol-link" entry
+      (file "~/org/mobile/toread.org")
+      "* %? %a
+:PROPERTIES:
+:CREATED: %U
+:END:")
+     ("z" "org-protocol-quote" entry
+      (file+function "~/org/in.org" pjs-org-capture-to-heading)
+      "* %:description :REVIEW:
+:PROPERTIES:
+:CREATED: %U
+:END:
+#+BEGIN_QUOTE
+%i
+#+END_QUOTE
+%?" :immediate-finish t)))
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
