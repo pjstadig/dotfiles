@@ -55,19 +55,19 @@
              ((org-agenda-overriding-header "Stuck projects (>90 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
-                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
+                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "JOURNAL" "NOTE")
                                               'notproject 'notstuck 90 nil 'stuck 30 89 'stuck 7 29))))
        (tags "*"
              ((org-agenda-overriding-header "Stuck projects (30-90 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
-                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
+                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "JOURNAL" "NOTE")
                                               'notproject 'stuck 90 nil 'notstuck 30 89 'stuck 7 29))))
        (tags "*"
              ((org-agenda-overriding-header "Stuck projects (7-30 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
-                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH")
+                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "JOURNAL" "NOTE")
                                               'notproject 'stuck 90 nil 'stuck 30 89 'notstuck 7 29)))))
       nil nil)
      ("w" "Weekly review"

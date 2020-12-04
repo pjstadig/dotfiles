@@ -196,27 +196,33 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
         (or (and (pjs-org-todo-p)
                  (pjs-org-sub-task-p (pjs-org-not-done-todo-regex)))))))
 
-(defun pjs-org-stuck-project-p (start end)
+(defun pjs-org-most-recent-date ()
+  (save-restriction
+    (widen)
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (recent-d nil))
+      (save-excursion
+        (while (< (point) subtree-end)
+          (when (re-search-forward (org-re-timestamp 'all) subtree-end 'goto-end)
+            (let* ((match (match-string 1))
+                   (dt (org-read-date t t match)))
+              (when (or (null recent-d) (time-less-p recent-d dt))
+                (setq recent-d dt)))))
+        recent-d))))
+
+(defun pjs-org-stuck-project-p (end start)
   "A stuck project has no task and no activity between START and END days ago."
   (save-restriction
     (widen)
     (when (and (pjs-org-project-p)
                (not (pjs-org-sub-task-p (pjs-org-not-done-todo-regex))))
-      (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-            (stuck-p t)
-            (start-d (org-read-date t t (concat "-" (number-to-string start) "d")))
-            (end-d (when end
-                     (org-read-date t t (concat "-" (number-to-string end) "d")))))
-        (save-excursion
-          (while (and stuck-p (< (point) subtree-end))
-            (if (re-search-forward (org-re-timestamp 'all) subtree-end t)
-                (let ((dt (org-read-date t t (match-string 1))))
-                  (when (or (time-less-p start-d dt)
-                            (and end-d
-                                 (time-less-p dt end-d)))
-                    (setq stuck-p nil)))
-              (goto-char subtree-end)))
-          stuck-p)))))
+      (let ((dt (pjs-org-most-recent-date))
+            (start-d (when start
+                     (org-read-date t t (concat "-" (number-to-string start) "d"))))
+            (end-d (org-read-date t t (concat "-" (number-to-string end) "d"))))
+        (and (time-less-p dt end-d)
+             (or (null start-d)
+                 (time-less-p start-d dt)))))))
 
 (defun pjs-org-has-priority-p (priority)
   ;; Source: https://blog.aaronbieber.com/2016/09/24/an-agenda-for-life-with-org-mode.html
