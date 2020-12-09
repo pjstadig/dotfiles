@@ -80,3 +80,12 @@ fi
 
 unset local256
 export ASPELL_CONF="conf .aspell.$(hostname -s).conf; conf-dir ${HOME}"
+
+# the below causes all kinds of issues with programs that, for example, find the incorrect
+# version of glibc
+
+# for programs that require some libraries (caesium for clojure, or appimage executables)
+# I can set LD_LIBRARY_PATH for only those commands
+
+# LD_LIBRARY_PATH="${HOME}/.nix-profile/lib${LD_LIBRARY_PATH+:${LD_LIBRARY_PATH}}"
+# export LD_LIBRARY_PATH
