@@ -85,60 +85,33 @@ If EXWM is configured, also reset that."
     (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
 
 ;; ;;; Configure packages
-(use-package auth-source
-  :defer t
-  :custom
-  (auth-sources '("~/.netrc.gpg")))
 (use-package checkdoc
-  :hook (emacs-lisp-mode . checkdoc-minor-mode)
-  :custom
-  (checkdoc-force-docstrings-flag nil))
+  :hook (emacs-lisp-mode . checkdoc-minor-mode))
 (use-package cider
   :ensure t
   :after (clojure-mode)
-  :custom
-  (cider-auto-jump-to-error nil)
-  (cider-auto-select-error-buffer nil)
-  (cider-auto-select-test-report-buffer nil)
-  (cider-debug-prompt 'minibuffer)
-  (cider-docview-fill-column 80)
-  (cider-eldoc-display-context-dependent-info t)
-  (cider-jdk-src-paths '("~/.cache/openjdk-8u192b26/"))
-  (cider-preferred-build-tool 'lein)
-  (cider-prompt-for-symbol nil)
-  (cider-repl-display-help-banner nil)
-  (cider-repl-history-file ".cider-history")
-  (cider-repl-history-size 1000)
-  (cider-repl-pop-to-buffer-on-connect 'display-only)
-  (cider-repl-print-level 10)
-  (cider-repl-use-pretty-printing t)
-  (cider-save-file-on-load t))
+  ;; :custom
+  ;; TODO: do I want to set this?
+  ;; (cider-jdk-src-paths '("~/.cache/openjdk-8u192b26/"))
+)
 (use-package cljstyle-mode
   :after (clojure-mode)
   :bind (:map clojure-mode-map
               ("C-c C-n" . cljstyle)))
 (use-package clojure-mode
   :ensure t
-  :defer t
-  :custom
-  (clojure-docstring-fill-column 80))
+  :defer t)
 (use-package company
   :ensure t
   :hook (prog-mode . company-mode))
-(use-package doc-view
-  :demand t
-  :custom
-  (doc-view-continuous t))
 (use-package eldoc
   :hook ((clojure-mode . eldoc-mode)
          (emacs-lisp-mode . eldoc-mode)))
+;; TODO: move to OSX specific config
 (use-package exec-path-from-shell
   :ensure t
   :demand t
   :if (memq window-system '(mac ns))
-  :init
-  (eval-when-compile
-    (message "AGAIN CURRENT FILE: %s" byte-compile-current-file))
   :custom
   (exec-path-from-shell-variables '("PATH" "MANPATH" "JAVA_HOME" "ASPELL_CONF"))
   :config
@@ -146,77 +119,15 @@ If EXWM is configured, also reset that."
   (exec-path-from-shell-initialize))
 (use-package exwm
   :ensure t
-  :defer t
-  :custom
-  (exwm-layout-show-all-buffers nil)
-  (exwm-manage-configurations '(((string-equal exwm-class-name "Xfce4-terminal")
-                                 workspace 0)
-                                ((string-equal exwm-class-name "Firefox")
-                                 simulation-keys (("" . [left])
-                                                  ("" . [right])
-                                                  ("" . [up])
-                                                  ("" . [down])
-                                                  ("" . [home])
-                                                  ("" . [end])
-                                                  ([134217846] . [prior])
-                                                  ("" . [next])
-                                                  ("" . [delete])
-                                                  ("" . [S-end delete])
-                                                  ([134217847] . "")
-                                                  ("" . "")
-                                                  ("" . "")
-                                                  ([134217751] . ""))
-                                 workspace 1)
-                                ((string-equal exwm-class-name "Google-chrome")
-                                 simulation-keys (("" . [left])
-                                                  ("" . [right])
-                                                  ("" . [up])
-                                                  ("" . [down])
-                                                  ("" . [home])
-                                                  ("" . [end])
-                                                  ([134217846] . [prior])
-                                                  ("" . [next])
-                                                  ("" . [delete])
-                                                  ("" . [S-end delete])
-                                                  ([134217847] . "")
-                                                  ("" . "")
-                                                  ("" . "")
-                                                  ([134217751] . ""))
-                                 workspace 1)
-                                ((string-equal exwm-class-name "Anki")
-                                 simulation-keys (("" . [left])
-                                                  ("" . [right])
-                                                  ("" . [up])
-                                                  ("" . [down])
-                                                  ("" . [home])
-                                                  ("" . [end])
-                                                  ([134217846] . [prior])
-                                                  ("" . [next])
-                                                  ("" . [delete])
-                                                  ("" . [S-end delete])
-                                                  ([134217847] . "")
-                                                  ("" . "")
-                                                  ("" . "")
-                                                  ([134217751] . ""))
-                                 workspace 1)))
-  (exwm-randr-workspace-monitor-plist '(9 "HDMI1"))
-  (exwm-replace t)
-  (exwm-update-class-hook '(pjs-set-exwm-buffer-name-to-class))
-  (exwm-workspace-index-map (lambda (n) (number-to-string (1+ n))))
-  (exwm-workspace-number 10)
-  (exwm-workspace-show-all-buffers nil)
-  (exwm-workspace-switch-create-limit 10))
+  :if (memq window-system '(x)))
 (use-package exwm-edit
   :ensure t
   :after (exwm))
-(use-package files
-  :defer t
-  :custom
-  (backup-directory-alist '(("." . "~/.emacs.d/backups")))
-  (require-final-newline t)
-  :config
-  (declare-function auto-save-visited-mode "files.el")
-  (auto-save-visited-mode))
+;; (use-package files
+;;   :defer t
+;;   :config
+;;   (declare-function auto-save-visited-mode "files.el")
+;;   (auto-save-visited-mode))
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
   :commands (flycheck-next-error flycheck-previous-error)
@@ -249,9 +160,7 @@ If EXWM is configured, also reset that."
   :after (helm))
 (use-package helm-org
   :ensure t
-  :bind (("C-c j j" . helm-org-agenda-files-headings))
-  :custom
-  (helm-org-format-outline-path t))
+  :bind (("C-c j j" . helm-org-agenda-files-headings)))
 (use-package helm-projectile
   :ensure t
   :after (helm projectile)
@@ -280,27 +189,13 @@ If EXWM is configured, also reset that."
                                                       idle-change
                                                       mode-enabled)))
 (use-package linum
-  :hook (prog-mode . linum-mode)
-  :custom
-  (linum-format "%d "))
-(use-package lisp-mode
-  :defer t
-  :custom
-  (emacs-lisp-docstring-fill-column t))
+  :hook (prog-mode . linum-mode))
 (use-package magit
   :ensure t
   :bind (("C-c g" . magit-status)))
 (use-package markdown-mode
   :ensure t
   :hook (markdown-mode . variable-pitch-mode))
-(use-package menu-bar
-  :defer t
-  :custom
-  (menu-bar-mode nil))
-(use-package mouse
-  :defer t
-  :custom
-  (mouse-yank-at-point t))
 (use-package ob-shell
   :after (org))
 (use-package org
@@ -310,9 +205,7 @@ If EXWM is configured, also reset that."
   :bind (("C-c b" . org-switchb)
          ("C-c o o" . org-cycle-agenda-files)
          ("C-c j r". org-refile-goto-last-stored)
-         ("C-c j c". org-capture-goto-last-stored))
-  :custom
-  (org-startup-indented t))
+         ("C-c j c". org-capture-goto-last-stored)))
 (use-package org-autolist
   :ensure t
   :after (org)
@@ -323,12 +216,6 @@ If EXWM is configured, also reset that."
   :ensure t
   :defer t
   :commands (org-drill)
-  :custom
-  (org-drill-left-cloze-delimiter "{")
-  (org-drill-question-tag "REVIEW")
-  (org-drill-right-cloze-delimiter "}")
-  (org-drill-save-buffers-after-drill-sessions-p nil)
-  (org-drill-scope 'agenda)
   :bind (("C-c d" . pjs-org-drill-or-resume))
   :config
   (declare-function org-drill-hide-region "org-drill.el")
@@ -355,8 +242,6 @@ If EXWM is configured, also reset that."
   :hook ((clojure-mode emacs-lisp-mode) . paredit-mode))
 (use-package paren
   :demand t
-  :custom
-  (show-paren-delay 0.25)
   :config
   (declare-function show-paren-mode "paren.el")
   (show-paren-mode 1))
@@ -369,8 +254,6 @@ If EXWM is configured, also reset that."
 (use-package pinentry
   :ensure t
   :demand t
-  :custom
-  (epa-pinentry-mode 'loopback)
   :config
   (declare-function pinentry-start "pinentry.el")
   (pinentry-start))
@@ -416,8 +299,6 @@ If EXWM is configured, also reset that."
   (projectile-mode +1))
 (use-package saveplace
   :demand t
-  :custom
-  (save-place-file "~/.emacs.d/places")
   :config
   (setq-default save-place t))
 (use-package scroll-bar
@@ -426,18 +307,7 @@ If EXWM is configured, also reset that."
   (declare-function scroll-bar-mode "scroll-bar.el")
   (scroll-bar-mode -1))
 (use-package simple
-  :hook (prog-mode . column-number-mode)
-  :custom
-  (save-interprogram-paste-before-kill t))
-(use-package startup
-  :defer t
-  :custom
-  (inhibit-startup-screen t))
-(use-package solar
-  :defer t
-  :custom
-  (calendar-latitude 38.0718912)
-  (calendar-longitude -78.7225072))
+  :hook (prog-mode . column-number-mode))
 (use-package tc
   :after (magit)
   :bind (:map git-commit-mode-map
@@ -445,10 +315,6 @@ If EXWM is configured, also reset that."
               ("C-c C-l" . tc/insert-clubhouse-story-url)
               ("C-c a" . tc/insert-co-authored-by)
               ("C-c C-a" . tc/insert-co-authored-by)))
-(use-package tool-bar
-  :demand t
-  :custom
-  (tool-bar-mode nil))
 (use-package typo
   :ensure t
   :hook ((markdown-mode org-mode) . typo-mode))
@@ -456,25 +322,14 @@ If EXWM is configured, also reset that."
   :ensure t
   :hook (((markdown-mode org-mode) . visual-fill-column-mode)
          (visual-fill-column-mode . visual-line-mode))
-  :custom
-  (split-window-preferred-function 'visual-fill-column-split-window-sensibly)
   :config
   (advice-add 'text-scale-adjust :after 'visual-fill-column-adjust))
-(use-package uniquify
-  :demand t
-  :custom
-  (uniquify-buffer-name-style 'forward))
 (use-package whitespace
   :hook (prog-mode . whitespace-mode))
 (use-package writegood-mode
   :ensure t
   :hook text-mode)
 (use-package zk
-  :custom
-  (zk-directory "~/org/zk/")
-  (zk-extensions (quote ("org" "txt" "text" "md" "markdown")))
-  (zk-strip-summary-regexp "\\([
-        ]\\|^#\\+[[:upper:]_]+:.*$\\|^:[^:]+:.*$\\)")
   :hook (org-mode . zk-navigate-keys)
   :bind (("C-c z z" . zk)))
 

@@ -3,9 +3,132 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auth-sources '("~/.netrc.gpg"))
+ '(auto-save-visited-mode t)
+ '(backup-directory-alist '(("." . "~/.emacs.d/backups")))
+ '(calendar-latitude 38.0718912)
+ '(calendar-longitude -78.7225072)
+ '(checkdoc-force-docstrings-flag nil)
+ '(cider-auto-jump-to-error nil)
+ '(cider-auto-select-error-buffer nil)
+ '(cider-auto-select-test-report-buffer nil)
+ '(cider-debug-prompt 'minibuffer)
+ '(cider-docview-fill-column 80)
+ '(cider-eldoc-display-context-dependent-info t)
+ '(cider-preferred-build-tool 'lein)
+ '(cider-print-options '(("length" 20) ("level" 10) ("right-margin" 90)))
+ '(cider-prompt-for-symbol nil)
+ '(cider-repl-display-help-banner nil)
+ '(cider-repl-history-file "~/.cider-history")
+ '(cider-repl-pop-to-buffer-on-connect nil)
+ '(cider-save-file-on-load t)
  '(completion-styles '(flex))
  '(dired-clean-confirm-killing-deleted-buffers nil)
+ '(doc-view-continuous t)
+ '(emacs-lisp-docstring-fill-column t)
+ '(epg-pinentry-mode 'loopback)
+ '(exwm-manage-configurations
+   '(((string-equal exwm-class-name "Xfce4-terminal")
+      workspace 0)
+     ((string-equal exwm-class-name "Firefox")
+      simulation-keys
+      (("" .
+        [left])
+       ("" .
+        [right])
+       ("" .
+        [up])
+       ("" .
+        [down])
+       ("" .
+        [home])
+       ("" .
+        [end])
+       ([134217846]
+        .
+        [prior])
+       ("" .
+        [next])
+       ("" .
+        [delete])
+       ("" .
+        [S-end delete])
+       ([134217847]
+        . "")
+       ("" . "")
+       ("" . "")
+       ([134217751]
+        . ""))
+      workspace 1)
+     ((string-equal exwm-class-name "Google-chrome")
+      simulation-keys
+      (("" .
+        [left])
+       ("" .
+        [right])
+       ("" .
+        [up])
+       ("" .
+        [down])
+       ("" .
+        [home])
+       ("" .
+        [end])
+       ([134217846]
+        .
+        [prior])
+       ("" .
+        [next])
+       ("" .
+        [delete])
+       ("" .
+        [S-end delete])
+       ([134217847]
+        . "")
+       ("" . "")
+       ("" . "")
+       ([134217751]
+        . ""))
+      workspace 1)
+     ((string-equal exwm-class-name "Anki")
+      simulation-keys
+      (("" .
+        [left])
+       ("" .
+        [right])
+       ("" .
+        [up])
+       ("" .
+        [down])
+       ("" .
+        [home])
+       ("" .
+        [end])
+       ([134217846]
+        .
+        [prior])
+       ("" .
+        [next])
+       ("" .
+        [delete])
+       ("" .
+        [S-end delete])
+       ([134217847]
+        . "")
+       ("" . "")
+       ("" . "")
+       ([134217751]
+        . "")))))
+ '(exwm-randr-workspace-monitor-plist '(9 "HDMI1"))
+ '(exwm-replace t)
+ '(exwm-update-class-hook '(pjs-set-exwm-buffer-name-to-class))
+ '(exwm-workspace-index-map '(lambda (n) (number-to-string (1+ n))))
+ '(exwm-workspace-number 10)
  '(helm-org-format-outline-path t)
+ '(inhibit-startup-screen t)
+ '(linum-format "%d ")
+ '(menu-bar-mode nil)
+ '(mouse-yank-at-point t)
  '(org-agenda-breadcrumbs-separator "—▶")
  '(org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
  '(org-agenda-compact-blocks t)
@@ -183,6 +306,11 @@ From: %a")
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
  '(org-directory "~/org")
+ '(org-drill-left-cloze-delimiter "{")
+ '(org-drill-question-tag "REVIEW")
+ '(org-drill-right-cloze-delimiter "}")
+ '(org-drill-save-buffers-after-drill-sessions-p nil)
+ '(org-drill-scope 'agenda)
  '(org-edit-src-content-indentation 0)
  '(org-emphasis-alist
    '(("*" bold)
@@ -217,6 +345,7 @@ From: %a")
  '(org-special-ctrl-a/e 'reversed)
  '(org-special-ctrl-k t)
  '(org-startup-folded 'content)
+ '(org-startup-indented t)
  '(org-stuck-projects
    '("+LEVEL=1+TODO=\"TODO\"+CATEGORY=\"Projects\"-SOMEDAY-MAYBE"
      ("NEXT")
@@ -269,6 +398,7 @@ From: %a")
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
    '(cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm exwm-edit flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-org helm-projectile magit markdown markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode))
+ '(require-final-newline t)
  '(safe-local-variable-values
    '((elisp-lint-indent-specs
       (if-let* . 2)
@@ -295,14 +425,23 @@ From: %a")
            (whitespace-mode 0)
            (whitespace-mode 1))
      (clojure-test-ns-segment-position . 1)))
+ '(save-interprogram-paste-before-kill t)
  '(sh-basic-offset 2)
+ '(show-paren-delay 0.25)
+ '(split-window-preferred-function 'visual-fill-column-split-window-sensibly)
  '(sql-input-ring-file-name "~/.sql-mode-history")
  '(text-mode-hook
    '(pjs-configure-text-mode-fill-column flyspell-mode text-mode-hook-identify))
+ '(tool-bar-mode nil)
+ '(uniquify-buffer-name-style 'forward nil (uniquify))
  '(visible-bell t)
  '(whitespace-line-column nil)
  '(whitespace-style
-   '(face trailing tabs lines-tail newline empty indentation::space)))
+   '(face trailing tabs lines-tail newline empty indentation::space))
+ '(zk-directory "~/org/zk/")
+ '(zk-extensions '("org" "txt" "text" "md" "markdown"))
+ '(zk-strip-summary-regexp "\\([
+        ]\\|^#\\+[[:upper:]_]+:.*$\\|^:[^:]+:.*$\\)"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
