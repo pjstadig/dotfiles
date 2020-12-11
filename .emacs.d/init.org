@@ -258,6 +258,7 @@ If EXWM is configured, also reset that."
   (declare-function pinentry-start "pinentry.el")
   (pinentry-start))
 (use-package pjs
+  :demand t
   :hook (prog-mode . pjs-prog-mode-local-bindings)
   :bind (("<XF86Tools>" . pjs-show-xfce-settings)
          ("C-c e s" . pjs-suspend)
@@ -354,5 +355,4 @@ If EXWM is configured, also reset that."
 # Local Variables:
 # eval: (typo-mode -1)
 # fill-column: 90
-# pjs-org-insert-created-property-p: nil
 # End:

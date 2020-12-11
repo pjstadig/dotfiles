@@ -211,6 +211,7 @@
   (declare-function pinentry-start "pinentry.el")
   (pinentry-start))
 (use-package pjs
+  :demand t
   :hook (prog-mode . pjs-prog-mode-local-bindings)
   :bind (("<XF86Tools>" . pjs-show-xfce-settings)
          ("C-c e s" . pjs-suspend)

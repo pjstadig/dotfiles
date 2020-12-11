@@ -3,6 +3,7 @@
 ;;; Commentary:
 ;;
 ;;; Code:
+(require 'pjs)
 (require 'org)
 (require 'org-agenda)
 (require 'org-capture)
@@ -301,12 +302,6 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
   (if (get-buffer "*Org Agenda*")
       (switch-to-buffer "*Org Agenda*")
     (org-agenda)))
-
-(defcustom pjs-org-insert-created-property-p nil
-  "If true will insert CREATED property for new headings."
-  :group 'pjs
-  :type 'boolean
-  :safe #'booleanp)
 
 (defun pjs-org-insert-created-property ()
   (when pjs-org-insert-created-property-p

@@ -133,5 +133,11 @@
     (save-buffer))
   (exwm-workspace-switch-to-buffer "Firefox"))
 
+(defcustom pjs-org-insert-created-property-p nil
+  "If true will insert CREATED property for new headings."
+  :group 'pjs
+  :type 'boolean
+  :safe #'booleanp)
+
 (provide 'pjs)
 ;;; pjs.el ends here
