@@ -7,8 +7,11 @@
 (require 'pjs-exwm)
 
 (defun pjs-reset ()
-  "Recompile and reload all Emacs Lisp.  If EXWM is configured, also reset that."
+  "Retangle, recompile and reload all Emacs Lisp.
+
+If EXWM is configured, also reset that."
   (interactive)
+  (org-babel-tangle-file (concat user-emacs-directory "init.org"))
   (byte-recompile-file (concat user-emacs-directory "init.el") nil 0)
   (when (file-exists-p pjs-system-file)
     (byte-recompile-file pjs-system-file nil 0))
