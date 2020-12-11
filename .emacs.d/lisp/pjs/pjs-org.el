@@ -302,10 +302,17 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
       (switch-to-buffer "*Org Agenda*")
     (org-agenda)))
 
+(defcustom pjs-org-insert-created-property-p nil
+  "If true will insert CREATED property for new headings."
+  :group 'pjs
+  :type 'boolean
+  :safe #'booleanp)
+
 (defun pjs-org-insert-created-property ()
-  (org-set-property "CREATED"
-                    (format-time-string (org-time-stamp-format t t)
-                                        (current-time))))
+  (when pjs-org-insert-created-property-p
+    (org-set-property "CREATED"
+                      (format-time-string (org-time-stamp-format t t)
+                                          (current-time)))))
 
 (defun pjs-org-agenda-restrict-to-heading ()
   "Restrict agenda to completed heading."

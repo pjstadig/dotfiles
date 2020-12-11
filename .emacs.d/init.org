@@ -354,4 +354,5 @@ If EXWM is configured, also reset that."
 # Local Variables:
 # eval: (typo-mode -1)
 # fill-column: 90
+# pjs-org-insert-created-property-p: nil
 # End:
