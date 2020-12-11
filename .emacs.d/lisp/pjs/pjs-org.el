@@ -219,7 +219,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
                (not (pjs-org-sub-task-p (pjs-org-not-done-todo-regex))))
       (let ((dt (pjs-org-most-recent-date))
             (start-d (when start
-                     (org-read-date t t (concat "-" (number-to-string start) "d"))))
+                       (org-read-date t t (concat "-" (number-to-string start) "d"))))
             (end-d (org-read-date t t (concat "-" (number-to-string end) "d"))))
         (and (time-less-p dt end-d)
              (or (null start-d)
