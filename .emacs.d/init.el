@@ -90,13 +90,6 @@
   :ensure t
   :defer t
   :custom
-  (exwm-input-prefix-keys '(24          ; ""
-                            21          ; ""
-                            8           ; ""
-                            [134217848]
-                            [134217824]
-                            [134217766]
-                            [134217786]))
   (exwm-layout-show-all-buffers nil)
   (exwm-manage-configurations '(((string-equal exwm-class-name "Xfce4-terminal")
                                  workspace 0)
