@@ -226,6 +226,7 @@
  '(org-archive-file-header-format "")
  '(org-archive-location "~/org/archive.org::")
  '(org-attach-id-dir "attachments/")
+ '(org-babel-clojure-backend 'cider)
  '(org-capture-prepare-finalize-hook '(pjs-ensure-ending-newline))
  '(org-capture-templates
    '(("t" "Todo" entry
@@ -344,6 +345,7 @@ From: %a")
  '(org-refile-use-outline-path 'file)
  '(org-special-ctrl-a/e 'reversed)
  '(org-special-ctrl-k t)
+ '(org-src-ask-before-returning-to-edit-buffer nil)
  '(org-startup-folded 'content)
  '(org-startup-indented t)
  '(org-stuck-projects
@@ -397,10 +399,11 @@ From: %a")
  '(org-use-sub-superscripts '{})
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
-   '(cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm exwm-edit flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-org helm-projectile magit markdown markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode))
+   '(ob-http cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm exwm-edit flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-org helm-projectile magit markdown markdown-mode org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode))
  '(require-final-newline t)
  '(safe-local-variable-values
-   '((elisp-lint-indent-specs
+   '((org-id-link-to-org-use-id quote use-existing)
+     (elisp-lint-indent-specs
       (if-let* . 2)
       (when-let* . 1)
       (let* . defun)

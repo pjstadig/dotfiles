@@ -2,6 +2,11 @@
 ;;
 ;;; Commentary:
 ;;
+;; I use exwm, which means I have a long running Emacs instance, but I don't
+;; want to load update configuration into Emacs.
+;;
+;; `pjs-reset' will retangle, recompile, and reload all my Emacs Lisp.
+;;
 ;;; Code:
 (require 'pjs-system)
 (require 'pjs-exwm)

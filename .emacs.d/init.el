@@ -1,43 +1,55 @@
 ;;; init.el --- Emacs initialization -*- lexical-binding: t -*-
 ;;; Commentary:
-
+;;
 ;; None.
-
+;;
 ;;; Code:
+;; Bootstrap
 
-;;; Configure Emacs
+;; These need to be set before doing anything else.
 (setq custom-file (concat user-emacs-directory "custom.el")
-      load-prefer-newer t
-      ;; Installing emacs on OSX using nix seems to need this.  This is causing
-      ;; the tangle to happen in the wrong directory, so commenting it.  Maybe
-      ;; on OSX it should be setq-default?
+      load-prefer-newer t)
 
-      ;;default-directory "~/"
-      )
-
-(setq-default fill-column 90
+(setq-default default-directory "~/"  ; OSX with nix needs this
+              fill-column 90
               indent-tabs-mode nil)
+;; Initialize packages
 
-;;; Setup package
+;; My basic unit of code is the package, so before anything else can happen I
+;; need to initialize the package system ...
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/")
              :append)
 (package-initialize)
 
-;;; Setup use-package
+;; ...and install `use-package'.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
 (require 'use-package)
 
-;;; Add load paths for lisp directories
+;; Even my own code I organize as packages, and I add to `load-path' all the
+;; directories in the 'lisp'.
 (dolist (dir (directory-files (concat user-emacs-directory "lisp")))
   (when (not (member dir '("." "..")))
     (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
+;; Activate customization for `org-babel'.
+;; - add a hook to disable evaluation confirmation on a per-file basis
+(use-package pjs-org-babel :after (ob-core)
+  :hook (hack-local-variables . pjs-org-babel-set-confirm-evaluate))
+;; Configure languages for org-babel
 
-;; ;;; Configure packages
+(use-package ob-clojure :after (org)
+  :custom
+  (org-babel-default-header-args:clojure '((:session "*ob-clojure*"))))
+;; Learning quantum computing and deep neural networks, I use linear algebra,
+;; and `ob-octave' is very helpful for doing ad-hoc linear algebra.
+(use-package ob-octave :after (org))
+;; `ob-http' is indispensable for testing REST APIs.
+(use-package ob-http :ensure t :after (org))
+;; Legacy initialization
+
 (use-package checkdoc
   :hook (emacs-lisp-mode . checkdoc-minor-mode))
 (use-package cider
@@ -228,6 +240,7 @@
   :hook (exwm-init . pjs-start-initial-programs))
 (use-package pjs-org
   :commands (pjs-ensure-ending-newline)
+  :hook ((hack-local-variables . pjs-set-org-confirm-babel-evaluate))
   :bind (("C-c a" . pjs-org-agenda)
          :map org-agenda-mode-map
          ("C-c C-x ^" . pjs-org-agenda-restrict-to-heading)
@@ -300,6 +313,7 @@
 
 (require 'pjs-system)
 (pjs-load-system-file)
+;; Epilogue
 
 (provide 'init)
 ;;; init.el ends here

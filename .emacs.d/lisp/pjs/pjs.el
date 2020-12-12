@@ -139,5 +139,11 @@
   :type 'boolean
   :safe #'booleanp)
 
+(defcustom pjs-org-confirm-babel-evaluate t
+  "If true will confirm before evaluating code blocks."
+  :group 'pjs
+  :type 'boolean
+  :safe #'booleanp)
+
 (provide 'pjs)
 ;;; pjs.el ends here
