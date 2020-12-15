@@ -295,7 +295,7 @@ From: %a")
 :CREATED: %U
 :END:")
      ("z" "org-protocol-quote" entry
-      (file+function "~/org/in.org" pjs-org-capture-to-heading)
+      (file+function "~/org/review.org" pjs-org-capture-to-heading)
       "* %:description :REVIEW:
 :PROPERTIES:
 :CREATED: %U
