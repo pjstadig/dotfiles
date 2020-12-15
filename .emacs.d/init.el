@@ -240,7 +240,6 @@
   :hook (exwm-init . pjs-start-initial-programs))
 (use-package pjs-org
   :commands (pjs-ensure-ending-newline)
-  :hook ((hack-local-variables . pjs-set-org-confirm-babel-evaluate))
   :bind (("C-c a" . pjs-org-agenda)
          :map org-agenda-mode-map
          ("C-c C-x ^" . pjs-org-agenda-restrict-to-heading)
