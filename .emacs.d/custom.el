@@ -207,7 +207,7 @@
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
-   '("~/org/in.org" "~/org/mobile/in.org" "~/org/mobile/todo.org" "~/org/mobile/toread.org" "~/org/mobile/tolisten.org" "~/org/mobile/towatch.org" "~/org/someday-maybe.org" "~/org/review.org" "~/org/habits.org" "~/org/journal.org" "~/org/reference.org"))
+   '("~/org/in.org" "~/org/mobile/in.org" "~/org/mobile/todo.org" "~/org/mobile/toread.org" "~/org/mobile/tolisten.org" "~/org/mobile/towatch.org" "~/org/someday-maybe.org" "~/org/review.org" "~/org/journal.org" "~/org/reference.org"))
  '(org-agenda-insert-diary-strategy 'date-tree-last)
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
