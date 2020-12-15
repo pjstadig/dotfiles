@@ -220,6 +220,7 @@
      (todo priority-down category-keep user-defined-up)
      (tags priority-down category-keep user-defined-up)
      (search category-keep user-defined-up)))
+ '(org-agenda-sticky t)
  '(org-agenda-tags-column -96)
  '(org-agenda-tags-todo-honor-ignore-options t)
  '(org-agenda-window-setup 'only-window)
