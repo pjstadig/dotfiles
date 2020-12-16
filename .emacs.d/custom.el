@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auth-source-save-behavior nil)
  '(auth-sources '("~/.netrc.gpg"))
  '(auto-save-visited-mode t)
  '(backup-directory-alist '(("." . "~/.emacs.d/backups")))
@@ -129,11 +130,69 @@
  '(linum-format "%d ")
  '(menu-bar-mode nil)
  '(mouse-yank-at-point t)
- '(org-agenda-breadcrumbs-separator "—▶")
  '(org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
-   '(("i" "Inbox"
+   '(("a" . "Agendas daily, weekly, or otherwise")
+     ("ad" "Daily agenda; habits, priorities, reading, watching, listening"
+      ((agenda ""
+               ((org-agenda-span 'day)
+                (org-agenda-skip-function
+                 '(or
+                   (pjs-org-agenda-skip-subtree-if 'tag
+                                                   '("REVIEW"))
+                   (pjs-org-agenda-skip-entry-if 'todo 'done)))))
+       (tags-todo "*"
+                  ((org-agenda-overriding-header "==Priority tasks================================================================================================================================================================================")
+                   (org-agenda-files
+                    '("~/org/mobile/todo.org"))
+                   (org-agenda-skip-function
+                    '(pjs-org-agenda-skip-entry-if 'notpriority 65 'tag "WAITING"))))
+       (tags-todo "TOREAD"
+                  ((org-agenda-overriding-header "==Reading queue=================================================================================================================================================================================")
+                   (org-agenda-max-entries 10)))
+       (tags-todo "TOWATCH"
+                  ((org-agenda-overriding-header "==Watch queue===================================================================================================================================================================================")
+                   (org-agenda-max-entries 10)))
+       (tags-todo "TOLISTEN"
+                  ((org-agenda-overriding-header "==Listen queue==================================================================================================================================================================================")
+                   (org-agenda-max-entries 10))))
+      nil nil)
+     ("aw" "Weekly review agenda; agenda for past week, completed entries, stuck projects, someday entries, maybe entries, hold entries"
+      ((agenda ""
+               ((org-agenda-span 'week)
+                (org-agenda-start-day "-7d")
+                (org-agenda-start-with-log t)
+                (org-agenda-log-mode-items
+                 '(closed clock state))
+                (org-agenda-include-inactive-timestamps t)
+                (org-agenda-start-on-weekday nil)))
+       (tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
+             ((org-agenda-overriding-header "==Completed entries=============================================================================================================================================================================")
+              (org-agenda-skip-function
+               '(pjs-org-agenda-skip-subtree-if 'active))))
+       (tags "*"
+             ((org-agenda-overriding-header "==Stuck projects (15+ days)=====================================================================================================================================================================")
+              (org-agenda-skip-function
+               '(or
+                 (pjs-org-agenda-skip-subtree-if 'tag
+                                                 '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "JOURNAL" "NOTE"))
+                 (pjs-org-agenda-skip-entry-if 'notstuck 15 nil)))
+              (org-agenda-max-entries 15)))
+       (tags-todo "*"
+                  ((org-agenda-overriding-header "==Someday tasks=================================================================================================================================================================================")
+                   (org-agenda-skip-function
+                    '(pjs-org-agenda-skip-entry-if 'nottag "SOMEDAY" 'project))))
+       (tags-todo "*"
+                  ((org-agenda-overriding-header "==Maybe tasks===================================================================================================================================================================================")
+                   (org-agenda-skip-function
+                    '(pjs-org-agenda-skip-entry-if 'nottag "MAYBE" 'project))))
+       (tags-todo "*"
+                  ((org-agenda-overriding-header "==Hold tasks====================================================================================================================================================================================")
+                   (org-agenda-skip-function
+                    '(pjs-org-agenda-skip-entry-if 'nottag '"HOLD" 'project)))))
+      nil nil)
+     ("i" "Inbox"
       ((agenda ""
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
@@ -150,7 +209,7 @@
                  '(pjs-org-agenda-skip-subtree-if 'tag
                                                   '("NOTE" "REVIEW")
                                                   'todo 'done))))
-       (tags "FLAGGED|TODO=\"TODO\"+PRIORITY=\"A\"" nil)
+       (tags-todo "FLAGGED|PRIORITY=\"A\"/TODO" nil)
        (tags "+CATEGORY=\"TOREAD\""
              ((org-agenda-overriding-header "Reading queue:")
               (org-agenda-max-entries 10))))
@@ -165,9 +224,9 @@
        (tags "TODO=\"TODO\""
              ((org-agenda-overriding-header "Next tasks:")
               (org-agenda-skip-function
-               '(pjs-org-agenda-skip-entry-if 'habit 'scheduled 'deadline 'category "IN" 'tag
-                                              '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
-                                              'project)))))
+               '(pjs-org-agenda-skip-subtree-if 'habit 'scheduled 'deadline 'category "IN" 'tag
+                                                '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
+                                                'project)))))
       nil)
      ("e" "Completed entries" tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
       ((org-agenda-overriding-header "Completed entries:")
@@ -192,18 +251,7 @@
                '(pjs-org-agenda-skip-entry-if 'tag
                                               '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "JOURNAL" "NOTE")
                                               'notproject 'stuck 90 nil 'stuck 30 89 'notstuck 7 29)))))
-      nil nil)
-     ("w" "Weekly review"
-      ((agenda ""
-               ((org-agenda-span 'day)
-                (org-agenda-skip-function
-                 '(pjs-org-agenda-skip-subtree-if 'tag
-                                                  '("NOTE" "REVIEW")
-                                                  'todo 'done))))
-       (tags "WAITING" nil)
-       (tags "HOLD"
-             ((org-agenda-overriding-header "Hold entries:"))))
-      nil)))
+      nil nil)))
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
@@ -342,7 +390,10 @@ From: %a")
  '(org-pretty-entities t)
  '(org-refile-allow-creating-parent-nodes 'confirm)
  '(org-refile-target-verify-function 'pjs-org-valid-refile-target-p)
- '(org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+ '(org-refile-targets
+   '((nil :maxlevel . 9)
+     (org-agenda-files :maxlevel . 9)
+     ("~/clubhouse/clubhouse.org" :maxlevel . 9)))
  '(org-refile-use-outline-path 'file)
  '(org-special-ctrl-a/e 'reversed)
  '(org-special-ctrl-k t)
@@ -357,12 +408,14 @@ From: %a")
  '(org-tag-alist
    '(("WAITING" . 119)
      ("HOLD" . 104)
-     ("MOBILE" . 109)
+     ("MOBILE" . 98)
      ("NOTE" . 110)
      ("CANCELLED" . 99)
      ("FLAGGED" . 63)
-     ("SHOPPING" . 115)
-     ("REVIEW" . 114)))
+     ("SHOPPING" . 112)
+     ("REVIEW" . 114)
+     ("SOMEDAY" . 115)
+     ("MAYBE" . 109)))
  '(org-tags-column 0)
  '(org-tags-exclude-from-inheritance '("FLAGGED"))
  '(org-todo-keyword-faces

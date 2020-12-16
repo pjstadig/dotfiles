@@ -215,8 +215,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
   "A stuck project has no task and no activity between START and END days ago."
   (save-restriction
     (widen)
-    (when (and (pjs-org-project-p)
-               (not (pjs-org-sub-task-p (pjs-org-not-done-todo-regex))))
+    (when (pjs-org-project-p)
       (let ((dt (pjs-org-most-recent-date))
             (start-d (when start
                        (org-read-date t t (concat "-" (number-to-string start) "d"))))
