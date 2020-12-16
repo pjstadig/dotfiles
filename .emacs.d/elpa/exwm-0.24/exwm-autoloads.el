@@ -10,9 +10,7 @@
 ;;; Generated autoloads from exwm.el
 
 (autoload 'exwm-restart "exwm" "\
-Restart EXWM.
-
-\(fn)" t nil)
+Restart EXWM." t nil)
 
 (autoload 'exwm-init "exwm" "\
 Initialize EXWM.
@@ -20,9 +18,7 @@ Initialize EXWM.
 \(fn &optional FRAME)" t nil)
 
 (autoload 'exwm-exit "exwm" "\
-Exit EXWM.
-
-\(fn)" t nil)
+Exit EXWM." t nil)
 
 (autoload 'exwm-enable "exwm" "\
 Enable/Disable EXWM.
@@ -58,14 +54,10 @@ Enable/Disable EXWM.
 ;;; Generated autoloads from exwm-floating.el
 
 (autoload 'exwm-floating-toggle-floating "exwm-floating" "\
-Toggle the current window between floating and non-floating states.
-
-\(fn)" t nil)
+Toggle the current window between floating and non-floating states." t nil)
 
 (autoload 'exwm-floating-hide "exwm-floating" "\
-Hide the current floating X window (which would show again when selected).
-
-\(fn)" t nil)
+Hide the current floating X window (which would show again when selected)." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "exwm-floating" '("exwm-floating-")))
 
@@ -187,19 +179,13 @@ See also `exwm-layout-enlarge-window'.
 \(fn DELTA)" t nil)
 
 (autoload 'exwm-layout-hide-mode-line "exwm-layout" "\
-Hide mode-line.
-
-\(fn)" t nil)
+Hide mode-line." t nil)
 
 (autoload 'exwm-layout-show-mode-line "exwm-layout" "\
-Show mode-line.
-
-\(fn)" t nil)
+Show mode-line." t nil)
 
 (autoload 'exwm-layout-toggle-mode-line "exwm-layout" "\
-Toggle the display of mode-line.
-
-\(fn)" t nil)
+Toggle the display of mode-line." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "exwm-layout" '("exwm-layout-")))
 
@@ -216,9 +202,7 @@ Toggle the display of mode-line.
 ;;; Generated autoloads from exwm-randr.el
 
 (autoload 'exwm-randr-refresh "exwm-randr" "\
-Refresh workspaces according to the updated RandR info.
-
-\(fn)" t nil)
+Refresh workspaces according to the updated RandR info." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "exwm-randr" '("exwm-randr-")))
 
@@ -242,14 +226,10 @@ Return the geometry of frame FRAME.
 \(fn FRAME)" nil nil)
 
 (autoload 'exwm-workspace--current-height "exwm-workspace" "\
-Return the height of current workspace.
-
-\(fn)" nil nil)
+Return the height of current workspace." nil nil)
 
 (autoload 'exwm-workspace--minibuffer-own-frame-p "exwm-workspace" "\
-Reports whether the minibuffer is displayed in its own frame.
-
-\(fn)" nil nil)
+Reports whether the minibuffer is displayed in its own frame." nil nil)
 
 (autoload 'exwm-workspace-switch "exwm-workspace" "\
 Switch to workspace INDEX (0-based).
@@ -303,19 +283,13 @@ Make the current Emacs window display another buffer.
 \(fn BUFFER-OR-NAME)" t nil)
 
 (autoload 'exwm-workspace-attach-minibuffer "exwm-workspace" "\
-Attach the minibuffer so that it always shows.
-
-\(fn)" t nil)
+Attach the minibuffer so that it always shows." t nil)
 
 (autoload 'exwm-workspace-detach-minibuffer "exwm-workspace" "\
-Detach the minibuffer so that it automatically hides.
-
-\(fn)" t nil)
+Detach the minibuffer so that it automatically hides." t nil)
 
 (autoload 'exwm-workspace-toggle-minibuffer "exwm-workspace" "\
-Attach the minibuffer if it's detached, or detach it if it's attached.
-
-\(fn)" t nil)
+Attach the minibuffer if it's detached, or detach it if it's attached." t nil)
 
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "exwm-workspace" '("exwm-workspace-")))
 

@@ -29,9 +29,7 @@ Preconfigured helm for org headings that are parents of the current heading.
 \(fn &optional ARG)" t nil)
 
 (autoload 'helm-org-capture-templates "helm-org" "\
-Preconfigured helm for org templates.
-
-\(fn)" t nil)
+Preconfigured helm for org templates." t nil)
 
 (autoload 'helm-org-completing-read-tags "helm-org" "\
 Completing read function for Org tags.
