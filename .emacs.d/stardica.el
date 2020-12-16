@@ -2,6 +2,7 @@
 (require 'pjs)
 (setq pjs-inhibit-clojure-align-on-save 't)
 (setq pjs-inhibit-cleanup-on-save 't)
+(setq default-directory "~/")
 
 (require 'projectile)
 (setq projectile-project-root-files nil)
