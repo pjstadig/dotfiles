@@ -453,7 +453,7 @@ From: %a")
  '(org-use-sub-superscripts '{})
  '(org-yank-adjusted-subtrees t)
  '(package-selected-packages
-   '(cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm exwm-edit flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-org helm-projectile magit markdown markdown-mode ob-http org org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode))
+   '(cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm exwm-edit flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-org helm-projectile magit markdown markdown-mode ob-http org org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode xelb))
  '(require-final-newline t)
  '(safe-local-variable-values
    '((org-id-link-to-org-use-id quote use-existing)
