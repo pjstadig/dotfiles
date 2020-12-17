@@ -30,3 +30,27 @@ double prefix prompt for all these parameters."
      (plist-get params :jack-in-cmd)
      (lambda (server-buffer)
        (cider-connect-sibling-clj params server-buffer)))))
+
+(defun clubhouse-find-defresources ()
+  (save-excursion
+    (goto-char (point-min))
+    (let ((matches '()))
+      (while (re-search-forward "^\s*(defresource \\(.*\\)" nil t)
+        (let* ((match (match-data))
+               (pos (marker-position (car match)))
+               (name-start (marker-position (caddr match)))
+               (name-end (marker-position (cadddr match)))
+               (name (buffer-substring-no-properties name-start name-end)))
+          (setf (alist-get name matches) pos)))
+      (reverse matches))))
+
+(defun clubhouse-defresource-imenu ()
+  "Jump to a defresource form in the current buffer."
+  (interactive)
+  (let* ((matches (clubhouse-find-defresources))
+         (selection (when matches
+                      (completing-read "Resources: " matches))))
+    (when selection
+      (goto-char (alist-get selection matches nil nil #'equal)))))
+
+(bind-key (kbd "C-c C-r") #'clubhouse-defresource-imenu)
