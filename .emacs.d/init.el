@@ -10,8 +10,7 @@
 (setq custom-file (concat user-emacs-directory "custom.el")
       load-prefer-newer t)
 
-(setq-default default-directory "~/"  ; OSX with nix needs this
-              fill-column 90
+(setq-default fill-column 90
               indent-tabs-mode nil)
 ;; Initialize packages
 
