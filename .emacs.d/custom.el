@@ -23,6 +23,7 @@
  '(cider-repl-history-file "~/.cider-history")
  '(cider-repl-pop-to-buffer-on-connect nil)
  '(cider-save-file-on-load t)
+ '(clubhouse-backend-directory "~/src/backend")
  '(completion-styles '(flex))
  '(dired-clean-confirm-killing-deleted-buffers nil)
  '(doc-view-continuous t)
@@ -504,6 +505,7 @@ From: %a")
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "CTDB" :family "Fira Mono"))))
+ '(clubhouse-backend-given-when-then-face ((t (:inherit font-lock-doc-face :weight bold))))
  '(fixed-pitch ((t (:height 120 :family "Fira Mono"))))
  '(italic ((t (:slant italic))))
  '(org-block ((t (:inherit fixed-pitch))))
