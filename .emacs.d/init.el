@@ -261,10 +261,6 @@
   :config
   (declare-function projectile-mode "projectile.el")
   (projectile-mode +1))
-(use-package saveplace
-  :demand t
-  :config
-  (setq-default save-place t))
 (use-package scroll-bar
   :demand t
   :config
