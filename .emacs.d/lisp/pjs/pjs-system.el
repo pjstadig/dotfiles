@@ -1,23 +1,19 @@
-;;; pjs-system.el --- System local configuration -*- lexical-binding: t; -*-
-;;
+;;; pjs-system.el --- System local configuration -*- lexical-binding: t -*-
+;;;
 ;;; Commentary:
-;;
-;; I sometimes need to configure Emacs differently for different systems (e.g. home versus
-;; work).  This gives me a hook to do that.
-;;
-;; Emacs will set pjs-system-file to a file path named for the current system, and
-;; pjs-load-system-file will load the system file if it exists.
-;;
-;; I must call pjs-load-system-file at the end of my init.el, and it will load system
-;; specific tweaks.
-;;
+;;;
+;;; I sometimes need to configure Emacs differently for different systems
+;;; (e.g. home versus work).  The system specific config should run last.
+;;;
+;;; This creates a pjs-load-system-file function and adds it as an
+;;; after-init-hook.  The system file will be 'pjs-(system-name).el' and it
+;;; should be in the 'pjs' module.
+;;;
 ;;; Code:
-(defvar pjs-system-file
-  (expand-file-name (concat user-emacs-directory (system-name) ".el")))
-
 (defun pjs-load-system-file ()
-  (when (file-exists-p pjs-system-file)
-    (load pjs-system-file)))
+  (require (intern (concat "pjs-" (system-name))) nil t))
+
+(add-hook 'after-init-hook #'pjs-load-system-file 100)
 
 (provide 'pjs-system)
 ;;; pjs-system.el ends here

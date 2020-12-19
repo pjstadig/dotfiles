@@ -12,7 +12,6 @@
 ;; `pjs-reset' will retangle, recompile, and reload all my Emacs Lisp.
 ;;
 ;;; Code:
-(require 'pjs-system)
 (require 'pjs-exwm)
 
 (defun pjs-reset ()
@@ -22,12 +21,9 @@ If EXWM is configured, also reset that."
   (interactive)
   (org-babel-tangle-file (concat user-emacs-directory "init.org"))
   (byte-recompile-file (concat user-emacs-directory "init.el") nil 0)
-  (when (file-exists-p pjs-system-file)
-    (byte-recompile-file pjs-system-file nil 0))
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
   (byte-recompile-directory (concat user-emacs-directory "lisp") 0)
   (load (concat user-emacs-directory "init"))
-  (pjs-load-system-file)
   (when pjs-exwm-configured-p
     (pjs-configure-exwm)
     (exwm-reset)))
@@ -74,6 +70,32 @@ If EXWM is configured, also reset that."
 (dolist (dir (directory-files (concat user-emacs-directory "lisp")))
   (when (not (member dir '("." "..")))
     (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
+#+end_src
+* System
+#+begin_src emacs-lisp :tangle lisp/pjs/pjs-system.el :comments none
+;;; pjs-system.el --- System local configuration -*- lexical-binding: t -*-
+;;;
+;;; Commentary:
+;;;
+;;; I sometimes need to configure Emacs differently for different systems
+;;; (e.g. home versus work).  The system specific config should run last.
+;;;
+;;; This creates a pjs-load-system-file function and adds it as an
+;;; after-init-hook.  The system file will be 'pjs-(system-name).el' and it
+;;; should be in the 'pjs' module.
+;;;
+;;; Code:
+(defun pjs-load-system-file ()
+  (require (intern (concat "pjs-" (system-name))) nil t))
+
+(add-hook 'after-init-hook #'pjs-load-system-file 100)
+
+(provide 'pjs-system)
+;;; pjs-system.el ends here
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package pjs-system)
 #+end_src
 * Org babel
 #+begin_src emacs-lisp :tangle lisp/pjs/pjs-org-babel.el :comments none
@@ -330,8 +352,6 @@ If EXWM is configured, also reset that."
 (use-package pjs-reset
   :bind (("s-r" . pjs-reset)))
 (use-package pjs-secrets)
-(use-package pjs-system
-  :commands pjs-load-system-file)
 (use-package projectile
   :ensure t
   :bind-keymap
@@ -386,9 +406,6 @@ If EXWM is configured, also reset that."
 (require 'server)
 (when (not (eq (server-running-p) 't))
   (server-start))
-
-(require 'pjs-system)
-(pjs-load-system-file)
 #+end_src
 * Epilogue
 #+begin_src emacs-lisp

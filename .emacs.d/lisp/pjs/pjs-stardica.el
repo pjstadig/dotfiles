@@ -1,4 +1,4 @@
-;;; stardica.el --- Stardica code and config -*- lexical-binding: t; -*-
+;;; pjs-stardica.el --- Stardica code and config -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 (require 'pjs)
@@ -19,5 +19,5 @@
   :hook (clojure-mode . clubhouse-backend-font-lock)
   :bind (("C-c C-r" . clubhouse-backend-goto-defresource)))
 
-(provide 'stardica)
-;;; stardica.el ends here
+(provide 'pjs-stardica)
+;;; pjs-stardica.el ends here

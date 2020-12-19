@@ -33,6 +33,7 @@
 (dolist (dir (directory-files (concat user-emacs-directory "lisp")))
   (when (not (member dir '("." "..")))
     (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
+(use-package pjs-system)
 ;; Activate customization for `org-babel'.
 ;; - add a hook to disable evaluation confirmation on a per-file basis
 (use-package pjs-org-babel :after (ob-core)
@@ -251,8 +252,6 @@
 (use-package pjs-reset
   :bind (("s-r" . pjs-reset)))
 (use-package pjs-secrets)
-(use-package pjs-system
-  :commands pjs-load-system-file)
 (use-package projectile
   :ensure t
   :bind-keymap
@@ -307,9 +306,6 @@
 (require 'server)
 (when (not (eq (server-running-p) 't))
   (server-start))
-
-(require 'pjs-system)
-(pjs-load-system-file)
 ;; Epilogue
 
 (provide 'init)
