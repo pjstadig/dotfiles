@@ -42,6 +42,7 @@
 (use-package ob-clojure :after (org)
   :custom
   (org-babel-default-header-args:clojure '((:session "*ob-clojure*"))))
+(use-package ob-dot :after (org))
 ;; Learning quantum computing and deep neural networks, I use linear algebra,
 ;; and `ob-octave' is very helpful for doing ad-hoc linear algebra.
 (use-package ob-octave :after (org))
