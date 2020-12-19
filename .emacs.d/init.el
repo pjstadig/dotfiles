@@ -26,11 +26,13 @@
 
 (require 'use-package)
 
-;; Even my own code I organize as packages, and I add to `load-path' all the
-;; directories in the 'lisp'.
-(dolist (dir (directory-files (concat user-emacs-directory "lisp")))
+;; Add to load-path directory for my code.
+(add-to-list 'load-path (concat user-emacs-directory "lisp"))
+
+;; Some "packages" are not on elpa.  Add them to load-path.
+(dolist (dir (directory-files (concat user-emacs-directory "not-elpa")))
   (when (not (member dir '("." "..")))
-    (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
+    (add-to-list 'load-path (concat user-emacs-directory "not-elpa/" dir))))
 (use-package pjs-system)
 
 ;; Activate customization for `org-babel'.
