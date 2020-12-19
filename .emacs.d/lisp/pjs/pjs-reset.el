@@ -15,7 +15,6 @@
 
 If EXWM is configured, also reset that."
   (interactive)
-  (org-babel-tangle-file (concat user-emacs-directory "init.org"))
   (byte-recompile-file (concat user-emacs-directory "init.el") nil 0)
   (byte-recompile-directory (concat user-emacs-directory "elpa") 0)
   (byte-recompile-directory (concat user-emacs-directory "lisp") 0)

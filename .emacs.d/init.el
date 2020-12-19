@@ -1,19 +1,16 @@
 ;;; init.el --- Emacs initialization -*- lexical-binding: t -*-
 ;;; Commentary:
-;;
-;; None.
-;;
 ;;; Code:
-;; Bootstrap
 
+;;; Bootstrap
 ;; These need to be set before doing anything else.
 (setq custom-file (concat user-emacs-directory "custom.el")
       load-prefer-newer t)
 
 (setq-default fill-column 90
               indent-tabs-mode nil)
-;; Initialize packages
 
+;;; Initialize packages
 ;; My basic unit of code is the package, so before anything else can happen I
 ;; need to initialize the package system ...
 (require 'package)
@@ -26,6 +23,7 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
 (require 'use-package)
 
 ;; Even my own code I organize as packages, and I add to `load-path' all the
@@ -34,6 +32,7 @@
   (when (not (member dir '("." "..")))
     (add-to-list 'load-path (concat user-emacs-directory "lisp" "/" dir))))
 (use-package pjs-system)
+
 ;; Activate customization for `org-babel'.
 ;; - add a hook to disable evaluation confirmation on a per-file basis
 (use-package pjs-org-babel :after (ob-core)
@@ -59,7 +58,7 @@
   ;; :custom
   ;; TODO: do I want to set this?
   ;; (cider-jdk-src-paths '("~/.cache/openjdk-8u192b26/"))
-)
+  )
 (use-package cljstyle-mode
   :after (clojure-mode)
   :bind (:map clojure-mode-map
