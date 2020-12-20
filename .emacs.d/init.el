@@ -181,23 +181,7 @@
   :bind (("C-c c" . org-capture)))
 (use-package org-drill
   :ensure t
-  :defer t
-  :commands (org-drill)
-  :bind (("C-c d" . pjs-org-drill-or-resume))
-  :config
-  (declare-function org-drill-hide-region "org-drill.el")
-  (defun pjs-org-drill-hide-comments ()
-    "Hide comments."
-    (save-excursion
-      (while (re-search-forward "^#[^+].*$" nil t)
-        (org-drill-hide-region (match-beginning 0) (match-end 0)))))
-  (advice-add 'org-drill-hide-comments :override 'pjs-org-drill-hide-comments)
-  (defun pjs-org-drill-or-resume ()
-    (interactive)
-    (if (and org-drill-last-session
-             (org-drill-entries-pending-p org-drill-last-session))
-        (org-drill-resume)
-      (org-drill))))
+  :commands (org-drill))
 (use-package org-habit
   :after (org))
 (use-package org-id
@@ -248,6 +232,8 @@
   :hook (org-insert-heading . pjs-org-insert-created-property))
 (use-package pjs-org-cosmetics
   :after (org))
+(use-package pjs-org-drill
+  :bind (("C-c d" . pjs-org-drill-or-resume)))
 (use-package pjs-prog-mode
   :hook (prog-mode . pjs-todo-font-lock))
 (use-package pjs-reset
