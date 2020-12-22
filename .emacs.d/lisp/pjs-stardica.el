@@ -16,7 +16,9 @@
 
 (use-package clubhouse-backend
   :load-path "~/src/backend/elisp"
+  :if (file-exists-p "~/src/backend/elisp")
   :hook (clojure-mode . clubhouse-backend-font-lock)
+  :commands (clubhouse-backend-jack-in-dev-system)
   :bind (("C-c C-r" . clubhouse-backend-goto-defresource)))
 
 (provide 'pjs-stardica)
