@@ -1,8 +1,6 @@
-;;; pjs-carbon.el --- Stardica code and config -*- lexical-binding: t; -*-
+;;; pjs-carbon.el --- Carbon code and config -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
-(require 'pjs)
-
 (require 'org)
 
 (setq org-directory "~/org/personal"

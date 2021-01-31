@@ -125,7 +125,7 @@
 (defun pjs-pop-read-queue ()
   (interactive)
   (save-excursion
-    (find-file-existing "~/org/personal/mobile/toread.org")
+    (find-file-existing "~/org/personal/toread.org")
     (goto-char (point-min))
     (org-next-link)
     (org-open-at-point)

@@ -178,7 +178,7 @@
        (tags "*"
              ((org-agenda-overriding-header "==Waiting=======================================================================================================================================================================================")
               (org-agenda-skip-function
-               '(pjs-org-agenda-skip-entry-if 'nottag "WAITING"))))
+               '(pjs-org-agenda-skip-entry-if 'nottag "WAITING" 'todo 'done))))
        (tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
              ((org-agenda-overriding-header "==Archivable====================================================================================================================================================================================")
               (org-agenda-skip-function
@@ -456,7 +456,9 @@ From: %a")
    '(cider cljstyle-mode clojure-mode clojure-mode-extra-font-locking company deft exec-path-from-shell exwm exwm-edit flycheck-clj-kondo ghub gnu-elpa-keyring-update helm helm-ag helm-core helm-org helm-projectile magit markdown markdown-mode ob-http org org-autolist org-bullets org-drill paredit pdf-tools pinentry typo use-package visual-fill-column writegood-mode xelb))
  '(require-final-newline t)
  '(safe-local-variable-values
-   '((org-id-link-to-org-use-id quote use-existing)
+   '((org-archive-location . "~/org/work/archive.org::")
+     (org-archive-location . "~/org/personal/archive.org::")
+     (org-id-link-to-org-use-id quote use-existing)
      (elisp-lint-indent-specs
       (if-let* . 2)
       (when-let* . 1)

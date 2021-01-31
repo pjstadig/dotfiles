@@ -9,6 +9,7 @@
 ;;
 ;;; Code:
 (require 'pjs-exwm)
+(require 'pjs-system)
 
 (defun pjs-reset ()
   "Retangle, recompile and reload all Emacs Lisp.
@@ -21,7 +22,8 @@ If EXWM is configured, also reset that."
   (load (concat user-emacs-directory "init"))
   (when pjs-exwm-configured-p
     (pjs-configure-exwm)
-    (exwm-reset)))
+    (exwm-reset))
+  (pjs-load-system-file))
 
 (provide 'pjs-reset)
 ;;; pjs-reset.el ends here

@@ -11,7 +11,7 @@
 ;;;
 ;;; Code:
 (defun pjs-load-system-file ()
-  (require (intern (concat "pjs-" (system-name))) nil t))
+  (load (concat "pjs-" (system-name) ".el") t))
 
 (add-hook 'after-init-hook #'pjs-load-system-file 100)
 

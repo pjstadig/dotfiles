@@ -2,13 +2,12 @@
 ;;; Commentary:
 ;;; Code:
 (require 'pjs)
-(setq pjs-inhibit-clojure-align-on-save 't)
-(setq pjs-inhibit-cleanup-on-save 't)
-(setq default-directory "~/")
-
-(require 'org)
 (require 'projectile)
-(setq projectile-project-root-files nil)
+
+(setq default-directory "~/"
+      pjs-inhibit-clojure-align-on-save 't
+      pjs-inhibit-cleanup-on-save 't
+      projectile-project-root-files nil)
 
 (remove-hook 'prog-mode-hook 'whitespace-mode)
 
