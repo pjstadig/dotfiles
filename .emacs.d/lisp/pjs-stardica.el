@@ -10,8 +10,6 @@
 (require 'projectile)
 (setq projectile-project-root-files nil)
 
-(add-to-list 'org-agenda-files "~/clubhouse/clubhouse.org" t)
-
 (remove-hook 'prog-mode-hook 'whitespace-mode)
 
 (use-package clubhouse-backend

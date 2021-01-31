@@ -131,6 +131,9 @@
  '(linum-format "%d ")
  '(menu-bar-mode nil)
  '(mouse-yank-at-point t)
+ '(org-agenda-category-icon-alist
+   '(("personal" "~/org/personal/icon.png" nil nil :ascent center :height 16)
+     ("work" "~/org/work/icon.png" nil nil :ascent center :height 16)))
  '(org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
@@ -145,8 +148,6 @@
                    (pjs-org-agenda-skip-entry-if 'todo 'done)))))
        (tags-todo "*"
                   ((org-agenda-overriding-header "==Priority tasks================================================================================================================================================================================")
-                   (org-agenda-files
-                    '("~/org/mobile/todo.org"))
                    (org-agenda-skip-function
                     '(pjs-org-agenda-skip-entry-if 'notpriority 65 'tag "WAITING" 'scheduled 'deadline 'active))))
        (tags "*"
@@ -214,20 +215,8 @@
              ((org-agenda-overriding-header "Inbox:")
               (org-agenda-skip-function
                '(and
-                 (pjs-org-agenda-skip-entry-if 'notcategory "IN" 'scheduled 'deadline)
+                 (pjs-org-agenda-skip-entry-if 'nottag "IN" 'scheduled 'deadline)
                  (pjs-org-agenda-skip-entry-if 'nottag "FLAGGED"))))))
-      nil)
-     ("d" "Daily agenda"
-      ((agenda ""
-               ((org-agenda-span 'day)
-                (org-agenda-skip-function
-                 '(pjs-org-agenda-skip-subtree-if 'tag
-                                                  '("NOTE" "REVIEW")
-                                                  'todo 'done))))
-       (tags-todo "FLAGGED|PRIORITY=\"A\"/TODO" nil)
-       (tags "+CATEGORY=\"TOREAD\""
-             ((org-agenda-overriding-header "Reading queue:")
-              (org-agenda-max-entries 10))))
       nil)
      ("n" "Next tasks"
       ((agenda ""
@@ -239,8 +228,8 @@
        (tags "TODO=\"TODO\""
              ((org-agenda-overriding-header "Next tasks:")
               (org-agenda-skip-function
-               '(pjs-org-agenda-skip-subtree-if 'habit 'scheduled 'deadline 'category "IN" 'tag
-                                                '("CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE")
+               '(pjs-org-agenda-skip-subtree-if 'habit 'scheduled 'deadline 'tag
+                                                '("IN" "CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE" "SHOPPING")
                                                 'project)))))
       nil)
      ("e" "Completed entries" tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
@@ -270,14 +259,14 @@
  '(org-agenda-diary-file "~/org/journal.org")
  '(org-agenda-dim-blocked-tasks nil)
  '(org-agenda-files
-   '("~/org/in.org" "~/org/mobile/in.org" "~/org/mobile/todo.org" "~/org/mobile/toread.org" "~/org/mobile/tolisten.org" "~/org/mobile/towatch.org" "~/org/review.org" "~/org/journal.org" "~/org/reference.org"))
+   '("~/org/work/in.org" "~/org/work/todo.org" "~/org/work/toread.org" "~/org/work/tolisten.org" "~/org/work/towatch.org" "~/org/work/review.org" "~/org/work/journal.org" "~/org/work/reference.org"))
  '(org-agenda-insert-diary-strategy 'date-tree-last)
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
-   '((agenda . "  %?-12t% s%?b")
-     (todo . "  %?b")
-     (tags . "  %?b")
-     (search . "  %?b")))
+   '((agenda . " %i %?-12t% s%b")
+     (todo . " %i %b")
+     (tags . " %i %b")
+     (search . " %i %b")))
  '(org-agenda-sorting-strategy
    '((agenda habit-down time-up priority-down category-keep)
      (todo priority-down category-keep user-defined-up)
@@ -293,26 +282,26 @@
  '(org-capture-prepare-finalize-hook '(pjs-ensure-ending-newline))
  '(org-capture-templates
    '(("t" "Todo" entry
-      (file "~/org/in.org")
+      (file "in.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
 :END:")
      ("r" "Review" entry
-      (file "~/org/review.org")
+      (file "review.org")
       "* %? :REVIEW:
 :PROPERTIES:
 :CREATED: %U
 :END:")
      ("n" "Note" entry
-      (file "~/org/reference.org")
+      (file "reference.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
 :END:")
      ("l" "Linked")
      ("lt" "Todo" entry
-      (file "~/org/in.org")
+      (file "in.org")
       "* TODO %?
 :PROPERTIES:
 :CREATED: %U
@@ -323,7 +312,7 @@
 
 From: %a")
      ("ln" "Note" entry
-      (file "~/org/reference.org")
+      (file "reference.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
@@ -335,7 +324,7 @@ From: %a")
 From: %a")
      ("j" "Journal")
      ("jj" "Journal to file" entry
-      (file+olp+datetree "~/org/journal.org")
+      (file+olp+datetree "journal.org")
       "* %?
 :PROPERTIES:
 :CREATED: %U
@@ -345,20 +334,20 @@ From: %a")
 :CREATED: %T
 :END:")
      ("v" "Event" entry
-      (file "~/org/mobile/todo.org")
+      (file "todo.org")
       "* %^{Description}
 %^T
 :PROPERTIES:
 :CREATED: %U
 :END:" :immediate-finish t)
      ("y" "org-protocol-link" entry
-      (file "~/org/mobile/toread.org")
+      (file "toread.org")
       "* %? %a
 :PROPERTIES:
 :CREATED: %U
 :END:")
      ("z" "org-protocol-quote" entry
-      (file+function "~/org/review.org" pjs-org-capture-to-heading)
+      (file+function "review.org" pjs-org-capture-to-heading)
       "* %:description :REVIEW:
 :PROPERTIES:
 :CREATED: %U
@@ -369,7 +358,7 @@ From: %a")
 %?" :immediate-finish t)))
  '(org-clock-out-remove-zero-time-clocks t)
  '(org-default-notes-file "~/org/in.org")
- '(org-directory "~/org")
+ '(org-directory "~/org/work")
  '(org-drill-left-cloze-delimiter "{")
  '(org-drill-question-tag "REVIEW")
  '(org-drill-right-cloze-delimiter "}")
@@ -404,11 +393,8 @@ From: %a")
  '(org-pretty-entities t)
  '(org-refile-allow-creating-parent-nodes 'confirm)
  '(org-refile-target-verify-function 'pjs-org-valid-refile-target-p)
- '(org-refile-targets
-   '((nil :maxlevel . 9)
-     (org-agenda-files :maxlevel . 9)
-     ("~/clubhouse/clubhouse.org" :maxlevel . 9)))
- '(org-refile-use-outline-path 'file)
+ '(org-refile-targets '((nil :maxlevel . 9) (org-agenda-files :maxlevel . 9)))
+ '(org-refile-use-outline-path 'full-file-path)
  '(org-special-ctrl-a/e 'reversed)
  '(org-special-ctrl-k t)
  '(org-src-ask-before-returning-to-edit-buffer nil)
