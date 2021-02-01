@@ -166,7 +166,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
         (re-search-forward regex subtree-end t)))))
 
 (defun pjs-org-project-entry-p ()
-  (and (string-equal "TODO" (org-get-category))
+  (and (string-equal "todo.org" (buffer-name))
        (not (pjs-org-todo-p))))
 
 (defun pjs-org-project-p ()
