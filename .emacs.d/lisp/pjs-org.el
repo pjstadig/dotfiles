@@ -8,6 +8,7 @@
 (require 'org-agenda)
 (require 'org-capture)
 (require 'org-clock)
+(require 's)
 
 (defun pjs-org-agenda-skip-entry-if (&rest conditions)
   (pjs-org-agenda-skip-if nil conditions))
@@ -166,7 +167,7 @@ that can be put into `org-agenda-skip-function' for the duration of a command."
         (re-search-forward regex subtree-end t)))))
 
 (defun pjs-org-project-entry-p ()
-  (and (string-equal "todo.org" (buffer-name))
+  (and (s-ends-with-p "todo.org" (buffer-name))
        (not (pjs-org-todo-p))))
 
 (defun pjs-org-project-p ()
