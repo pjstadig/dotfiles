@@ -261,10 +261,10 @@
  '(org-agenda-insert-diary-strategy 'date-tree-last)
  '(org-agenda-persistent-filter t)
  '(org-agenda-prefix-format
-   '((agenda . " % i%?-12t% s%b")
-     (todo . " % i%b")
-     (tags . " % i%b")
-     (search . " % i%b")))
+   '((agenda . "  % i%?-12t% s%b")
+     (todo . "  % i%b")
+     (tags . "  % i%b")
+     (search . "  % i%b")))
  '(org-agenda-sorting-strategy
    '((agenda habit-down time-up priority-down category-keep)
      (todo priority-down category-keep user-defined-up)
