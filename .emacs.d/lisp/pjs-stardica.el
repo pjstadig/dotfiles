@@ -1,12 +1,10 @@
 ;;; pjs-stardica.el --- Stardica code and config -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
-(require 'org-agenda)
 (require 'pjs)
 (require 'projectile)
 
 (setq default-directory "~/"
-      org-agenda-category-icon-alist nil
       pjs-inhibit-clojure-align-on-save 't
       pjs-inhibit-cleanup-on-save 't
       projectile-project-root-files nil)

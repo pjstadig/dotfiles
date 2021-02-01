@@ -4,7 +4,9 @@
 (require 'org)
 (require 'org-agenda)
 
-(setq org-agenda-diary-file "~/org/personal/journal.org"
+(setq org-agenda-category-icon-alist '(("personal" "~/org/personal/blank-icon.png" nil nil :ascent center :height 16)
+                                       ("work" "~/org/personal/clubhouse-icon.png" nil nil :ascent center :height 16))
+      org-agenda-diary-file "~/org/personal/journal.org"
       org-agenda-files (append '("~/org/personal/in.org"
                                  "~/org/personal/todo.org"
                                  "~/org/personal/toread.org"

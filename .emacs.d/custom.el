@@ -131,9 +131,7 @@
  '(linum-format "%d ")
  '(menu-bar-mode nil)
  '(mouse-yank-at-point t)
- '(org-agenda-category-icon-alist
-   '(("personal" "~/org/personal/icon.png" nil nil :ascent center :height 16)
-     ("work" "~/org/work/icon.png" nil nil :ascent center :height 16)))
+ '(org-agenda-category-icon-alist nil)
  '(org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
