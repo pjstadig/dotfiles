@@ -266,9 +266,9 @@
      (tags . "  % i%b")
      (search . "  % i%b")))
  '(org-agenda-sorting-strategy
-   '((agenda habit-down time-up priority-down category-keep)
-     (todo priority-down category-keep user-defined-up)
-     (tags priority-down category-keep user-defined-up)
+   '((agenda category-keep habit-down time-up category-keep)
+     (todo category-keep priority-down user-defined-up)
+     (tags category-keep priority-down user-defined-up)
      (search category-keep user-defined-up)))
  '(org-agenda-tags-column -96)
  '(org-agenda-tags-todo-honor-ignore-options t)
