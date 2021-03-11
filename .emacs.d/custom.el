@@ -135,8 +135,7 @@
  '(org-agenda-cmp-user-defined 'pjs-org-agenda-sort-created)
  '(org-agenda-compact-blocks t)
  '(org-agenda-custom-commands
-   '(("a" . "Agendas daily, weekly, or otherwise")
-     ("ad" "Daily agenda; habits, priorities, reading, watching, listening"
+   '(("d" "Daily agenda; habits, priorities, reading, watching, listening"
       ((agenda ""
                ((org-agenda-span 'day)
                 (org-agenda-skip-function
@@ -164,7 +163,7 @@
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'nottag "TOLISTEN")))))
       nil nil)
-     ("aw" "Weekly review agenda; agenda for past week, waiting, archivable, stuck projects, someday, maybe, hold"
+     ("w" "Weekly review agenda; agenda for past week, waiting, archivable, stuck projects, someday, maybe, hold"
       ((agenda ""
                ((org-agenda-span 'week)
                 (org-agenda-start-day "-7d")
@@ -230,12 +229,26 @@
                                                 '("IN" "CANCELLED" "WAITING" "SOMEDAY" "MAYBE" "HOLD" "TOREAD" "TOLISTEN" "TOWATCH" "FLAGGED" "REVIEW" "NOTE" "SHOPPING")
                                                 'project)))))
       nil)
-     ("e" "Completed entries" tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
-      ((org-agenda-overriding-header "Completed entries:")
-       (org-agenda-skip-function
-        '(pjs-org-agenda-skip-entry-if 'active))))
+     ("e" "Completed entries"
+      ((agenda ""
+               ((org-agenda-span 'day)
+                (org-agenda-skip-function
+                 '(pjs-org-agenda-skip-subtree-if 'tag
+                                                  '("NOTE" "REVIEW")
+                                                  'todo 'done))))
+       (tags "CLOSED<\"<-7d>\"|TODO=\"DONE\"+CLOSED=\"\""
+             ((org-agenda-overriding-header "Completed entries:")
+              (org-agenda-skip-function
+               '(pjs-org-agenda-skip-entry-if 'active)))))
+      nil)
      ("#" "Stuck projects"
-      ((tags "*"
+      ((agenda ""
+               ((org-agenda-span 'day)
+                (org-agenda-skip-function
+                 '(pjs-org-agenda-skip-subtree-if 'tag
+                                                  '("NOTE" "REVIEW")
+                                                  'todo 'done))))
+       (tags "*"
              ((org-agenda-overriding-header "Stuck projects (>90 days):")
               (org-agenda-skip-function
                '(pjs-org-agenda-skip-entry-if 'tag
@@ -323,14 +336,16 @@ From: %a")
      ("j" "Journal")
      ("jj" "Journal to file" entry
       (file+olp+datetree "journal.org")
-      "* %?
+      "* %T
 :PROPERTIES:
 :CREATED: %U
-:END:")
-     ("jc" "Journal to clocked entry" entry #'pjs-org-capture-journal "* %?
+:END:
+- %?")
+     ("jc" "Journal to clocked entry" entry #'pjs-org-capture-journal "* %T
 :PROPERTIES:
-:CREATED: %T
-:END:")
+:CREATED: %U
+:END:
+- %?")
      ("v" "Event" entry
       (file "todo.org")
       "* %^{Description}
