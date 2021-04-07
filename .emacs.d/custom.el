@@ -201,6 +201,11 @@
                    (org-agenda-skip-function
                     '(pjs-org-agenda-skip-entry-if 'nottag '"HOLD" 'project)))))
       nil nil)
+     ("j" "Journal agenda" agenda ""
+      ((org-agenda-span 'month)
+       (org-agenda-skip-function
+        '(pjs-org-agenda-skip-entry-if 'nottag "JOURNAL"))
+       (org-agenda-start-with-entry-text-mode 't)))
      ("i" "Inbox"
       ((agenda ""
                ((org-agenda-span 'day)
