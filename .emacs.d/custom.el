@@ -217,7 +217,7 @@
              ((org-agenda-overriding-header "Inbox:")
               (org-agenda-skip-function
                '(and
-                 (pjs-org-agenda-skip-entry-if 'nottag "IN" 'scheduled 'deadline)
+                 (pjs-org-agenda-skip-entry-if 'nottag "IN")
                  (pjs-org-agenda-skip-entry-if 'nottag "FLAGGED"))))))
       nil)
      ("n" "Next tasks"
