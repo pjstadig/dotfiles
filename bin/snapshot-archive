@@ -4,10 +4,17 @@
 set -Eeuo pipefail
 
 echo "== START = $(date)" | tee .snapshot-archive.log
-if ! (mount-secure-backup "${@}" &&
-        rsync_tmbackup.sh ~/archive ~/secure-backup) 2>&1 | tee -a .snapshot-archive.log; then
+if mount-secure-backup "${@}" 2>&1 | tee -a .snapshot-archive.log; then
+  if ! rsync_tmbackup.sh ~/archive ~/secure-backup 2>&1 | tee -a .snapshot-archive.log; then
+    failed=true
+  fi
+  if ! umount-secure-backup 2>&1 | tee -a .snapshot-archive.log; then
+    failed=true;
+  fi
+else
   failed=true
 fi
+
 echo "==   END = $(date)" | tee -a .snapshot-archive.log
 if [ "${failed:-false}" = "true" ]; then
   echo "Snapshot failed!"
